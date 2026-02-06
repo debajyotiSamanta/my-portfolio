@@ -128,7 +128,7 @@ export default function Contact() {
                   type="text" 
                   id="contact-name" 
                   className="w-full px-5 py-3 border-2 border-gray-600 dark:border-gray-500 bg-gray-800 dark:bg-gray-700 text-white dark:text-white rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-600/40 dark:focus:ring-blue-600/30 transition-all duration-300 placeholder-gray-400 dark:placeholder-gray-500 font-medium"
-                  placeholder="John Doe"
+                  placeholder="Debajyoti Samanta"
                 />
               </div>
 
@@ -139,7 +139,7 @@ export default function Contact() {
                   type="email" 
                   id="contact-email" 
                   className="w-full px-5 py-3 border-2 border-gray-600 dark:border-gray-500 bg-gray-800 dark:bg-gray-700 text-white dark:text-white rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-600/40 dark:focus:ring-blue-600/30 transition-all duration-300 placeholder-gray-400 dark:placeholder-gray-500 font-medium"
-                  placeholder="john@example.com"
+                  placeholder="debajyoti@example.com"
                 />
               </div>
 
