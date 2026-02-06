@@ -85,7 +85,7 @@ export default function Header() {
         {/* Right Side Controls */}
         <div className="flex items-center gap-2 sm:gap-4">
           {/* Theme Toggle Button */}
-          <button
+          {/* <button
             onClick={toggleTheme}
             className="relative p-2.5 rounded-lg bg-gradient-to-br from-gray-700 to-gray-800 dark:from-gray-800 dark:to-gray-900 text-yellow-400 dark:text-yellow-400 hover:shadow-lg shadow-lg shadow-black/40 dark:shadow-blue-700/30 transition-all duration-300 hover:scale-110 group border border-gray-600 dark:border-gray-700 font-bold"
             aria-label="Toggle theme"
@@ -97,7 +97,7 @@ export default function Header() {
             ) : (
               <i className="ri-moon-line text-lg relative z-10"></i>
             )}
-          </button>
+          </button> */}
           
           {/* Mobile menu toggle */}
           <button
