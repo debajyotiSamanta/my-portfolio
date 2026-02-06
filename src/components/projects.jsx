@@ -60,7 +60,7 @@ export default function Projects() {
   ];
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 via-white to-blue-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 animate__animated animate__fadeInUp" id="projects">
+    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-900 via-gray-850 to-gray-900 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 animate__animated animate__fadeInUp" id="projects">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <div className="inline-flex items-center justify-center gap-2 mb-6">
@@ -68,10 +68,10 @@ export default function Projects() {
             <span className="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Featured Work</span>
             <div className="h-1 w-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"></div>
           </div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4 animate__animated animate__slideInDown">
+          <h2 className="text-4xl lg:text-5xl font-bold text-white dark:text-white mb-4 animate__animated animate__slideInDown">
             Projects & Creations
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 animate__animated animate__slideInUp max-w-2xl mx-auto font-light">
+          <p className="text-lg text-gray-300 dark:text-gray-400 animate__animated animate__slideInUp max-w-2xl mx-auto font-medium">
             A showcase of my best work - from responsive websites to interactive applications
           </p>
         </div>
@@ -80,11 +80,11 @@ export default function Projects() {
           {projects.map((p, i) => (
             <div
               key={i}
-              className="group relative bg-white dark:bg-gray-800/50 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-3 transition-all duration-300 animate__animated animate__fadeInUp overflow-hidden backdrop-blur-sm border border-gray-200 dark:border-gray-700"
+              className="group relative bg-gray-900 dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-3 transition-all duration-300 animate__animated animate__fadeInUp overflow-hidden backdrop-blur-sm border border-gray-700 dark:border-gray-600"
               style={{ animationDelay: `${i * 0.1}s` }}
             >
               {/* Image Container */}
-              <div className="relative h-56 overflow-hidden bg-gradient-to-br from-slate-200 to-slate-300 dark:from-gray-700 dark:to-gray-600">
+              <div className="relative h-56 overflow-hidden bg-gradient-to-br from-gray-700 to-gray-800 dark:from-gray-700 dark:to-gray-600">
                 <img
                   src={p.img}
                   alt={p.title}
@@ -102,11 +102,11 @@ export default function Projects() {
 
               {/* Content */}
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
+                <h3 className="text-xl font-bold text-white dark:text-white mb-3 group-hover:text-blue-400 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
                   {p.title}
                 </h3>
                 
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 font-light h-12 overflow-hidden">
+                <p className="text-sm text-gray-300 dark:text-gray-400 mb-4 font-medium h-12 overflow-hidden">
                   Crafted with modern technologies to deliver exceptional user experiences
                 </p>
 

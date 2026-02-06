@@ -20,33 +20,33 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #3b82f6, #a855f7);
+  background: linear-gradient(180deg, #2563eb, #7c3aed);
   border-radius: 10px;
   transition: all 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #2563eb, #7e22ce);
+  background: linear-gradient(180deg, #1d4ed8, #6d28d9);
 }
 
 /* Dark mode scrollbar */
 .dark::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #1e40af, #6b21a8);
+  background: linear-gradient(180deg, #3b82f6, #8b5cf6);
 }
 
 .dark::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #1e3a8a, #581c87);
+  background: linear-gradient(180deg, #2563eb, #7c3aed);
 }
 
 /* Selection color */
 ::selection {
-  background: linear-gradient(to right, #3b82f6, #a855f7);
+  background: linear-gradient(to right, #2563eb, #7c3aed);
   color: white;
 }
 
 /* Text selection */
 ::-moz-selection {
-  background: linear-gradient(to right, #3b82f6, #a855f7);
+  background: linear-gradient(to right, #2563eb, #7c3aed);
   color: white;
 }
 
@@ -72,13 +72,13 @@ a, button {
 
 /* Form inputs styling */
 input:focus, textarea:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
 }
 
 .dark input:focus, .dark textarea:focus {
   border-color: #60a5fa;
-  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
 }
 
 /* Button hover effects */

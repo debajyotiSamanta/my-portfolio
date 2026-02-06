@@ -201,9 +201,9 @@ Contributions, issues, and feature requests are welcome!
 
 ## ?? Contact
 
-- Email: your.email@example.com
-- LinkedIn: [Your Profile](https://linkedin.com)
-- GitHub: [Your Profile](https://github.com)
+- Email: debajyotisamanta2003@gmail.com.com
+- LinkedIn: [Your Profile](https://www.linkedin.com/in/debajyoti-samanta-b49b292b5/)
+- GitHub: [Your Profile](https://github.com/debajyotiSamanta)
 - Portfolio: [Live Demo](https://yourportfolio.com)
 
 ---

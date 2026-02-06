@@ -31,7 +31,7 @@ export default function Contact() {
   }, []);
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-blue-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 animate__animated animate__fadeInUp" id="contact">
+    <section className="py-20 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-850 to-gray-900 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 animate__animated animate__fadeInUp" id="contact">
       <div className="max-w-6xl w-full">
         <div className="text-center mb-16">
           <div className="inline-flex items-center justify-center gap-2 mb-6">
@@ -39,10 +39,10 @@ export default function Contact() {
             <span className="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Get in Touch</span>
             <div className="h-1 w-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"></div>
           </div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4 animate__animated animate__slideInDown">
+          <h2 className="text-4xl lg:text-5xl font-bold text-white dark:text-white mb-4 animate__animated animate__slideInDown">
             Contact Me
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 animate__animated animate__slideInUp max-w-2xl mx-auto font-light">
+          <p className="text-lg text-gray-300 dark:text-gray-400 animate__animated animate__slideInUp max-w-2xl mx-auto font-medium">
             Let's discuss your project and create something amazing together
           </p>
         </div>
@@ -54,16 +54,16 @@ export default function Contact() {
               <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white">
                 <i className="ri-chat-3-line text-xl"></i>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Let's Connect</h3>
+              <h3 className="text-2xl font-bold text-white dark:text-white">Let's Connect</h3>
               <div className="flex-1 h-1 bg-gradient-to-r from-blue-500 to-transparent rounded-full ml-4"></div>
             </div>
             
             <div className="space-y-6">
               {/* Email */}
-              <div className="group relative bg-white dark:bg-gray-800/50 p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700 backdrop-blur-sm overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div className="group relative bg-gray-900 dark:bg-gray-800/80 p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 dark:border-gray-600 backdrop-blur-sm overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <div className="relative z-10">
-                  <span className="flex items-center gap-3 text-gray-700 dark:text-gray-300 font-semibold mb-3">
+                  <span className="flex items-center gap-3 text-gray-200 dark:text-gray-200 font-bold mb-3">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white">
                       <i className="ri-mail-line text-lg"></i>
                     </div>
@@ -76,10 +76,10 @@ export default function Contact() {
               </div>
 
               {/* Whatsapp */}
-              <div className="group relative bg-white dark:bg-gray-800/50 p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700 backdrop-blur-sm overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div className="group relative bg-gray-900 dark:bg-gray-800/80 p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 dark:border-gray-600 backdrop-blur-sm overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-green-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <div className="relative z-10">
-                  <span className="flex items-center gap-3 text-gray-700 dark:text-gray-300 font-semibold mb-3">
+                  <span className="flex items-center gap-3 text-gray-200 dark:text-gray-200 font-bold mb-3">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white">
                       <i className="ri-whatsapp-line text-lg"></i>
                     </div>
@@ -93,16 +93,16 @@ export default function Contact() {
               </div>
 
               {/* Additional Info */}
-              <div className="group relative bg-white dark:bg-gray-800/50 p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700 backdrop-blur-sm overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div className="group relative bg-gray-900 dark:bg-gray-800/80 p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-700 dark:border-gray-600 backdrop-blur-sm overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <div className="relative z-10">
-                  <span className="flex items-center gap-3 text-gray-700 dark:text-gray-300 font-semibold mb-3">
+                  <span className="flex items-center gap-3 text-gray-200 dark:text-gray-200 font-bold mb-3">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-white">
                       <i className="ri-map-pin-line text-lg"></i>
                     </div>
                     Location
                   </span>
-                  <p className="text-gray-600 dark:text-gray-400 font-light">
+                  <p className="text-gray-300 dark:text-gray-400 font-medium">
                     West Bengal, India
                   </p>
                 </div>
@@ -116,40 +116,40 @@ export default function Contact() {
               <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white">
                 <i className="ri-quill-pen-line text-xl"></i>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Send a Message</h3>
+              <h3 className="text-2xl font-bold text-white dark:text-white">Send a Message</h3>
               <div className="flex-1 h-1 bg-gradient-to-r from-blue-500 to-transparent rounded-full ml-4"></div>
             </div>
             
             <form className="space-y-6" id="contact-form">
               {/* Name Input */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Full Name</label>
+                <label className="block text-sm font-semibold text-gray-200 dark:text-gray-300 mb-3">Full Name</label>
                 <input 
                   type="text" 
                   id="contact-name" 
-                  className="w-full px-5 py-3 border-2 border-gray-200 dark:border-gray-600 dark:bg-gray-800/50 dark:text-white rounded-lg focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 dark:focus:ring-blue-600/30 transition-all duration-300 placeholder-gray-400 dark:placeholder-gray-500 font-light"
+                  className="w-full px-5 py-3 border-2 border-gray-600 dark:border-gray-500 bg-gray-800 dark:bg-gray-700 text-white dark:text-white rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-600/40 dark:focus:ring-blue-600/30 transition-all duration-300 placeholder-gray-400 dark:placeholder-gray-500 font-medium"
                   placeholder="John Doe"
                 />
               </div>
 
               {/* Email Input */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Email Address</label>
+                <label className="block text-sm font-semibold text-gray-200 dark:text-gray-300 mb-3">Email Address</label>
                 <input 
                   type="email" 
                   id="contact-email" 
-                  className="w-full px-5 py-3 border-2 border-gray-200 dark:border-gray-600 dark:bg-gray-800/50 dark:text-white rounded-lg focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 dark:focus:ring-blue-600/30 transition-all duration-300 placeholder-gray-400 dark:placeholder-gray-500 font-light"
+                  className="w-full px-5 py-3 border-2 border-gray-600 dark:border-gray-500 bg-gray-800 dark:bg-gray-700 text-white dark:text-white rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-600/40 dark:focus:ring-blue-600/30 transition-all duration-300 placeholder-gray-400 dark:placeholder-gray-500 font-medium"
                   placeholder="john@example.com"
                 />
               </div>
 
               {/* Project Input */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Project Details</label>
+                <label className="block text-sm font-semibold text-gray-200 dark:text-gray-300 mb-3">Project Details</label>
                 <input 
                   type="text" 
                   id="contact-project" 
-                  className="w-full px-5 py-3 border-2 border-gray-200 dark:border-gray-600 dark:bg-gray-800/50 dark:text-white rounded-lg focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 dark:focus:ring-blue-600/30 transition-all duration-300 placeholder-gray-400 dark:placeholder-gray-500 font-light"
+                  className="w-full px-5 py-3 h-40 border-2 border-gray-600 dark:border-gray-500 bg-gray-800 dark:bg-gray-700 text-white dark:text-white rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-600/40 dark:focus:ring-blue-600/30 transition-all duration-300 placeholder-gray-400 dark:placeholder-gray-500 font-medium resize-none"
                   placeholder="Describe your project needs..."
                 />
               </div>
@@ -168,7 +168,7 @@ export default function Contact() {
                 </span>
               </button>
 
-              <p className="text-center text-xs text-gray-500 dark:text-gray-400 font-light">
+              <p className="text-center text-xs text-gray-400 dark:text-gray-400 font-medium">
                 I'll respond to your message as soon as possible
               </p>
             </form>

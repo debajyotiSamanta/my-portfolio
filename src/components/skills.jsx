@@ -33,18 +33,18 @@ export default function Skills() {
   ]
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-slate-50 to-blue-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 animate__animated animate__fadeInUp" id="skills">
+    <section className="py-20 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-850 to-gray-900 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 animate__animated animate__fadeInUp" id="skills">
       <div className="max-w-6xl w-full">
         <div className="text-center mb-16">
           <div className="inline-flex items-center justify-center gap-2 mb-6">
             <div className="h-1 w-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"></div>
-            <span className="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Expertise</span>
+            <span className="text-sm font-bold text-blue-400 dark:text-blue-300 uppercase tracking-wider">Expertise</span>
             <div className="h-1 w-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"></div>
           </div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4 animate__animated animate__slideInDown">
+          <h2 className="text-4xl lg:text-5xl font-black text-white dark:text-white mb-4 animate__animated animate__slideInDown">
             Technical Skills
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 animate__animated animate__fadeInUp max-w-2xl mx-auto font-light">
+          <p className="text-lg text-gray-300 dark:text-gray-400 animate__animated animate__fadeInUp max-w-2xl mx-auto font-medium">
             Proficient in modern web technologies and tools that power today's digital experiences
           </p>
         </div>
@@ -52,11 +52,11 @@ export default function Skills() {
         {/* Frontend Developer Section */}
         <div className="mb-20 animate__animated animate__slideInLeft" style={{ animationDelay: "0.3s" }}>
           <div className="flex items-center gap-3 mb-10">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center text-white font-bold">
               <i className="ri-braces-line text-xl"></i>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Frontend Development</h3>
-            <div className="flex-1 h-1 bg-gradient-to-r from-blue-500 to-transparent rounded-full ml-4"></div>
+            <h3 className="text-2xl font-black text-white dark:text-white">Frontend Development</h3>
+            <div className="flex-1 h-1 bg-gradient-to-r from-blue-600 to-transparent rounded-full ml-4"></div>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
             {frontendSkills.map((skill, i) => (
@@ -69,7 +69,7 @@ export default function Skills() {
                 }}
               >
                 <div 
-                  className="relative bg-white dark:bg-gray-800/50 rounded-xl shadow-md hover:shadow-2xl transition-all duration-500 p-6 flex flex-col items-center text-center border border-gray-200 dark:border-gray-700 backdrop-blur-sm overflow-hidden"
+                  className="relative bg-gray-900 dark:bg-gray-800 rounded-xl shadow-md hover:shadow-2xl transition-all duration-500 p-6 flex flex-col items-center text-center border border-gray-700 dark:border-gray-600 backdrop-blur-sm overflow-hidden"
                   style={{
                     transformStyle: 'preserve-3d',
                     transform: 'rotateX(0deg) rotateY(0deg) translateZ(0px)',
@@ -84,11 +84,11 @@ export default function Skills() {
                     e.currentTarget.style.boxShadow = '';
                   }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl pointer-events-none"></div>
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse pointer-events-none"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-gray-700/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl pointer-events-none"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse pointer-events-none"></div>
                   
                   <div 
-                    className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 p-1 mb-4 shadow-lg relative z-10 transition-all duration-600 group-hover:scale-110"
+                    className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 to-blue-700 p-1 mb-4 shadow-lg shadow-blue-600/50 relative z-10 transition-all duration-600 group-hover:scale-110"
                     style={{
                       transformStyle: 'preserve-3d',
                       transform: 'rotateY(0deg) scale(1)',
@@ -103,7 +103,7 @@ export default function Skills() {
                       e.currentTarget.style.boxShadow = '';
                     }}
                   >
-                    <div className="w-full h-full rounded-full bg-white dark:bg-gray-800 flex items-center justify-center overflow-hidden">
+                    <div className="w-full h-full rounded-full bg-gray-800 dark:bg-gray-850 flex items-center justify-center overflow-hidden">
                       <img 
                         src={skill.img} 
                         alt={skill.name} 
@@ -112,8 +112,8 @@ export default function Skills() {
                     </div>
                   </div>
                   
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 relative z-10 group-hover:scale-105 transition-transform duration-300">{skill.name}</h3>
-                  <span className="text-xs text-blue-600 dark:text-blue-400 font-semibold bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full relative z-10 group-hover:scale-110 transition-transform duration-300">{skill.level}</span>
+                  <h3 className="text-lg font-bold text-white dark:text-white mb-2 relative z-10 group-hover:scale-105 transition-transform duration-300">{skill.name}</h3>
+                  <span className="text-xs text-blue-300 dark:text-blue-300 font-bold bg-blue-600/30 dark:bg-blue-900/50 px-3 py-1 rounded-full relative z-10 group-hover:scale-110 transition-transform duration-300">{skill.level}</span>
                 </div>
               </div>
             ))}
@@ -123,11 +123,11 @@ export default function Skills() {
         {/* Web Designer Section */}
         <div className="animate__animated animate__slideInRight" style={{ animationDelay: "0.4s" }}>
           <div className="flex items-center gap-3 mb-10">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-white">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-600 to-pink-700 flex items-center justify-center text-white font-bold">
               <i className="ri-pantone-line text-xl"></i>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Design & Other Languages</h3>
-            <div className="flex-1 h-1 bg-gradient-to-r from-purple-500 to-transparent rounded-full ml-4"></div>
+            <h3 className="text-2xl font-black text-white dark:text-white">Design & Other Languages</h3>
+            <div className="flex-1 h-1 bg-gradient-to-r from-purple-600 to-transparent rounded-full ml-4"></div>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
             {designSkills.map((skill, i) => (
@@ -140,7 +140,7 @@ export default function Skills() {
                 }}
               >
                 <div 
-                  className="relative bg-white dark:bg-gray-800/50 rounded-xl shadow-md hover:shadow-2xl transition-all duration-500 p-6 flex flex-col items-center text-center border border-gray-200 dark:border-gray-700 backdrop-blur-sm overflow-hidden"
+                  className="relative bg-gray-900 dark:bg-gray-800 rounded-xl shadow-md hover:shadow-2xl transition-all duration-500 p-6 flex flex-col items-center text-center border border-gray-700 dark:border-gray-600 backdrop-blur-sm overflow-hidden"
                   style={{
                     transformStyle: 'preserve-3d',
                     transform: 'rotateX(0deg) rotateY(0deg) translateZ(0px)',
@@ -174,7 +174,7 @@ export default function Skills() {
                       e.currentTarget.style.boxShadow = '';
                     }}
                   >
-                    <div className="w-full h-full rounded-full bg-white dark:bg-gray-800 flex items-center justify-center overflow-hidden">
+                    <div className="w-full h-full rounded-full bg-gray-800 dark:bg-gray-850 flex items-center justify-center overflow-hidden">
                       <img 
                         src={skill.img} 
                         alt={skill.name} 
@@ -183,8 +183,8 @@ export default function Skills() {
                     </div>
                   </div>
                   
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 relative z-10 group-hover:scale-105 transition-transform duration-300">{skill.name}</h3>
-                  <span className="text-xs text-purple-600 dark:text-purple-400 font-semibold bg-purple-50 dark:bg-purple-900/30 px-3 py-1 rounded-full relative z-10 group-hover:scale-110 transition-transform duration-300">{skill.level}</span>
+                  <h3 className="text-lg font-bold text-white dark:text-white mb-2 relative z-10 group-hover:scale-105 transition-transform duration-300">{skill.name}</h3>
+                  <span className="text-xs text-purple-300 dark:text-purple-300 font-bold bg-purple-600/30 dark:bg-purple-900/50 px-3 py-1 rounded-full relative z-10 group-hover:scale-110 transition-transform duration-300">{skill.level}</span>
                 </div>
               </div>
             ))}

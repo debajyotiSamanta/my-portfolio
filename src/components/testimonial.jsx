@@ -41,7 +41,7 @@ export default function Testimonial() {
   ];
 
   return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 via-white to-blue-50/40 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 animate__animated animate__fadeInUp relative overflow-hidden">
+    <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-900 via-gray-850 to-gray-900 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 animate__animated animate__fadeInUp relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl -z-10"></div>
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-br from-purple-400/10 to-pink-400/10 rounded-full blur-3xl -z-10"></div>
@@ -49,15 +49,15 @@ export default function Testimonial() {
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
         <div className="text-center mb-20">
-          <div className="inline-flex items-center justify-center gap-3 mb-6 bg-blue-50 dark:bg-blue-900/20 px-4 py-2 rounded-full border border-blue-100 dark:border-blue-800/50 backdrop-blur-sm">
+          <div className="inline-flex items-center justify-center gap-3 mb-6 bg-gray-800 dark:bg-blue-900/20 px-4 py-2 rounded-full border border-gray-700 dark:border-blue-800/50 backdrop-blur-sm">
             <span className="w-2 h-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full animate-pulse"></span>
             <span className="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Testimonials & Feedback</span>
             <span className="w-2 h-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full animate-pulse"></span>
           </div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6 animate__animated animate__slideInDown">
+          <h2 className="text-4xl lg:text-5xl font-bold text-white dark:text-white mb-6 animate__animated animate__slideInDown">
             Client Testimonials
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-light animate__animated animate__slideInUp">
+          <p className="text-lg text-gray-300 dark:text-gray-400 max-w-2xl mx-auto font-medium animate__animated animate__slideInUp">
             Real feedback from satisfied clients who trusted me with their projects
           </p>
         </div>
@@ -67,7 +67,7 @@ export default function Testimonial() {
           {testimonials.map((t, i) => (
             <div
               key={i}
-              className="group relative bg-white dark:bg-gray-800/70 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-gray-200 dark:border-gray-700/50 p-8 animate__animated animate__fadeInUp backdrop-blur-sm overflow-hidden"
+              className="group relative bg-gray-900 dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-gray-700 dark:border-gray-600 p-8 animate__animated animate__fadeInUp backdrop-blur-sm overflow-hidden"
               style={{ animationDelay: `${i * 0.1}s` }}
             >
               {/* Gradient Background */}
@@ -84,12 +84,12 @@ export default function Testimonial() {
               </div>
 
               {/* Quote Text */}
-              <p className="relative z-10 text-gray-700 dark:text-gray-300 mb-8 leading-relaxed italic font-light text-base">
+              <p className="relative z-10 text-gray-200 dark:text-gray-300 mb-8 leading-relaxed italic font-medium text-base">
                 "{t.quote}"
               </p>
 
               {/* Divider */}
-              <div className="relative z-10 border-t border-gray-200 dark:border-gray-700/50 pt-6 flex items-center gap-4">
+              <div className="relative z-10 border-t border-gray-700 dark:border-gray-700/50 pt-6 flex items-center gap-4">
                 {/* Avatar */}
                 <div className={`w-14 h-14 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center text-white font-bold text-lg shadow-lg flex-shrink-0`}>
                   {t.avatar}
@@ -97,7 +97,7 @@ export default function Testimonial() {
 
                 {/* Info */}
                 <div className="flex-1">
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">{t.name}</h3>
+                  <h3 className="text-lg font-bold text-white dark:text-white">{t.name}</h3>
                   <span className={`text-sm font-semibold bg-gradient-to-r ${t.color} bg-clip-text text-transparent`}>
                     {t.subtitle}
                   </span>

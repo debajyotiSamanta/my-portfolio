@@ -2,14 +2,14 @@ import myImage from "../assets/my_image.png";
 
 export default function Home() {
   return (
-    <section className="min-h-screen pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 animate__animated animate__fadeInUp" id="home">
+    <section className="min-h-screen pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-900 via-blue-950 to-gray-950 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 animate__animated animate__fadeInUp" id="home">
       <div className="max-w-7xl mx-auto">
         {/* Hero Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center mb-20">
           {/* Left Content */}
           <div className="space-y-8 animate__animated animate__slideInLeft">
             {/* Greeting Badge */}
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/10 to-purple-500/10 dark:from-blue-500/20 dark:to-purple-500/20 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-full text-sm font-medium border border-blue-200/50 dark:border-blue-500/30 backdrop-blur-sm">
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600/20 to-purple-600/20 dark:from-blue-500/30 dark:to-purple-500/30 text-blue-100 dark:text-blue-200 px-4 py-2 rounded-full text-sm font-bold border border-blue-500/50 dark:border-blue-500/40 backdrop-blur-sm">
               <span className="flex h-2 w-2 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 animate-pulse"></span>
               Crafting Digital Experiences
             </div>
@@ -17,8 +17,8 @@ export default function Home() {
             {/* Main Title */}
             <div className="space-y-6">
               <div>
-                <p className="text-slate-500 dark:text-slate-400 text-lg mb-2 font-medium">Welcome, I'm</p>
-                <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-gray-900 dark:text-white leading-tight tracking-tight">
+                <p className="text-gray-300 dark:text-gray-400 text-lg mb-2 font-bold">Welcome, I'm</p>
+                <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white dark:text-white leading-tight tracking-tight">
                   Debajyoti{" "}
                   <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent animate-pulse">
                     Samanta
@@ -27,14 +27,14 @@ export default function Home() {
               </div>
               <div className="flex items-center gap-3">
                 <div className="h-1 w-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"></div>
-                <h2 className="text-2xl sm:text-3xl font-semibold text-slate-700 dark:text-slate-300">
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-100 dark:text-gray-200">
                   Frontend Developer & UI/UX Enthusiast
                 </h2>
               </div>
             </div>
 
             {/* Description */}
-            <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-lg font-light">
+            <p className="text-lg text-gray-300 dark:text-gray-400 leading-relaxed max-w-lg font-medium">
               I specialize in building beautiful, responsive, and user-focused web applications. Armed with modern web technologies, I transform ideas into seamless digital experiences that matter.
             </p>
 
@@ -42,7 +42,7 @@ export default function Home() {
             <div className="flex flex-wrap gap-4 pt-6">
               <a
                 href="#projects"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl shadow-lg group relative overflow-hidden"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-700 to-purple-700 hover:from-blue-800 hover:to-purple-800 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl shadow-xl shadow-blue-900/50 dark:shadow-blue-600/40 group relative overflow-hidden"
               >
                 <span className="relative z-10 flex items-center gap-2">
                   View My Work
@@ -52,7 +52,7 @@ export default function Home() {
               </a>
               <a
                 href="#contact"
-                className="inline-flex items-center gap-2 border-2 border-slate-300 dark:border-slate-600 text-gray-900 dark:text-white font-semibold py-3 px-8 rounded-lg hover:border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-600/10 dark:hover:border-blue-400 dark:hover:text-blue-300 hover:text-blue-600 transition-all duration-300 hover:shadow-lg"
+                className="inline-flex items-center gap-2 border-2 border-gray-600 dark:border-gray-500 text-gray-100 dark:text-white font-bold py-3 px-8 rounded-lg hover:border-blue-500 hover:bg-gray-800 dark:hover:bg-gray-700 dark:hover:border-blue-400 dark:hover:text-blue-300 hover:text-blue-300 transition-all duration-300 hover:shadow-lg"
               >
                 Start a Project
                 <i className="ri-mail-line"></i>
@@ -60,7 +60,7 @@ export default function Home() {
               <a
                 href="/src/assets/my_resume.pdf"
                 download
-                className="inline-flex items-center gap-2 bg-white/90 dark:bg-gray-700 text-gray-900 dark:text-white border border-slate-200 dark:border-slate-600 font-semibold py-3 px-6 rounded-lg hover:shadow-lg transition-all duration-300"
+                className="inline-flex items-center gap-2 bg-gray-800 dark:bg-gray-700 text-gray-100 dark:text-white border border-gray-600 dark:border-gray-500 font-bold py-3 px-6 rounded-lg hover:shadow-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition-all duration-300"
                 title="Download Resume"
               >
                 Download Resume
@@ -69,7 +69,7 @@ export default function Home() {
               <a
                 href="/src/assets/Debajyoti Samanta CV.pdf"
                 download
-                className="inline-flex items-center gap-2 bg-white/90 dark:bg-gray-700 text-gray-900 dark:text-white border border-slate-200 dark:border-slate-600 font-semibold py-3 px-6 rounded-lg hover:shadow-lg transition-all duration-300"
+                className="inline-flex items-center gap-2 bg-gray-800 dark:bg-gray-700 text-gray-100 dark:text-white border border-gray-600 dark:border-gray-500 font-bold py-3 px-6 rounded-lg hover:shadow-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition-all duration-300"
                 title="Download CV"
               >
                 Download CV
@@ -121,11 +121,11 @@ export default function Home() {
           {/* Right Image Section */}
           <div className="relative animate__animated animate__slideInRight">
             {/* Background Blob */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-3xl blur-3xl opacity-20 animate-pulse"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl blur-3xl opacity-30 animate-pulse"></div>
             
             {/* Image Container */}
-            <div className="relative bg-white dark:bg-gray-800 rounded-3xl p-2 shadow-2xl overflow-hidden">
-              <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-blue-100 to-purple-100 dark:from-gray-700 dark:to-gray-600 aspect-square flex items-center justify-center">
+            <div className="relative bg-gray-900 dark:bg-gray-800 rounded-3xl p-2 shadow-2xl shadow-black/50 overflow-hidden">
+              <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 dark:from-gray-800 dark:to-gray-900 aspect-square flex items-center justify-center">
                 <img
                   src={myImage}
                   alt="Debajyoti Samanta"
@@ -135,17 +135,17 @@ export default function Home() {
             </div>
 
             {/* Floating Stats */}
-            <div className="absolute -bottom-6 -left-6 bg-white dark:bg-gray-800 rounded-xl p-4 shadow-xl backdrop-blur-md border border-gray-200 dark:border-gray-700 animate__animated animate__slideInUp" style={{ animationDelay: "0.3s" }}>
+            <div className="absolute -bottom-6 -left-6 bg-gray-900 dark:bg-gray-800 rounded-xl p-4 shadow-2xl shadow-black/60 backdrop-blur-md border border-gray-700 dark:border-gray-600 animate__animated animate__slideInUp" style={{ animationDelay: "0.3s" }}>
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600">15+</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Projects</div>
+                <div className="text-2xl font-black text-blue-400">15+</div>
+                <div className="text-sm text-gray-300 dark:text-gray-400 font-bold">Projects</div>
               </div>
             </div>
 
-            <div className="absolute -top-6 -right-6 bg-white dark:bg-gray-800 rounded-xl p-4 shadow-xl backdrop-blur-md border border-gray-200 dark:border-gray-700 animate__animated animate__slideInDown" style={{ animationDelay: "0.4s" }}>
+            <div className="absolute -top-6 -right-6 bg-gray-900 dark:bg-gray-800 rounded-xl p-4 shadow-2xl shadow-black/60 backdrop-blur-md border border-gray-700 dark:border-gray-600 animate__animated animate__slideInDown" style={{ animationDelay: "0.4s" }}>
               <div className="text-center">
-                <div className="text-2xl font-bold text-purple-600">3+</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Years Exp</div>
+                <div className="text-2xl font-black text-purple-400">3+</div>
+                <div className="text-sm text-gray-300 dark:text-gray-400 font-bold">Years Exp</div>
               </div>
             </div>
           </div>
@@ -154,47 +154,47 @@ export default function Home() {
         {/* Info Cards Section */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-24">
           {/* Biography Card */}
-          <div className="group relative bg-white dark:bg-gray-800/50 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700 backdrop-blur-sm overflow-hidden animate__animated animate__fadeInUp" style={{ animationDelay: "0.1s" }}>
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div className="group relative bg-gray-900 dark:bg-gray-800/80 rounded-2xl p-8 shadow-xl shadow-black/40 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-700 dark:border-gray-600 backdrop-blur-sm overflow-hidden animate__animated animate__fadeInUp" style={{ animationDelay: "0.1s" }}>
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             <div className="relative z-10 flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-2xl text-white shadow-lg">
+              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center text-2xl text-white shadow-lg shadow-blue-600/50">
                 <i className="ri-user-heart-line"></i>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white">About Me</h3>
+              <h3 className="text-xl font-black text-white dark:text-white">About Me</h3>
             </div>
-            <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-sm font-light">
+            <p className="text-gray-300 dark:text-gray-400 leading-relaxed text-sm font-medium">
               Passionate IT student at Meghnad Saha Institute of Technology. I specialize in creating elegant solutions to complex problems with modern web technologies.
             </p>
           </div>
 
           {/* Contact Card */}
-          <div className="group relative bg-white dark:bg-gray-800/50 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700 backdrop-blur-sm overflow-hidden animate__animated animate__fadeInUp" style={{ animationDelay: "0.2s" }}>
-            <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div className="group relative bg-gray-900 dark:bg-gray-800/80 rounded-2xl p-8 shadow-xl shadow-black/40 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-700 dark:border-gray-600 backdrop-blur-sm overflow-hidden animate__animated animate__fadeInUp" style={{ animationDelay: "0.2s" }}>
+            <div className="absolute inset-0 bg-gradient-to-br from-green-600/10 to-emerald-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             <div className="relative z-10 flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-2xl text-white shadow-lg">
+              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-green-600 to-emerald-700 flex items-center justify-center text-2xl text-white shadow-lg shadow-green-600/50">
                 <i className="ri-mail-send-line"></i>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Get in Touch</h3>
+              <h3 className="text-xl font-black text-white dark:text-white">Get in Touch</h3>
             </div>
             <div className="space-y-3 relative z-10">
-              <p className="text-gray-600 dark:text-gray-400 text-sm font-light">
-                <span className="font-semibold text-gray-900 dark:text-white">Email</span>
+              <p className="text-gray-300 dark:text-gray-400 text-sm font-medium">
+                <span className="font-bold text-white dark:text-white">Email</span>
                 <br />
-                <a href="mailto:debajyotisamanta2003@gmail.com" className="text-green-600 dark:text-green-400 hover:underline">debajyotisamanta2003@gmail.com</a>
+                <a href="mailto:debajyotisamanta2003@gmail.com" className="text-green-400 dark:text-green-400 hover:underline font-semibold">debajyotisamanta2003@gmail.com</a>
               </p>
             </div>
           </div>
 
           {/* Skills Card */}
-          <div className="group relative bg-white dark:bg-gray-800/50 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700 backdrop-blur-sm overflow-hidden animate__animated animate__fadeInUp" style={{ animationDelay: "0.3s" }}>
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div className="group relative bg-gray-900 dark:bg-gray-800/80 rounded-2xl p-8 shadow-xl shadow-black/40 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-700 dark:border-gray-600 backdrop-blur-sm overflow-hidden animate__animated animate__fadeInUp" style={{ animationDelay: "0.3s" }}>
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 to-pink-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             <div className="relative z-10 flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-2xl text-white shadow-lg">
+              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-600 to-pink-700 flex items-center justify-center text-2xl text-white shadow-lg shadow-purple-600/50">
                 <i className="ri-lightbulb-flash-line"></i>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Expertise</h3>
+              <h3 className="text-xl font-black text-white dark:text-white">Expertise</h3>
             </div>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-400 relative z-10 text-sm font-light">
+            <ul className="space-y-2 text-gray-300 dark:text-gray-400 relative z-10 text-sm font-medium">
               <li className="flex items-center gap-2 group/item">
                 <span className="w-2 h-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 group-hover/item:scale-150 transition-transform"></span>
                 React & Modern JavaScript
@@ -214,9 +214,9 @@ export default function Home() {
         {/* Scroll Indicator */}
         <div className="flex justify-center mt-20 opacity-70 hover:opacity-100 transition-opacity">
           <div className="text-center">
-            <p className="text-gray-500 dark:text-gray-400 text-sm mb-3 font-medium">Explore My Work</p>
+            <p className="text-gray-300 dark:text-gray-400 text-sm mb-3 font-bold">Explore My Work</p>
             <div className="flex justify-center">
-              <div className="w-6 h-10 border-2 border-gray-400 dark:border-gray-600 rounded-full p-2 flex justify-center">
+              <div className="w-6 h-10 border-2 border-gray-600 dark:border-gray-500 rounded-full p-2 flex justify-center">
                 <div className="w-1 h-3 bg-gradient-to-b from-blue-600 to-purple-600 rounded-full animate-bounce"></div>
               </div>
             </div>

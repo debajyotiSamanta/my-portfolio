@@ -27,7 +27,7 @@ export default function Services() {
   ];
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 via-blue-50/30 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 animate__animated animate__fadeInUp" id="services">
+    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-900 via-gray-850 to-gray-900 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 animate__animated animate__fadeInUp" id="services">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <div className="inline-flex items-center justify-center gap-2 mb-6">
@@ -35,10 +35,10 @@ export default function Services() {
             <span className="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">What I Offer</span>
             <div className="h-1 w-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"></div>
           </div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4 animate__animated animate__slideInDown">
+          <h2 className="text-4xl lg:text-5xl font-bold text-white dark:text-white mb-4 animate__animated animate__slideInDown">
             Services
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 animate__animated animate__slideInUp max-w-2xl mx-auto font-light">
+          <p className="text-lg text-gray-300 dark:text-gray-400 animate__animated animate__slideInUp max-w-2xl mx-auto font-medium">
             Comprehensive solutions to bring your digital vision to life
           </p>
         </div>
@@ -47,7 +47,7 @@ export default function Services() {
           {services.map((service, i) => (
             <div 
               key={i} 
-              className="group relative bg-white dark:bg-gray-800/50 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-3 transition-all duration-300 p-8 border border-gray-200 dark:border-gray-700 backdrop-blur-sm overflow-hidden animate__animated animate__fadeInUp" 
+              className="group relative bg-gray-900 dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-3 transition-all duration-300 p-8 border border-gray-700 dark:border-gray-600 backdrop-blur-sm overflow-hidden animate__animated animate__fadeInUp" 
               style={{ animationDelay: `${i * 0.15}s` }}
             >
               {/* Background Gradient */}
@@ -59,10 +59,10 @@ export default function Services() {
               </div>
 
               {/* Content */}
-              <h2 className="relative z-10 text-2xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-transparent group-hover:bg-gradient-to-br ${service.color} group-hover:bg-clip-text transition-all duration-300">
+              <h2 className="relative z-10 text-2xl font-bold text-white dark:text-white mb-4 group-hover:text-transparent group-hover:bg-gradient-to-br ${service.color} group-hover:bg-clip-text transition-all duration-300">
                 {service.title}
               </h2>
-              <p className="relative z-10 text-gray-600 dark:text-gray-400 leading-relaxed font-light mb-6">
+              <p className="relative z-10 text-gray-300 dark:text-gray-400 leading-relaxed font-medium mb-6">
                 {service.desc}
               </p>
 
