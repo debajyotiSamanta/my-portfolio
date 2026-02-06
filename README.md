@@ -82,21 +82,21 @@ npm run preview
 ```
 my-portfolio/
 +-- src/
-¦   +-- components/
-¦   ¦   +-- header.jsx          # Navigation header with theme toggle
-¦   ¦   +-- home.jsx            # Hero section with CTA
-¦   ¦   +-- skills.jsx          # Technical skills with 3D effects
-¦   ¦   +-- projects.jsx        # Project showcase
-¦   ¦   +-- services.jsx        # Services offering
-¦   ¦   +-- qualifications.jsx  # Education & experience
-¦   ¦   +-- contact.jsx         # Contact form
-¦   ¦   +-- testimonial.jsx     # Client testimonials
-¦   ¦   +-- footer.jsx          # Footer section
-¦   +-- assets/                 # Images and icons
-¦   +-- App.jsx                 # Main app component
-¦   +-- main.jsx                # Entry point
-¦   +-- App.css                 # Global styles
-¦   +-- index.css               # Main stylesheet
+ï¿½   +-- components/
+ï¿½   ï¿½   +-- header.jsx          # Navigation header with theme toggle
+ï¿½   ï¿½   +-- home.jsx            # Hero section with CTA
+ï¿½   ï¿½   +-- skills.jsx          # Technical skills with 3D effects
+ï¿½   ï¿½   +-- projects.jsx        # Project showcase
+ï¿½   ï¿½   +-- services.jsx        # Services offering
+ï¿½   ï¿½   +-- qualifications.jsx  # Education & experience
+ï¿½   ï¿½   +-- contact.jsx         # Contact form
+ï¿½   ï¿½   +-- testimonial.jsx     # Client testimonials
+ï¿½   ï¿½   +-- footer.jsx          # Footer section
+ï¿½   +-- assets/                 # Images and icons
+ï¿½   +-- App.jsx                 # Main app component
+ï¿½   +-- main.jsx                # Entry point
+ï¿½   +-- App.css                 # Global styles
+ï¿½   +-- index.css               # Main stylesheet
 +-- public/                     # Static files
 +-- index.html                  # HTML template
 +-- vite.config.js              # Vite configuration
@@ -209,3 +209,7 @@ Contributions, issues, and feature requests are welcome!
 ---
 
 **Made with ?? by Debajyoti Samanta**
+
+## Resume / CV
+
+Provide PDF files for visitors by placing `resume.pdf` and `cv.pdf` into the project's `public/` folder. Files in `public/` are served at the root of the site (for example `/resume.pdf`). Once added, the home page buttons allow visitors to download them.

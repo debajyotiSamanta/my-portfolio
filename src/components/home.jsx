@@ -57,6 +57,24 @@ export default function Home() {
                 Start a Project
                 <i className="ri-mail-line"></i>
               </a>
+              <a
+                href="/src/assets/my_resume.pdf"
+                download
+                className="inline-flex items-center gap-2 bg-white/90 dark:bg-gray-700 text-gray-900 dark:text-white border border-slate-200 dark:border-slate-600 font-semibold py-3 px-6 rounded-lg hover:shadow-lg transition-all duration-300"
+                title="Download Resume"
+              >
+                Download Resume
+                <i className="ri-download-line"></i>
+              </a>
+              <a
+                href="/src/assets/Debajyoti Samanta CV.pdf"
+                download
+                className="inline-flex items-center gap-2 bg-white/90 dark:bg-gray-700 text-gray-900 dark:text-white border border-slate-200 dark:border-slate-600 font-semibold py-3 px-6 rounded-lg hover:shadow-lg transition-all duration-300"
+                title="Download CV"
+              >
+                Download CV
+                <i className="ri-download-line"></i>
+              </a>
             </div>
 
             {/* Social Links */}
