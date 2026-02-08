@@ -6,6 +6,7 @@ import project3 from "../assets/project3.png"
 import project4 from "../assets/project4.png"
 import project5 from "../assets/project5.png"
 import solarSystem from "../assets/solar_system.png"
+import ElectricBorder from './ElectricBorder'
 
 export default function Projects() {
   const projects = [
@@ -78,8 +79,12 @@ export default function Projects() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((p, i) => (
-            <div
+            <ElectricBorder
               key={i}
+              color="#7df9ff"
+              speed={1}
+              chaos={0.12}
+              borderRadius={16}
               className="group relative bg-gray-900 dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-3 transition-all duration-300 animate__animated animate__fadeInUp overflow-hidden backdrop-blur-sm border border-gray-700 dark:border-gray-600"
               style={{ animationDelay: `${i * 0.1}s` }}
             >
@@ -123,7 +128,7 @@ export default function Projects() {
 
               {/* Hover Indicator */}
               <div className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-blue-600 to-purple-600 w-0 group-hover:w-full transition-all duration-300"></div>
-            </div>
+            </ElectricBorder>
           ))}
         </div>
       </div>
