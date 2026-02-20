@@ -6,6 +6,7 @@ import project3 from "../assets/project3.png"
 import project4 from "../assets/project4.png"
 import project5 from "../assets/project5.png"
 import solarSystem from "../assets/solar_system.png"
+import todo from "../assets/todo.png"
 
 export default function Projects() {
   const projects = [
@@ -64,6 +65,13 @@ export default function Projects() {
       title: "3D Solar System",
       link: "https://debajyotisamanta.github.io/Solar_system/",
       description: "A visually stunning 3D solar system simulation built with HTML, CSS, and JavaScript. It allows users to explore the planets, moons, and other celestial bodies in an interactive and immersive way, providing an educational and engaging experience."
+    },
+    {
+      img: todo,
+      subtitle: "Web",
+      title: "To-Do List Application",
+      link: "https://todo-sigma-snowy.vercel.app/",
+      description: "A simple and efficient to-do list application built with react. It allows users to easily manage their tasks, add new items, and mark them as completed through a user-friendly interface."
     }
   ];
 
