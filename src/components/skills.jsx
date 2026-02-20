@@ -11,6 +11,7 @@ import nodejs from "../assets/nodejs-1.svg"
 import python from "../assets/python-5.svg"
 import react from "../assets/react-2.svg"
 import tailwind from "../assets/Tailwind_CSS.png"
+import sql from "../assets/sql.png"
 
 export default function Skills() {
   const frontendSkills = [
@@ -26,10 +27,11 @@ export default function Skills() {
   const designSkills = [
     { img: figma, name: "Figma", level: "Intermediate" },
     { img: c, name: "C", level: "Intermediate" },
-    { img: cpp, name: "C++", level: "Intermediate" },
+    { img: cpp, name: "C++", level: "Basic" },
     { img: python, name: "Python", level: "Intermediate" },
     { img: nodejs, name: "NodeJs", level: "Basic" },
     { img: java, name: "Java", level: "Intermediate" },
+    { img: sql, name: "SQL", level: "Intermediate" },
   ]
 
   return (

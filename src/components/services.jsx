@@ -1,4 +1,3 @@
-import ElectricBorder from './ElectricBorder';
 
 export default function Services() {
   const services = [
@@ -47,12 +46,8 @@ export default function Services() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {services.map((service, i) => (
-            <ElectricBorder
+            <div
               key={i}
-              color="#7df9ff"
-              speed={1}
-              chaos={0.12}
-              borderRadius={16}
               className="group relative bg-gray-900 dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-3 transition-all duration-300 p-8 border border-gray-700 dark:border-gray-600 backdrop-blur-sm overflow-hidden animate__animated animate__fadeInUp"
               style={{ animationDelay: `${i * 0.15}s` }}
             >
@@ -77,7 +72,7 @@ export default function Services() {
 
               {/* Bottom accent */}
               <div className={`absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r ${service.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
-            </ElectricBorder>
+            </div>
           ))}
         </div>
       </div>

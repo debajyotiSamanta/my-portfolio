@@ -12,24 +12,6 @@ export default function Testimonial() {
       rating: 5
     },
     {
-      quote: "Working with Debajyoti was seamless. The code quality, responsiveness of the website, and design execution were all top-notch. Recommended!",
-      name: "Michael Chen",
-      subtitle: "Digital Marketing Manager",
-      avatar: "MC",
-      icon: "ri-thumb-up-line",
-      color: "from-green-500 to-emerald-500",
-      rating: 5
-    },
-    {
-      quote: "As a non-technical founder, Debajyoti made the development process so easy to understand. Great developer and even better at client management.",
-      name: "Emma Williams",
-      subtitle: "E-commerce Business Owner",
-      avatar: "EW",
-      icon: "ri-heart-line",
-      color: "from-pink-500 to-rose-500",
-      rating: 5
-    },
-    {
       quote: "I believe in building secure, scalable applications that protect user data. Authentication and security are crucial for earning trust.",
       name: "Debajyoti Samanta",
       subtitle: "Frontend Developer",
