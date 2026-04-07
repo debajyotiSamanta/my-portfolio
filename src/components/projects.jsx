@@ -7,6 +7,7 @@ import project4 from "../assets/project4.png"
 import project5 from "../assets/project5.png"
 import solarSystem from "../assets/solar_system.png"
 import todo from "../assets/todo.png"
+import pfm from "../assets/pfm.png"
 
 export default function Projects() {
   const projects = [
@@ -72,6 +73,13 @@ export default function Projects() {
       title: "To-Do List Application",
       link: "https://todo-sigma-snowy.vercel.app/",
       description: "A simple and efficient to-do list application built with react. It allows users to easily manage their tasks, add new items, and mark them as completed through a user-friendly interface."
+    },
+    {
+      img: pfm,
+      subtitle: "Full-Stack",
+      title: "Personal Finance Manager",
+      link: "https://personal-finance-manager-orcin.vercel.app/",
+      description: "PMF is a web application that helps users to manage their personal finances. It allows users to track their income and expenses, set budgets, and monitor their spending habits through an intuitive interface."
     }
   ];
 
@@ -106,10 +114,10 @@ export default function Projects() {
                   alt={p.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
                 />
-                
+
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                
+
                 {/* Badge */}
                 <span className="absolute top-4 right-4 inline-block bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">
                   {p.subtitle}
@@ -121,7 +129,7 @@ export default function Projects() {
                 <h3 className="text-xl font-bold text-white dark:text-white mb-3 group-hover:text-blue-400 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
                   {p.title}
                 </h3>
-                
+
                 <div className="mb-4">
                   <div className="h-1 w-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full transition-all duration-300 group-hover:w-24"></div>
 
