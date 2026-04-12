@@ -50,7 +50,7 @@ export default function Projects() {
       img: ludo,
       subtitle: "Game",
       title: "Ludo Multiplayer Game",
-      link: "https://debajyotisamanta.github.io/LUDO/",
+      link: "https://playludoroom.hackerspacemsit.in/",
       description: "A fun and interactive multiplayer Ludo game built with HTML, CSS, and JavaScript. Features smooth gameplay, intuitive controls, and engaging visuals for an enjoyable gaming experience."
     },
     {
