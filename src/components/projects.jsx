@@ -29,7 +29,7 @@ export default function Projects() {
       img: project3,
       subtitle: "Web",
       title: "Age Calculator",
-      link: "https://debajyotisamanta.github.io/CodeAlpha_Project_AGE-CALCULATOR/",
+      link: "https://code-alpha-project-age-calculator-tau.vercel.app/",
       description: "An intuitive age calculator web application built with HTML, CSS, and JavaScript. It allows users to easily calculate their age based on their birthdate, providing a user-friendly interface and accurate results."
     },
     {
