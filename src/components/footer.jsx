@@ -185,8 +185,8 @@ export default function Footer() {
                       <div className="text-gray-300 dark:text-gray-400 text-sm font-medium flex items-start gap-3">
                         <i className={`${item.icon} text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0`}></i>
                         <div>
-                          <p className="text-xs text-gray-400 dark:text-gray-400 uppercase tracking-wider mb-0.5 font-medium\">{item.label}</p>
-                          <p className="text-gray-100 dark:text-gray-100\">{item.value}</p>
+                          <p className="text-xs text-gray-400 dark:text-gray-400 uppercase tracking-wider mb-0.5 font-medium">{item.label}</p>
+                          <p className="text-gray-100 dark:text-gray-100">{item.value}</p>
                         </div>
                       </div>
                     )}

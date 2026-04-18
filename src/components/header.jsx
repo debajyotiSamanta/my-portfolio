@@ -112,7 +112,7 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-gradient-to-b from-gray-900 to-gray-950 dark:from-gray-950 dark:to-gray-900 border-t border-gradient-to-r from-blue-800/40 to-purple-800/40 dark:from-blue-900/50 dark:to-purple-900/50 shadow-2xl shadow-black/60 animate__animated animate__slideInDown\">
+        <div className="md:hidden bg-gradient-to-b from-gray-900 to-gray-950 dark:from-gray-950 dark:to-gray-900 border-t border-gradient-to-r from-blue-800/40 to-purple-800/40 dark:from-blue-900/50 dark:to-purple-900/50 shadow-2xl shadow-black/60 animate__animated animate__slideInDown">
           <ul className="flex flex-col py-3 px-4 space-y-1.5">
             {navLinks.map((link, index) => (
               <li key={link.href} style={{ animationDelay: `${index * 0.05}s` }} className="animate__animated animate__fadeInLeft">

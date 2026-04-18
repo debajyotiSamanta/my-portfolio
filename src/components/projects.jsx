@@ -8,6 +8,7 @@ import project5 from "../assets/project5.png"
 import solarSystem from "../assets/solar_system.png"
 import todo from "../assets/todo.png"
 import pfm from "../assets/pfm.png"
+import mentorship from "../assets/mentorship.png"
 
 export default function Projects() {
   const projects = [
