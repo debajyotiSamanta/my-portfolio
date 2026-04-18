@@ -80,6 +80,13 @@ export default function Projects() {
       title: "Personal Finance Manager",
       link: "https://personal-finance-manager-orcin.vercel.app/",
       description: "PMF is a web application that helps users to manage their personal finances. It allows users to track their income and expenses, set budgets, and monitor their spending habits through an intuitive interface."
+    },
+    {
+      img: mentorship,
+      subtitle: "Full-Stack",
+      title: "Mentorship Platform",
+      link: "https://mentorship-platform-frontend-delta.vercel.app/",
+      description: "A platform for connecting students with mentors in various fields. It provides a seamless experience for finding, contacting, and collaborating with mentors to support learning and career development."
     }
   ];
 
