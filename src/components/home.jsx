@@ -1,4 +1,6 @@
 import myImage from "../assets/my_image.png";
+import myResume from "../assets/my_resume.pdf";
+
 
 export default function Home() {
   return (
@@ -58,8 +60,8 @@ export default function Home() {
                 <i className="ri-mail-line"></i>
               </a>
               <a
-                href="/src/assets/my_resume.pdf"
-                download
+                href={myResume}
+                download="Debajyoti_Samanta_Resume.pdf"
                 className="inline-flex items-center gap-2 bg-gray-800 dark:bg-gray-700 text-gray-100 dark:text-white border border-gray-600 dark:border-gray-500 font-bold py-3 px-6 rounded-lg hover:shadow-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition-all duration-300"
                 title="Download Resume"
               >
@@ -67,8 +69,8 @@ export default function Home() {
                 <i className="ri-download-line"></i>
               </a>
               <a
-                href="/src/assets/Debajyoti Samanta CV.pdf"
-                download
+                href={myResume}
+                download="Debajyoti_Samanta_CV.pdf"
                 className="inline-flex items-center gap-2 bg-gray-800 dark:bg-gray-700 text-gray-100 dark:text-white border border-gray-600 dark:border-gray-500 font-bold py-3 px-6 rounded-lg hover:shadow-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition-all duration-300"
                 title="Download CV"
               >
