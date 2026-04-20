@@ -12,14 +12,14 @@ export default function Particles() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // More particles since it spans full screen
-    const particles = Array.from({ length: 80 }, () => ({
+    // More particles since it spans full screen (increased count)
+    const particles = Array.from({ length: 180 }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       r: Math.random() * 1.8 + 0.4,
       vx: (Math.random() - 0.5) * 0.35,
       vy: (Math.random() - 0.5) * 0.35,
-      alpha: Math.random() * 0.2 + 0.05,
+      alpha: Math.random() * 0.4 + 0.45, // 0.45 to 0.85 max opacity for very bright dots
       color: Math.random() > 0.5 ? "124,58,237" : Math.random() > 0.5 ? "76,215,246" : "255,176,205",
     }));
 
