@@ -1,5 +1,6 @@
 import myImage from "../assets/my_image.png";
 import myResume from "../assets/my_resume.pdf";
+// import myCV from "../assets/my_cv.pdf";
 
 export default function Home() {
   const socials = [
@@ -128,9 +129,12 @@ export default function Home() {
               <a href="#contact" className="btn-ghost">
                 Start a Project <i className="ri-mail-line"></i>
               </a>
-              <a href={myResume} download="Debajyoti_Samanta_Resume.pdf" className="btn-glass">
+              <a href={myResume} download="Debajyoti_Samanta_Resume.pdf" className="btn-glass" style={{ borderColor: "var(--clr-cyan)", color: "var(--clr-cyan)" }}>
                 Resume <i className="ri-download-line"></i>
               </a>
+              {/* <a href={myCv} download="Debajyoti_Samanta_CV.pdf" className="btn-glass" style={{ borderColor: "var(--clr-cyan)", color: "var(--clr-cyan)" }}>
+                Download CV <i className="ri-download-cloud-2-line"></i>
+              </a> */}
             </div>
 
             {/* Socials */}
