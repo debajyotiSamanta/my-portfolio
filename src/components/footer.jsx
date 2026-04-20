@@ -1,225 +1,250 @@
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
-  const socialLinks = [
-    {
-      href: "https://www.linkedin.com/in/debajyoti-samanta-b49b292b5/",
-      icon: "ri-linkedin-box-line",
-      label: "LinkedIn",
-      gradient: "from-blue-500 to-blue-600",
-      bgColor: "bg-blue-900 dark:bg-blue-900/30"
-    },
-    {
-      href: "https://github.com/debajyotiSamanta",
-      icon: "ri-github-line",
-      label: "GitHub",
-      gradient: "from-slate-700 to-slate-900",
-      bgColor: "bg-gray-700 dark:bg-slate-900/30"
-    },
-    {
-      href: "https://www.instagram.com/unique_engineer_07/",
-      icon: "ri-instagram-line",
-      label: "Instagram",
-      gradient: "from-pink-500 to-rose-500",
-      bgColor: "bg-pink-900 dark:bg-pink-900/30"
-    },
-    {
-      href: "https://www.facebook.com/debajyoti.samanta.588680",
-      icon: "ri-facebook-circle-line",
-      label: "Facebook",
-      gradient: "from-blue-600 to-blue-800",
-      bgColor: "bg-blue-900 dark:bg-blue-900/30"
-    }
+  const socials = [
+    { href: "https://www.linkedin.com/in/debajyoti-samanta-b49b292b5/", icon: "ri-linkedin-box-fill",   color: "#0A66C2", label: "LinkedIn"  },
+    { href: "https://github.com/debajyotiSamanta",                       icon: "ri-github-fill",          color: "#6e5494", label: "GitHub"    },
+    { href: "https://www.instagram.com/unique_engineer_07/",              icon: "ri-instagram-fill",       color: "#E1306C", label: "Instagram" },
+    { href: "https://www.facebook.com/debajyoti.samanta.588680",          icon: "ri-facebook-circle-fill", color: "#1877F2", label: "Facebook"  },
   ];
 
-  const footerSections = {
-    "Navigation": [
-      { label: "Home", href: "#home", icon: "ri-home-5-line" },
-      { label: "Skills", href: "#skills", icon: "ri-trophy-line" },
-      { label: "Projects", href: "#projects", icon: "ri-image-line" }
-    ],
-    "Resources": [
-      { label: "Qualification", href: "#qualification", icon: "ri-book-open-line" },
-      { label: "Services", href: "#services", icon: "ri-briefcase-line" },
-      { label: "Contact", href: "#contact", icon: "ri-chat-3-line" }
-    ]
-  };
+  const nav = [
+    { href: "#home",          label: "Home"          },
+    { href: "#skills",        label: "Skills"        },
+    { href: "#qualification", label: "Journey"       },
+    { href: "#services",      label: "Services"      },
+    { href: "#projects",      label: "Projects"      },
+    { href: "#contact",       label: "Contact"       },
+  ];
 
-  const contactInfo = [
-    { icon: "ri-mail-line", label: "Email", value: "debajyotisamanta2003@gmail.com", link: "mailto:debajyotisamanta2003@gmail.com" },
-    { icon: "ri-whatsapp-line", label: "WhatsApp", value: "+91 9564555918", link: "https://api.whatsapp.com/send?phone=919564555918" },
-    { icon: "ri-map-pin-line", label: "Location", value: "West Bengal, India", link: null }
+  const services = [
+    "Web Development",
+    "UI/UX Design",
+    "React Applications",
+    "Full-Stack Solutions",
+    "API Integration",
+  ];
+
+  const contact = [
+    { icon: "ri-mail-line",      value: "debajyotisamanta2003@gmail.com", href: "mailto:debajyotisamanta2003@gmail.com" },
+    { icon: "ri-whatsapp-line",  value: "+91 9564555918",                  href: "https://api.whatsapp.com/send?phone=919564555918" },
+    { icon: "ri-map-pin-line",   value: "West Bengal, India",              href: null },
   ];
 
   return (
-    <footer className="relative bg-gradient-to-b from-gray-900 via-gray-950 to-gray-950 dark:from-gray-950 dark:via-gray-950 dark:to-gray-950 border-t border-gray-700 dark:border-gray-800 transition-colors animate__animated animate__fadeInUp overflow-hidden">
-      {/* Decorative Background Elements */}
-      <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl -z-10"></div>
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-br from-purple-400/10 to-pink-400/10 rounded-full blur-3xl -z-10"></div>
+    <footer style={{
+      position: "relative",
+      background: "var(--bg-base)",
+      borderTop: "1px solid rgba(255,255,255,0.05)",
+      overflow: "hidden",
+    }}>
+      {/* Orb glows */}
+      <div style={{
+        position: "absolute", top: 0, right: "-5%",
+        width: "400px", height: "300px",
+        background: "radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%)",
+        borderRadius: "50%", pointerEvents: "none",
+      }} />
+      <div style={{
+        position: "absolute", bottom: 0, left: "-5%",
+        width: "350px", height: "300px",
+        background: "radial-gradient(circle, rgba(76,215,246,0.06) 0%, transparent 70%)",
+        borderRadius: "50%", pointerEvents: "none",
+      }} />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Main Footer Content */}
-        <div className="py-12">
-          {/* Top Section with CTA */}
-          <div className="mb-12 animate__animated animate__fadeInUp">
-            <div className="bg-gradient-to-r from-blue-600/10 to-purple-600/10 dark:from-blue-600/20 dark:to-purple-600/20 border border-blue-200 dark:border-blue-900/50 rounded-3xl p-8 text-center backdrop-blur-sm">
-              <h3 className="text-3xl md:text-4xl font-bold text-white dark:text-white mb-4">
-                Ready to Create Something <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Extraordinary?</span>
-              </h3>
-              <p className="text-gray-300 dark:text-gray-400 mb-8 max-w-2xl mx-auto font-medium">
-                Let's collaborate and bring your digital vision to life with creativity and innovation.
-              </p>
-              <a href="#contact" className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-4 px-10 rounded-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group">
-                <span>Start Your Project</span>
-                <i className="ri-arrow-right-line group-hover:translate-x-1 transition-transform"></i>
-              </a>
-            </div>
-          </div>
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1 }}>
 
-          {/* Divider */}
-          <div className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-700 to-transparent mb-12"></div>
+        {/* CTA Banner */}
+        <div style={{
+          margin: "64px 0 56px",
+          background: "rgba(27,31,44,0.80)",
+          border: "1px solid rgba(124,58,237,0.20)",
+          borderRadius: "20px",
+          padding: "48px 40px",
+          textAlign: "center",
+          backdropFilter: "blur(12px)",
+          boxShadow: "0 0 60px rgba(124,58,237,0.08)",
+        }}>
+          <h3 style={{
+            fontSize: "clamp(1.6rem, 3vw, 2.4rem)",
+            fontWeight: 800, letterSpacing: "-0.03em",
+            color: "var(--text-primary)", marginBottom: "12px",
+          }}>
+            Ready to Create Something{" "}
+            <span className="gradient-text">Extraordinary?</span>
+          </h3>
+          <p style={{ color: "var(--text-secondary)", marginBottom: "28px", fontSize: "0.95rem" }}>
+            Let's collaborate and bring your digital vision to life with creativity and innovation.
+          </p>
+          <a href="#contact" className="btn-primary" style={{ fontSize: "0.95rem" }}>
+            Start Your Project <i className="ri-arrow-right-line"></i>
+          </a>
+        </div>
 
-          {/* Main Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-            {/* Brand & Social Section */}
-            <div className="space-y-5 animate__animated animate__fadeInUp">
+        {/* Divider */}
+        <div style={{ height: "1px", background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent)", marginBottom: "48px" }} />
+
+        {/* 4-column grid */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "1.4fr 1fr 1fr 1.3fr",
+          gap: "40px",
+          marginBottom: "48px",
+        }} className="footer-grid">
+
+          {/* Brand */}
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
+              <div style={{
+                width: "40px", height: "40px", borderRadius: "10px",
+                background: "linear-gradient(135deg, #7C3AED, #4cd7f6)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                color: "white", fontWeight: 800, fontSize: "0.9rem",
+                boxShadow: "0 4px 16px rgba(124,58,237,0.45)",
+              }}>DS</div>
               <div>
-                <div className="inline-flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-xl shadow-lg">
-                    D
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-white dark:text-white">DEBAJYOTI SAMANTA</p>
-                    <p className="text-xs text-gray-400 dark:text-gray-400">Developer</p>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-300 dark:text-gray-400 leading-relaxed font-medium">
-                Crafting beautiful, responsive digital experiences with modern technologies and creative vision.
-              </p>
-              
-              <div className="space-y-3 pt-3 border-t border-gray-700 dark:border-gray-800">
-                <p className="text-sm font-bold text-white dark:text-white uppercase tracking-wider">Follow On Social</p>
-                <div className="flex gap-2.5 flex-wrap">
-                  {socialLinks.map((social) => (
-                    <a
-                      key={social.label}
-                      href={social.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      title={social.label}
-                      className={`w-12 h-12 rounded-full ${social.bgColor} bg-gradient-to-br ${social.gradient} text-white flex items-center justify-center text-lg transition-all duration-300 hover:scale-110 hover:shadow-lg hover:-translate-y-1 group`}
-                    >
-                      <i className={`${social.icon} group-hover:scale-125 transition-transform`}></i>
-                    </a>
-                  ))}
-                </div>
+                <p style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.15em", color: "var(--text-primary)", textTransform: "uppercase" }}>Debajyoti Samanta</p>
+                <p style={{ fontSize: "0.6rem", color: "var(--text-muted)", letterSpacing: "0.18em", textTransform: "uppercase" }}>Full Stack Developer</p>
               </div>
             </div>
-
-            {/* Navigation Column 1 */}
-            <div className="animate__animated animate__fadeInUp" style={{ animationDelay: "0.1s" }}>
-              <h3 className="text-lg font-bold text-white dark:text-white mb-6 flex items-center gap-3">
-                <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 shadow-sm"></div>
-                <span>Navigation</span>
-              </h3>
-              <ul className="space-y-3">
-                {footerSections.Navigation.map((link) => (
-                  <li key={link.href}>
-                    <a
-                      href={link.href}
-                      className="text-gray-300 dark:text-gray-400 hover:text-blue-400 dark:hover:text-blue-400 transition-all duration-300 text-sm font-medium flex items-center gap-3 group hover:translate-x-1"
-                    >
-                      <i className={`${link.icon} opacity-0 group-hover:opacity-100 transition-opacity`}></i>
-                      <span>{link.label}</span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Resources Column */}
-            <div className="animate__animated animate__fadeInUp" style={{ animationDelay: "0.2s" }}>
-              <h3 className="text-lg font-bold text-white dark:text-white mb-6 flex items-center gap-3">
-                <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 shadow-sm"></div>
-                <span>Resources</span>
-              </h3>
-              <ul className="space-y-3">
-                {footerSections.Resources.map((link) => (
-                  <li key={link.href}>
-                    <a
-                      href={link.href}
-                      className="text-gray-300 dark:text-gray-400 hover:text-blue-400 dark:hover:text-blue-400 transition-all duration-300 text-sm font-medium flex items-center gap-3 group hover:translate-x-1"
-                    >
-                      <i className={`${link.icon} opacity-0 group-hover:opacity-100 transition-opacity`}></i>
-                      <span>{link.label}</span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Contact Info */}
-            <div className="animate__animated animate__fadeInUp" style={{ animationDelay: "0.3s" }}>
-              <h3 className="text-lg font-bold text-white dark:text-white mb-6 flex items-center gap-3">
-                <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 shadow-sm"></div>
-                <span>Get In Touch</span>
-              </h3>
-              <ul className="space-y-3">
-                {contactInfo.map((item, i) => (
-                  <li key={i}>
-                    {item.link ? (
-                      <a
-                        href={item.link}
-                        target={!item.link.startsWith("mailto") ? "_blank" : undefined}
-                        rel={!item.link.startsWith("mailto") ? "noreferrer" : undefined}
-                        className="text-gray-300 dark:text-gray-400 hover:text-blue-400 dark:hover:text-blue-400 transition-all duration-300 text-sm font-medium flex items-start gap-3 group"
-                      >
-                        <i className={`${item.icon} text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0 group-hover:scale-110 transition-transform`}></i>
-                        <div className="group-hover:translate-x-1 transition-transform">
-                          <p className="text-xs text-gray-400 dark:text-gray-400 uppercase tracking-wider mb-0.5 font-medium">{item.label}</p>
-                          <p className="break-all text-gray-100 dark:text-gray-100">{item.value}</p>
-                        </div>
-                      </a>
-                    ) : (
-                      <div className="text-gray-300 dark:text-gray-400 text-sm font-medium flex items-start gap-3">
-                        <i className={`${item.icon} text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0`}></i>
-                        <div>
-                          <p className="text-xs text-gray-400 dark:text-gray-400 uppercase tracking-wider mb-0.5 font-medium">{item.label}</p>
-                          <p className="text-gray-100 dark:text-gray-100">{item.value}</p>
-                        </div>
-                      </div>
-                    )}
-                  </li>
-                ))}
-              </ul>
+            <p style={{ fontSize: "0.83rem", color: "var(--text-secondary)", lineHeight: 1.7, marginBottom: "20px" }}>
+              Crafting beautiful, responsive digital experiences with modern technologies and creative vision.
+            </p>
+            <div style={{ display: "flex", gap: "8px" }}>
+              {socials.map((s, i) => (
+                <a
+                  key={i}
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  title={s.label}
+                  style={{
+                    width: "36px", height: "36px", borderRadius: "50%",
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.07)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    color: "var(--text-muted)", fontSize: "1rem",
+                    textDecoration: "none", transition: "all 0.25s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = "white";
+                    e.currentTarget.style.background = s.color + "25";
+                    e.currentTarget.style.borderColor = s.color + "55";
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = "var(--text-muted)";
+                    e.currentTarget.style.background = "rgba(255,255,255,0.05)";
+                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)";
+                    e.currentTarget.style.transform = "translateY(0)";
+                  }}
+                >
+                  <i className={s.icon}></i>
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Divider */}
-          <div className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-700 to-transparent my-12"></div>
+          {/* Navigation */}
+          <div>
+            <h4 style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-primary)", marginBottom: "16px" }}>
+              Navigation
+            </h4>
+            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "10px" }}>
+              {nav.map((link, i) => (
+                <li key={i}>
+                  <a
+                    href={link.href}
+                    style={{ fontSize: "0.85rem", color: "var(--text-secondary)", textDecoration: "none", transition: "all 0.2s ease", display: "inline-block" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = "var(--clr-primary-dim)"; e.currentTarget.style.transform = "translateX(4px)"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = "var(--text-secondary)";  e.currentTarget.style.transform = "translateX(0)"; }}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-          {/* Bottom Section */}
-          <div className="animate__animated animate__fadeInUp" style={{ animationDelay: "0.4s" }}>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-gray-300 dark:text-gray-400 font-medium">
-              <div className="text-center md:text-left">
-                {/* <p className="mb-1 text-xs uppercase tracking-wider text-gray-500 dark:text-gray-600">Legal</p> */}
-                <p>© {currentYear} Debajyoti Samanta. All rights reserved.</p>
-              </div>
-              <div className="text-center">
-                {/* <p className="mb-1 text-xs uppercase tracking-wider text-gray-500 dark:text-gray-600">Crafted With</p> */}
-                <p>
-                  Built with <span className="text-red-500 animate-pulse">❤</span> & <span className="text-blue-600 dark:text-blue-400 font-semibold">passion</span>
-                </p>
-              </div>
-              <div className="text-center md:text-right">
-                {/* <p className="mb-1 text-xs uppercase tracking-wider text-gray-500 dark:text-gray-600">Design</p> */}
-                <p>Designed & developed by Debajyoti Samanta</p>
-              </div>
-            </div>
+          {/* Services */}
+          <div>
+            <h4 style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-primary)", marginBottom: "16px" }}>
+              Services
+            </h4>
+            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "10px" }}>
+              {services.map((s, i) => (
+                <li key={i} style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>{s}</li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h4 style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-primary)", marginBottom: "16px" }}>
+              Get in Touch
+            </h4>
+            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "14px" }}>
+              {contact.map((item, i) => {
+                const inner = (
+                  <>
+                    <i className={item.icon} style={{ color: "var(--clr-primary-dim)", flexShrink: 0, marginTop: "1px" }}></i>
+                    <span style={{ fontSize: "0.82rem", color: "var(--text-secondary)", wordBreak: "break-all" }}>{item.value}</span>
+                  </>
+                );
+                return item.href ? (
+                  <li key={i}>
+                    <a
+                      href={item.href}
+                      target={item.href.startsWith("mailto") ? undefined : "_blank"}
+                      rel="noreferrer"
+                      style={{ display: "flex", gap: "10px", alignItems: "flex-start", textDecoration: "none", transition: "color 0.2s ease" }}
+                      onMouseEnter={(e) => { e.currentTarget.querySelectorAll("span, i").forEach(el => el.style.color = "var(--clr-cyan)"); }}
+                      onMouseLeave={(e) => { e.currentTarget.querySelector("i").style.color = "var(--clr-primary-dim)"; e.currentTarget.querySelector("span").style.color = "var(--text-secondary)"; }}
+                    >
+                      {inner}
+                    </a>
+                  </li>
+                ) : (
+                  <li key={i} style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>{inner}</li>
+                );
+              })}
+            </ul>
           </div>
         </div>
+
+        {/* Divider */}
+        <div style={{ height: "1px", background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent)", marginBottom: "28px" }} />
+
+        {/* Bottom bar */}
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "12px",
+          paddingBottom: "32px",
+          fontSize: "0.78rem",
+          color: "var(--text-muted)",
+        }} className="footer-bottom">
+          <span>© {currentYear} Debajyoti Samanta. All rights reserved.</span>
+          <span>
+            Built with{" "}
+            <span style={{ color: "#f87171", animation: "pulse-glow 1.5s ease-in-out infinite" }}>❤</span>
+            {" "}& passion
+          </span>
+          <span>Designed & developed by Debajyoti Samanta</span>
+        </div>
       </div>
+
+      <style>{`
+        @media (max-width: 900px) {
+          .footer-grid { grid-template-columns: 1fr 1fr !important; }
+        }
+        @media (max-width: 540px) {
+          .footer-grid   { grid-template-columns: 1fr !important; }
+          .footer-bottom { flex-direction: column; text-align: center; }
+        }
+      `}</style>
     </footer>
   );
 }

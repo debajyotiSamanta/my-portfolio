@@ -1,81 +1,153 @@
-
 export default function Services() {
   const services = [
     {
       icon: "ri-layout-4-line",
       title: "UI/UX Design",
-      desc: "Creating intuitive, beautiful interfaces that users love. I focus on user-centered design principles and modern aesthetics.",
-      color: "from-blue-500 to-cyan-500"
+      desc: "Creating intuitive, beautiful interfaces that users love. Focused on user-centered design principles and premium modern aesthetics.",
+      accent: "var(--clr-primary-dim)",
+      glow: "rgba(124,58,237,0.25)",
+      bg: "rgba(124,58,237,0.08)",
+      border: "rgba(124,58,237,0.20)",
     },
     {
-      icon: "ri-code-line",
+      icon: "ri-code-s-slash-line",
       title: "Web Development",
-      desc: "Building responsive, performant websites using modern technologies. From concept to deployment, I ensure quality code.",
-      color: "from-purple-500 to-blue-500"
+      desc: "Building responsive, performant websites using modern technologies. From concept to deployment with clean, scalable code.",
+      accent: "var(--clr-cyan)",
+      glow: "rgba(76,215,246,0.20)",
+      bg: "rgba(76,215,246,0.06)",
+      border: "rgba(76,215,246,0.18)",
     },
     {
       icon: "ri-palette-line",
       title: "Brand Design",
-      desc: "Developing cohesive visual identities that represent your brand. Logo design, color schemes, and brand guidelines.",
-      color: "from-pink-500 to-rose-500"
+      desc: "Developing cohesive visual identities that represent your brand — logo design, color systems, and comprehensive brand guidelines.",
+      accent: "var(--clr-pink)",
+      glow: "rgba(255,176,205,0.20)",
+      bg: "rgba(255,176,205,0.06)",
+      border: "rgba(255,176,205,0.18)",
     },
     {
       icon: "ri-computer-line",
-      title: "Software Developer Engineer",
-      desc: "Developing robust, scalable software solutions with clean code architecture. Expertise in full-stack development and software engineering best practices.",
-      color: "from-green-500 to-emerald-500"
-    }
-  ];
+      title: "Full-Stack Engineering",
+      desc: "Developing robust, scalable software solutions with clean architecture. Expertise spanning the full product stack from API to UI.",
+      accent: "#6ee7b7",
+      glow: "rgba(52,211,153,0.20)",
+      bg: "rgba(52,211,153,0.06)",
+      border: "rgba(52,211,153,0.18)",
+    },
+  ]
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-900 via-gray-850 to-gray-900 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 animate__animated animate__fadeInUp" id="services">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center gap-2 mb-6">
-            <div className="h-1 w-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"></div>
-            <span className="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">What I Offer</span>
-            <div className="h-1 w-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"></div>
-          </div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-white dark:text-white mb-4 animate__animated animate__slideInDown">
-            Services
+    <section
+      id="services"
+      className="dot-grid section-kv"
+      style={{ background: "var(--bg-container)" }}
+    >
+      <div style={{
+        position: "absolute", top: "10%", left: "-5%",
+        width: "350px", height: "350px",
+        background: "radial-gradient(circle, rgba(255,176,205,0.06) 0%, transparent 70%)",
+        borderRadius: "50%", pointerEvents: "none",
+      }} />
+
+      <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
+
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: "56px" }}>
+          <span className="section-overline">What I Offer</span>
+          <h2 style={{
+            fontSize: "clamp(2.4rem, 5vw, 3.8rem)",
+            fontWeight: 800, letterSpacing: "-0.04em",
+            color: "var(--text-primary)", marginTop: "12px", marginBottom: "16px", lineHeight: 1.1,
+          }}>
+            My <span className="gradient-text-cyan">Services</span>
           </h2>
-          <p className="text-lg text-gray-300 dark:text-gray-400 animate__animated animate__slideInUp max-w-2xl mx-auto font-medium">
+          <p style={{ color: "var(--text-secondary)", fontSize: "1rem", maxWidth: "480px", margin: "0 auto" }}>
             Comprehensive solutions to bring your digital vision to life
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {services.map((service, i) => (
+        {/* Cards grid */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gap: "20px",
+        }} className="services-grid">
+          {services.map((svc, i) => (
             <div
               key={i}
-              className="group relative bg-gray-900 dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-3 transition-all duration-300 p-8 border border-gray-700 dark:border-gray-600 backdrop-blur-sm overflow-hidden animate__animated animate__fadeInUp"
-              style={{ animationDelay: `${i * 0.15}s` }}
+              style={{
+                position: "relative",
+                background: "rgba(27,31,44,0.80)",
+                backdropFilter: "blur(12px)",
+                border: `1px solid ${svc.border}`,
+                borderRadius: "16px",
+                padding: "32px 24px",
+                transition: "all 0.3s ease",
+                overflow: "hidden",
+                cursor: "default",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-6px)";
+                e.currentTarget.style.boxShadow = `0 16px 48px rgba(0,0,0,0.4), 0 0 30px ${svc.glow}`;
+                e.currentTarget.style.background = "rgba(53,57,71,0.60)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "none";
+                e.currentTarget.style.background = "rgba(27,31,44,0.80)";
+              }}
             >
-              {/* Background Gradient */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
-
-              {/* Icon Container */}
-              <div className={`relative z-10 w-16 h-16 rounded-xl bg-gradient-to-br ${service.color} p-3 mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110 flex items-center justify-center text-white text-3xl`}>
-                <i className={service.icon}></i>
+              {/* Icon */}
+              <div style={{
+                width: "52px", height: "52px",
+                borderRadius: "12px",
+                background: svc.bg,
+                border: `1px solid ${svc.border}`,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: "1.5rem", color: svc.accent,
+                marginBottom: "20px",
+                boxShadow: `0 0 20px ${svc.glow}`,
+              }}>
+                <i className={svc.icon}></i>
               </div>
 
-              {/* Content */}
-              <h2 className="relative z-10 text-2xl font-bold text-white dark:text-white mb-4 group-hover:text-transparent group-hover:bg-gradient-to-br ${service.color} group-hover:bg-clip-text transition-all duration-300">
-                {service.title}
-              </h2>
-              <p className="relative z-10 text-gray-300 dark:text-gray-400 leading-relaxed font-medium mb-6">
-                {service.desc}
+              {/* Title */}
+              <h3 style={{
+                fontWeight: 700, fontSize: "1.05rem",
+                color: "var(--text-primary)", marginBottom: "12px",
+              }}>
+                {svc.title}
+              </h3>
+
+              {/* Desc */}
+              <p style={{
+                fontSize: "0.85rem", color: "var(--text-secondary)",
+                lineHeight: 1.7, marginBottom: "20px",
+              }}>
+                {svc.desc}
               </p>
 
-              {/* Divider */}
-              <div className="relative z-10 h-1 w-0 group-hover:w-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full transition-all duration-300"></div>
-
-              {/* Bottom accent */}
-              <div className={`absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r ${service.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
+              {/* Bottom neon line */}
+              <div style={{
+                height: "2px",
+                background: `linear-gradient(90deg, ${svc.accent}, transparent)`,
+                borderRadius: "2px",
+              }} />
             </div>
           ))}
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 900px) {
+          .services-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 540px) {
+          .services-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </section>
-  );
+  )
 }

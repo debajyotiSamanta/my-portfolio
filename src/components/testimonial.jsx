@@ -1,5 +1,3 @@
-
-
 export default function Testimonial() {
   const testimonials = [
     {
@@ -7,93 +5,100 @@ export default function Testimonial() {
       name: "Sarah Johnson",
       subtitle: "Startup Founder",
       avatar: "SJ",
-      icon: "ri-star-line",
-      color: "from-blue-500 to-cyan-500",
-      rating: 5
+      rating: 5,
+      accent: "var(--clr-primary-dim)",
+      glow: "rgba(124,58,237,0.20)",
+      bg: "rgba(124,58,237,0.08)",
     },
     {
-      quote: "I believe in building secure, scalable applications that protect user data. Authentication and security are crucial for earning trust.",
+      quote: "I believe in building secure, scalable applications that protect user data. Authentication and security are crucial for earning trust and delivering great experiences.",
       name: "Debajyoti Samanta",
-      subtitle: "Frontend Developer",
+      subtitle: "Full Stack Developer",
       avatar: "DS",
-      icon: "ri-shield-check-line",
-      color: "from-purple-500 to-indigo-500",
-      rating: 5
-    }
+      rating: 5,
+      accent: "var(--clr-cyan)",
+      glow: "rgba(76,215,246,0.16)",
+      bg: "rgba(76,215,246,0.06)",
+    },
   ];
 
   return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-900 via-gray-850 to-gray-900 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 animate__animated animate__fadeInUp relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl -z-10"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-br from-purple-400/10 to-pink-400/10 rounded-full blur-3xl -z-10"></div>
+    <section
+      className="dot-grid section-kv"
+      style={{ background: "var(--bg-container)" }}
+    >
+      <div style={{
+        position: "absolute", top: "10%", left: "-5%",
+        width: "400px", height: "400px",
+        background: "radial-gradient(circle, rgba(124,58,237,0.07) 0%, transparent 70%)",
+        borderRadius: "50%", pointerEvents: "none",
+      }} />
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div style={{ maxWidth: "900px", margin: "0 auto", position: "relative", zIndex: 1 }}>
+
         {/* Header */}
-        <div className="text-center mb-20">
-          <div className="inline-flex items-center justify-center gap-3 mb-6 bg-gray-800 dark:bg-blue-900/20 px-4 py-2 rounded-full border border-gray-700 dark:border-blue-800/50 backdrop-blur-sm">
-            <span className="w-2 h-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full animate-pulse"></span>
-            <span className="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Testimonials & Feedback</span>
-            <span className="w-2 h-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full animate-pulse"></span>
-          </div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-white dark:text-white mb-6 animate__animated animate__slideInDown">
-            Client Testimonials
+        <div style={{ textAlign: "center", marginBottom: "56px" }}>
+          <span className="section-overline">Testimonials</span>
+          <h2 style={{
+            fontSize: "clamp(2rem, 4vw, 3.2rem)",
+            fontWeight: 800, letterSpacing: "-0.04em",
+            color: "var(--text-primary)", marginTop: "12px", marginBottom: "16px",
+          }}>
+            Words of{" "}
+            <span className="gradient-text-violet">Trust</span>
           </h2>
-          <p className="text-lg text-gray-300 dark:text-gray-400 max-w-2xl mx-auto font-medium animate__animated animate__slideInUp">
-            Real feedback from satisfied clients who trusted me with their projects
+          <p style={{ color: "var(--text-secondary)", fontSize: "1rem" }}>
+            Feedback from clients and collaborators
           </p>
         </div>
 
-        {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-12">
+        {/* Grid */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }} className="testimonial-grid">
           {testimonials.map((t, i) => (
-            <div
-              key={i}
-              className="group relative bg-gray-900 dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-gray-700 dark:border-gray-600 p-8 animate__animated animate__fadeInUp backdrop-blur-sm overflow-hidden"
-              style={{ animationDelay: `${i * 0.1}s` }}
-            >
-              {/* Gradient Background */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${t.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
-
-              {/* Top Decoration */}
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-blue-400 to-purple-400 opacity-5 rounded-full -mr-12 -mt-12 transition-all duration-300 group-hover:scale-150"></div>
-
-              {/* Rating Stars */}
-              <div className="relative z-10 flex gap-1 mb-6">
-                {[...Array(t.rating)].map((_, idx) => (
-                  <i key={idx} className="ri-star-fill text-yellow-400 text-sm"></i>
+            <div key={i} className="glass-card" style={{ padding: "32px 28px" }}>
+              {/* Stars */}
+              <div style={{ display: "flex", gap: "4px", marginBottom: "20px" }}>
+                {[...Array(t.rating)].map((_, j) => (
+                  <i key={j} className="ri-star-fill" style={{ color: "#fbbf24", fontSize: "0.9rem" }}></i>
                 ))}
               </div>
 
-              {/* Quote Text */}
-              <p className="relative z-10 text-gray-200 dark:text-gray-300 mb-8 leading-relaxed italic font-medium text-base">
+              {/* Quote */}
+              <p style={{
+                fontSize: "0.9rem", color: "var(--text-secondary)",
+                lineHeight: 1.75, fontStyle: "italic", marginBottom: "28px",
+              }}>
                 "{t.quote}"
               </p>
 
-              {/* Divider */}
-              <div className="relative z-10 border-t border-gray-700 dark:border-gray-700/50 pt-6 flex items-center gap-4">
-                {/* Avatar */}
-                <div className={`w-14 h-14 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center text-white font-bold text-lg shadow-lg flex-shrink-0`}>
+              {/* Author */}
+              <div style={{ display: "flex", alignItems: "center", gap: "12px", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                <div style={{
+                  width: "44px", height: "44px", borderRadius: "50%",
+                  background: t.bg,
+                  border: `2px solid ${t.glow}`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  color: t.accent, fontWeight: 800, fontSize: "0.85rem",
+                  boxShadow: `0 0 12px ${t.glow}`,
+                  flexShrink: 0,
+                }}>
                   {t.avatar}
                 </div>
-
-                {/* Info */}
-                <div className="flex-1">
-                  <h3 className="text-lg font-bold text-white dark:text-white">{t.name}</h3>
-                  <span className={`text-sm font-semibold bg-gradient-to-r ${t.color} bg-clip-text text-transparent`}>
-                    {t.subtitle}
-                  </span>
-                </div>
-
-                {/* Icon */}
-                <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center text-white text-lg flex-shrink-0`}>
-                  <i className={t.icon}></i>
+                <div>
+                  <p style={{ fontWeight: 700, fontSize: "0.9rem", color: "var(--text-primary)" }}>{t.name}</p>
+                  <p style={{ fontSize: "0.78rem", color: t.accent, fontWeight: 600 }}>{t.subtitle}</p>
                 </div>
               </div>
             </div>
           ))}
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 640px) {
+          .testimonial-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </section>
   );
 }

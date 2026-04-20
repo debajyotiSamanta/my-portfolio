@@ -11,157 +11,290 @@ import pfm from "../assets/pfm.png"
 import mentorship from "../assets/mentorship.png"
 
 export default function Projects() {
+  const featured = {
+    img: mentorship,
+    title: "MentorSpace — Mentorship Platform",
+    tag: "Full-Stack",
+    tagColor: "chip-cyan",
+    description: "A one-on-one mentorship platform with real-time WebRTC video/audio, collaborative multilingual code editor, and secure role-based authentication. Built for seamless mentor-student connections.",
+    tech: ["React", "Node.js", "WebRTC", "MongoDB", "Express"],
+    link: "https://mentorship-platform-frontend-delta.vercel.app/",
+  }
+
   const projects = [
     {
-      img: project1,
-      subtitle: "Web",
-      title: "Responsive web page design",
-      link: "https://debajyotisamanta.github.io/CODECANVAS/",
-      description: "A visually stunning responsive web page built with HTML, CSS, and JavaScript. Showcasing modern design principles and seamless user experience across devices."
-    },
-    {
-      img: project2,
-      subtitle: "Web",
-      title: "Responsive landing page design",
-      link: "https://debajyotisamanta.github.io/CodeClauseInternship_ResponsiveLandingPage/",
-      description: "A sleek and responsive landing page designed to captivate visitors. Built with HTML, CSS, and JavaScript, it features modern aesthetics and smooth interactions for an engaging user experience."
-    },
-    {
-      img: project3,
-      subtitle: "Web",
-      title: "Age Calculator",
-      link: "https://code-alpha-project-age-calculator-tau.vercel.app/",
-      description: "An intuitive age calculator web application built with HTML, CSS, and JavaScript. It allows users to easily calculate their age based on their birthdate, providing a user-friendly interface and accurate results."
-    },
-    {
-      img: project4,
-      subtitle: "Web",
-      title: "Fitness Tracker Dashboard",
-      link: "https://debajyotisamanta.github.io/Fitness-Tracker-Dashboard/",
-      description: "A sleek and responsive fitness tracker dashboard built with HTML, CSS, and JavaScript. It provides users with an intuitive interface to monitor their fitness goals, track workouts, and visualize progress through interactive charts and graphs."
-    },
-    {
-      img: project5,
-      subtitle: "Web",
-      title: "Event Management System",
-      link: "https://debajyotisamanta.github.io/CodeClauseInternship_Event_management_System/",
-      description: "A comprehensive event management system built with HTML, CSS, and JavaScript. It allows users to create, manage, and track events seamlessly, providing features such as event registration, scheduling, and attendee management for a smooth user experience."
-    },
-    {
-      img: ludo,
-      subtitle: "Game",
-      title: "Ludo Multiplayer Game",
-      link: "https://playludoroom.hackerspacemsit.in/",
-      description: "A fun and interactive multiplayer Ludo game built with HTML, CSS, and JavaScript. Features smooth gameplay, intuitive controls, and engaging visuals for an enjoyable gaming experience."
-    },
-    {
-      img: personalLib,
-      subtitle: "Web",
-      title: "📚Personal Book Library",
-      link: "https://debajyotisamanta.github.io/Personal-Book-Library/",
-      description: "A sleek and responsive personal book library web application built with HTML, CSS, and JavaScript. It allows users to easily manage their book collection, add new books, and track their reading progress through an intuitive interface."
-    },
-    {
-      img: solarSystem,
-      subtitle: "Web",
-      title: "3D Solar System",
-      link: "https://debajyotisamanta.github.io/Solar_system/",
-      description: "A visually stunning 3D solar system simulation built with HTML, CSS, and JavaScript. It allows users to explore the planets, moons, and other celestial bodies in an interactive and immersive way, providing an educational and engaging experience."
-    },
-    {
-      img: todo,
-      subtitle: "Web",
-      title: "To-Do List Application",
-      link: "https://todo-sigma-snowy.vercel.app/",
-      description: "A simple and efficient to-do list application built with react. It allows users to easily manage their tasks, add new items, and mark them as completed through a user-friendly interface."
-    },
-    {
-      img: pfm,
-      subtitle: "Full-Stack",
-      title: "Personal Finance Manager",
+      img: pfm, title: "Personal Finance Manager",
+      tag: "Full-Stack", tagColor: "chip-cyan",
+      desc: "Track income, expenses, set budgets and monitor spending habits through an intuitive dashboard interface.",
       link: "https://personal-finance-manager-orcin.vercel.app/",
-      description: "PMF is a web application that helps users to manage their personal finances. It allows users to track their income and expenses, set budgets, and monitor their spending habits through an intuitive interface."
     },
     {
-      img: mentorship,
-      subtitle: "Full-Stack",
-      title: "Mentorship Platform",
-      link: "https://mentorship-platform-frontend-delta.vercel.app/",
-      description: "A platform for connecting students with mentors in various fields. It provides a seamless experience for finding, contacting, and collaborating with mentors to support learning and career development."
-    }
-  ];
+      img: ludo, title: "Ludo Multiplayer Game",
+      tag: "Game", tagColor: "chip-pink",
+      desc: "Fun and interactive multiplayer Ludo game with smooth gameplay and engaging real-time visuals.",
+      link: "https://playludoroom.hackerspacemsit.in/",
+    },
+    {
+      img: solarSystem, title: "3D Solar System",
+      tag: "Web", tagColor: "chip-violet",
+      desc: "Visually stunning 3D solar system simulation — explore planets and celestial bodies interactively.",
+      link: "https://debajyotisamanta.github.io/Solar_system/",
+    },
+    {
+      img: project4, title: "Fitness Tracker Dashboard",
+      tag: "Web", tagColor: "chip-violet",
+      desc: "Monitor fitness goals, track workouts and visualize progress through interactive charts.",
+      link: "https://debajyotisamanta.github.io/Fitness-Tracker-Dashboard/",
+    },
+    {
+      img: todo, title: "To-Do List App",
+      tag: "React", tagColor: "chip-cyan",
+      desc: "Clean and efficient React task manager with intuitive UI for managing daily to-dos.",
+      link: "https://todo-sigma-snowy.vercel.app/",
+    },
+    {
+      img: personalLib, title: "Personal Book Library",
+      tag: "Web", tagColor: "chip-violet",
+      desc: "Manage your book collection, add new entries, and track reading progress through a sleek interface.",
+      link: "https://debajyotisamanta.github.io/Personal-Book-Library/",
+    },
+    {
+      img: project1, title: "Responsive Web Page Design",
+      tag: "Web", tagColor: "chip-violet",
+      desc: "Visually stunning responsive web page showcasing modern design principles across all devices.",
+      link: "https://debajyotisamanta.github.io/CODECANVAS/",
+    },
+    {
+      img: project2, title: "Responsive Landing Page",
+      tag: "Web", tagColor: "chip-violet",
+      desc: "Sleek landing page with modern aesthetics and smooth interactions for an engaging user experience.",
+      link: "https://debajyotisamanta.github.io/CodeClauseInternship_ResponsiveLandingPage/",
+    },
+    {
+      img: project3, title: "Age Calculator",
+      tag: "Web", tagColor: "chip-violet",
+      desc: "Intuitive age calculator web app — accurate results with a clean, user-friendly interface.",
+      link: "https://code-alpha-project-age-calculator-tau.vercel.app/",
+    },
+    {
+      img: project5, title: "Event Management System",
+      tag: "Web", tagColor: "chip-violet",
+      desc: "Comprehensive event management system — create, manage and track events with registration support.",
+      link: "https://debajyotisamanta.github.io/CodeClauseInternship_Event_management_System/",
+    },
+  ]
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-900 via-gray-850 to-gray-900 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 animate__animated animate__fadeInUp" id="projects">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center gap-2 mb-6">
-            <div className="h-1 w-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"></div>
-            <span className="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Featured Work</span>
-            <div className="h-1 w-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"></div>
-          </div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-white dark:text-white mb-4 animate__animated animate__slideInDown">
-            Projects & Creations
+    <section
+      id="projects"
+      className="dot-grid section-kv"
+      style={{ background: "var(--bg-surface)" }}
+    >
+      <div style={{
+        position: "absolute", top: "5%", right: "-5%",
+        width: "450px", height: "450px",
+        background: "radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%)",
+        borderRadius: "50%", pointerEvents: "none",
+      }} />
+
+      <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
+
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: "56px" }}>
+          <span className="section-overline">Featured Work</span>
+          <h2 style={{
+            fontSize: "clamp(2.4rem, 5vw, 3.8rem)",
+            fontWeight: 800, letterSpacing: "-0.04em",
+            color: "var(--text-primary)", marginTop: "12px", marginBottom: "16px", lineHeight: 1.1,
+          }}>
+            Projects &{" "}
+            <span className="gradient-text">Creations</span>
           </h2>
-          <p className="text-lg text-gray-300 dark:text-gray-400 animate__animated animate__slideInUp max-w-2xl mx-auto font-medium">
-            A showcase of my best work - from responsive websites to interactive applications
+          <p style={{ color: "var(--text-secondary)", fontSize: "1rem", maxWidth: "520px", margin: "0 auto" }}>
+            A curated showcase of my best work — from full-stack platforms to interactive web experiences
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Featured Card */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "0",
+          background: "rgba(27,31,44,0.85)",
+          border: "1px solid rgba(124,58,237,0.22)",
+          borderRadius: "20px",
+          overflow: "hidden",
+          marginBottom: "28px",
+          boxShadow: "0 8px 48px rgba(0,0,0,0.5), 0 0 40px rgba(124,58,237,0.10)",
+          transition: "all 0.35s ease",
+        }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.boxShadow = "0 16px 64px rgba(0,0,0,0.6), 0 0 60px rgba(124,58,237,0.20)";
+            e.currentTarget.style.borderColor = "rgba(124,58,237,0.40)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.boxShadow = "0 8px 48px rgba(0,0,0,0.5), 0 0 40px rgba(124,58,237,0.10)";
+            e.currentTarget.style.borderColor = "rgba(124,58,237,0.22)";
+          }}
+          className="featured-card"
+        >
+          {/* Image */}
+          <div style={{ position: "relative", overflow: "hidden", minHeight: "320px" }}>
+            <img
+              src={featured.img}
+              alt={featured.title}
+              style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.5s ease" }}
+              onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+              onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+            />
+            <div style={{
+              position: "absolute", inset: 0,
+              background: "linear-gradient(135deg, rgba(124,58,237,0.25) 0%, transparent 60%)",
+            }} />
+            <span style={{
+              position: "absolute", top: "16px", left: "16px",
+            }} className={`chip ${featured.tagColor}`}>
+              ✦ {featured.tag}
+            </span>
+          </div>
+
+          {/* Content */}
+          <div style={{ padding: "40px 36px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <h3 style={{
+              fontSize: "1.5rem", fontWeight: 800,
+              color: "var(--text-primary)", marginBottom: "16px",
+              letterSpacing: "-0.02em", lineHeight: 1.2,
+            }}>
+              {featured.title}
+            </h3>
+            <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", lineHeight: 1.75, marginBottom: "24px" }}>
+              {featured.description}
+            </p>
+
+            {/* Tech tags */}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "28px" }}>
+              {featured.tech.map((t, i) => (
+                <span key={i} style={{
+                  padding: "4px 12px",
+                  background: "rgba(124,58,237,0.12)",
+                  border: "1px solid rgba(124,58,237,0.22)",
+                  borderRadius: "6px",
+                  fontSize: "0.72rem", fontWeight: 700,
+                  color: "var(--clr-primary-dim)",
+                  letterSpacing: "0.03em",
+                }}>
+                  {t}
+                </span>
+              ))}
+            </div>
+
+            <a
+              href={featured.link}
+              target="_blank"
+              rel="noreferrer"
+              className="btn-primary"
+              style={{ alignSelf: "flex-start" }}
+            >
+              View Live <i className="ri-arrow-right-up-line"></i>
+            </a>
+          </div>
+        </div>
+
+        {/* Projects Grid */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "20px",
+        }} className="projects-grid">
           {projects.map((p, i) => (
             <div
               key={i}
-              className="group relative bg-gray-900 dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-3 transition-all duration-300 animate__animated animate__fadeInUp overflow-hidden backdrop-blur-sm border border-gray-700 dark:border-gray-600"
-              style={{ animationDelay: `${i * 0.1}s` }}
+              style={{
+                background: "rgba(27,31,44,0.80)",
+                border: "1px solid rgba(255,255,255,0.06)",
+                borderRadius: "14px",
+                overflow: "hidden",
+                transition: "all 0.3s ease",
+                position: "relative",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-5px)";
+                e.currentTarget.style.borderColor = "rgba(124,58,237,0.30)";
+                e.currentTarget.style.boxShadow = "0 12px 40px rgba(0,0,0,0.5), 0 0 24px rgba(124,58,237,0.12)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
             >
-              {/* Image Container */}
-              <div className="relative h-56 overflow-hidden bg-gradient-to-br from-gray-700 to-gray-800 dark:from-gray-700 dark:to-gray-600">
+              {/* Image */}
+              <div style={{ position: "relative", height: "180px", overflow: "hidden" }}>
                 <img
                   src={p.img}
                   alt={p.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
+                  style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.5s ease" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.08)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
                 />
-
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                {/* Badge */}
-                <span className="absolute top-4 right-4 inline-block bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">
-                  {p.subtitle}
+                <div style={{
+                  position: "absolute", inset: 0,
+                  background: "linear-gradient(to top, rgba(27,31,44,0.85) 0%, transparent 60%)",
+                }} />
+                <span style={{ position: "absolute", top: "10px", right: "10px" }} className={`chip ${p.tagColor}`}>
+                  {p.tag}
                 </span>
               </div>
 
               {/* Content */}
-              <div className="p-6" style={{ animationDelay: `${i * 0.1 + 0.2}s` }}>
-                <h3 className="text-xl font-bold text-white dark:text-white mb-3 group-hover:text-blue-400 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
+              <div style={{ padding: "18px 18px 20px" }}>
+                <h3 style={{ fontWeight: 700, fontSize: "0.95rem", color: "var(--text-primary)", marginBottom: "8px", lineHeight: 1.3 }}>
                   {p.title}
                 </h3>
-
-                <div className="mb-4">
-                  <div className="h-1 w-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full transition-all duration-300 group-hover:w-24"></div>
-
-                </div>
-                <p className="text-sm text-gray-300 dark:text-gray-400 font-medium mt-2 line-clamp-3 group-hover:line-clamp-none transition-all duration-300">
-                  {p.description}
+                <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", lineHeight: 1.65, marginBottom: "14px" }}>
+                  {p.desc}
                 </p>
                 <a
                   href={p.link}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-2 px-4 rounded-lg hover:shadow-lg transition-all duration-300 group/btn text-sm"
+                  style={{
+                    display: "inline-flex", alignItems: "center", gap: "4px",
+                    fontSize: "0.8rem", fontWeight: 700,
+                    color: "var(--clr-cyan)", textDecoration: "none",
+                    transition: "gap 0.2s ease",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.gap = "8px")}
+                  onMouseLeave={(e) => (e.currentTarget.style.gap = "4px")}
                 >
-                  View Project
-                  <i className="ri-arrow-right-line group-hover/btn:translate-x-1 transition-transform"></i>
+                  View Project <i className="ri-arrow-right-line"></i>
                 </a>
               </div>
 
-              {/* Hover Indicator */}
-              <div className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-blue-600 to-purple-600 w-0 group-hover:w-full transition-all duration-300"></div>
+              {/* Bottom bar */}
+              <div style={{
+                height: "2px",
+                background: "linear-gradient(90deg, var(--clr-primary), var(--clr-cyan))",
+                width: "0",
+                transition: "width 0.35s ease",
+              }}
+                onMouseEnter={(e) => (e.currentTarget.style.width = "100%")}
+                onMouseLeave={(e) => (e.currentTarget.style.width = "0")}
+              />
             </div>
           ))}
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 900px) {
+          .featured-card { grid-template-columns: 1fr !important; }
+          .projects-grid  { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 580px) {
+          .projects-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </section>
-  );
+  )
 }

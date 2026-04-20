@@ -1,169 +1,209 @@
-
 export default function Qualification() {
   const qualifications = {
     education: [
       {
         title: "B-Tech (Information Technology)",
         institution: "Meghnad Saha Institute of Technology",
-        period: "2023-2027",
+        period: "2023 – 2027",
         score: "Pursuing",
         icon: "ri-graduation-cap-line",
-        color: "from-pink-500 to-rose-500",
-        borderColor: "border-pink-500"
+        accent: "var(--clr-primary-dim)",
+        glow: "rgba(124,58,237,0.25)",
+        bg: "rgba(124,58,237,0.08)",
       },
       {
         title: "Higher Secondary Education",
         institution: "Raghunath Bari Ramtarak High School",
-        period: "2020-2022",
+        period: "2020 – 2022",
         score: "83.8%",
         icon: "ri-book-open-line",
-        color: "from-purple-500 to-pink-500",
-        borderColor: "border-purple-500"
+        accent: "var(--clr-cyan)",
+        glow: "rgba(76,215,246,0.20)",
+        bg: "rgba(76,215,246,0.06)",
       },
       {
         title: "Secondary Education",
         institution: "Kaminachak Sasibhusan Kanailal Vidyayatan",
-        period: "2018-2020",
+        period: "2018 – 2020",
         score: "85%",
         icon: "ri-pencil-ruler-2-line",
-        color: "from-blue-500 to-purple-500",
-        borderColor: "border-blue-500"
-      }
+        accent: "var(--clr-pink)",
+        glow: "rgba(255,176,205,0.20)",
+        bg: "rgba(255,176,205,0.06)",
+      },
     ],
     experience: [
       {
         title: "Frontend Developer",
-        institution: "Hackerspace - MSIT Official Coding Community",
+        institution: "Hackerspace — MSIT Official Coding Club",
         period: "Current",
-        description: "Building responsive web interfaces and mentoring juniors",
+        description: "Building responsive web interfaces and mentoring juniors in modern frontend practices.",
         icon: "ri-code-line",
-        color: "from-blue-500 to-cyan-500",
-        borderColor: "border-blue-500"
+        accent: "var(--clr-primary-dim)",
+        glow: "rgba(124,58,237,0.25)",
+        bg: "rgba(124,58,237,0.08)",
       },
       {
         title: "CDP Lead",
-        institution: "Hackerspace - MSIT Official Coding Community",
+        institution: "Hackerspace — MSIT Official Coding Club",
         period: "Current",
-        description: "Leading coding development program initiatives",
+        description: "Leading coding development program initiatives and workshops for community growth.",
         icon: "ri-team-line",
-        color: "from-emerald-500 to-teal-500",
-        borderColor: "border-emerald-500"
+        accent: "var(--clr-cyan)",
+        glow: "rgba(76,215,246,0.20)",
+        bg: "rgba(76,215,246,0.06)",
       },
       {
         title: "Frontend Developer Intern",
         institution: "CodeAlpha & CodeClause",
         period: "2024",
-        description: "Worked on real-world projects with mentorship",
+        description: "Worked on real-world production projects under mentorship, delivering polished UIs.",
         icon: "ri-briefcase-line",
-        color: "from-indigo-500 to-purple-500",
-        borderColor: "border-indigo-500"
-      }
-    ]
-  };
+        accent: "var(--clr-pink)",
+        glow: "rgba(255,176,205,0.20)",
+        bg: "rgba(255,176,205,0.06)",
+      },
+    ],
+  }
+
+  const TimelineColumn = ({ items, lineColor }) => (
+    <div style={{ position: "relative" }}>
+      {/* Vertical line */}
+      <div style={{
+        position: "absolute",
+        left: "19px",
+        top: "28px",
+        bottom: "28px",
+        width: "2px",
+        background: `linear-gradient(to bottom, ${lineColor}, transparent)`,
+        borderRadius: "2px",
+      }} />
+
+      <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+        {items.map((item, i) => (
+          <div key={i} style={{ display: "flex", gap: "20px", alignItems: "flex-start" }}>
+            {/* Timeline dot / icon */}
+            <div style={{
+              width: "40px", height: "40px",
+              borderRadius: "50%",
+              background: item.bg,
+              border: `2px solid ${item.glow}`,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              color: item.accent, fontSize: "1rem",
+              flexShrink: 0,
+              boxShadow: `0 0 16px ${item.glow}`,
+              zIndex: 1,
+            }}>
+              <i className={item.icon}></i>
+            </div>
+
+            {/* Card */}
+            <div
+              className="glass-card"
+              style={{ flex: 1, padding: "20px 22px" }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "6px", gap: "12px", flexWrap: "wrap" }}>
+                <h4 style={{ fontWeight: 700, fontSize: "0.95rem", color: "var(--text-primary)", margin: 0 }}>
+                  {item.title}
+                </h4>
+                <span style={{
+                  fontSize: "0.7rem", fontWeight: 700,
+                  color: item.accent,
+                  background: item.bg,
+                  border: `1px solid ${item.glow}`,
+                  borderRadius: "999px",
+                  padding: "2px 10px",
+                  whiteSpace: "nowrap",
+                  letterSpacing: "0.03em",
+                }}>
+                  {item.score || item.period}
+                </span>
+              </div>
+              <p style={{ fontSize: "0.82rem", color: "var(--text-muted)", marginBottom: item.description ? "8px" : 0, fontWeight: 500 }}>
+                {item.institution}
+              </p>
+              {item.description && (
+                <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", lineHeight: 1.6, fontStyle: "italic" }}>
+                  {item.description}
+                </p>
+              )}
+              {item.score && (
+                <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "6px", letterSpacing: "0.08em", textTransform: "uppercase", fontWeight: 600 }}>
+                  {item.period}
+                </p>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-900 via-gray-850 to-gray-900 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 animate__animated animate__fadeInUp" id="qualification">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center gap-2 mb-6">
-            <div className="h-1 w-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"></div>
-            <span className="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Background</span>
-            <div className="h-1 w-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"></div>
-          </div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-white dark:text-white mb-4 animate__animated animate__slideInDown">
-            Qualification
+    <section
+      id="qualification"
+      className="dot-grid section-kv"
+      style={{ background: "var(--bg-base)" }}
+    >
+      <div style={{
+        position: "absolute", bottom: "5%", left: "-5%",
+        width: "350px", height: "350px",
+        background: "radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%)",
+        borderRadius: "50%", pointerEvents: "none",
+      }} />
+
+      <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
+
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: "56px" }}>
+          <span className="section-overline">Background</span>
+          <h2 style={{
+            fontSize: "clamp(2.4rem, 5vw, 3.8rem)",
+            fontWeight: 800, letterSpacing: "-0.04em",
+            color: "var(--text-primary)", marginTop: "12px", marginBottom: "16px", lineHeight: 1.1,
+          }}>
+            My <span className="gradient-text-violet">Journey</span>
           </h2>
-          <p className="text-lg text-gray-300 dark:text-gray-400 animate__animated animate__slideInUp max-w-2xl mx-auto font-medium">
-            Education & professional experience
+          <p style={{ color: "var(--text-secondary)", fontSize: "1rem", maxWidth: "480px", margin: "0 auto" }}>
+            Education and professional experience that shaped my craft
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Education */}
-          <div className="animate__animated animate__slideInLeft">
-            <div className="flex items-center gap-3 mb-10">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white">
-                <i className="ri-book-open-line text-xl"></i>
-              </div>
-              <h3 className="text-2xl font-bold text-white dark:text-white">Education</h3>
-              <div className="flex-1 h-1 bg-gradient-to-r from-blue-500 to-transparent rounded-full ml-4"></div>
+        {/* 2-column grid */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "48px" }} className="qual-grid">
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "28px" }}>
+              <div style={{
+                width: "36px", height: "36px", borderRadius: "9px",
+                background: "rgba(124,58,237,0.12)", border: "1px solid rgba(124,58,237,0.25)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                color: "var(--clr-primary-dim)", fontSize: "1rem",
+              }}><i className="ri-book-open-line"></i></div>
+              <h3 style={{ fontWeight: 700, fontSize: "1.05rem", color: "var(--text-primary)" }}>Education</h3>
             </div>
-            <div className="space-y-6 relative">
-              {/* Vertical Line */}
-              <div className="absolute left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 via-purple-500 to-transparent rounded-full"></div>
-              
-              {qualifications.education.map((edu, i) => (
-                <div key={i} className="relative pl-20 animate__animated animate__fadeInUp" style={{ animationDelay: `${i * 0.1}s` }}>
-                  {/* Timeline Dot */}
-                  <div className={`absolute left-0 w-14 h-14 rounded-full bg-gradient-to-br ${edu.color} p-1 shadow-lg flex items-center justify-center text-white text-xl z-10`}>
-                    <i className={edu.icon}></i>
-                  </div>
-
-                  {/* Card */}
-                  <div className={`group bg-gray-900 dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border-l-4 ${edu.borderColor} border-l-2 backdrop-blur-sm hover:bg-opacity-80 dark:hover:bg-opacity-80`}>
-                    <h4 className="text-lg font-bold text-white dark:text-white mb-2 group-hover:text-blue-400 dark:group-hover:text-blue-400 transition-colors">
-                      {edu.title}
-                    </h4>
-                    <p className="text-sm text-gray-300 dark:text-gray-400 mb-3 font-medium">
-                      {edu.institution}
-                    </p>
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs font-bold text-gray-400 dark:text-gray-400 uppercase tracking-wider">
-                        {edu.period}
-                      </span>
-                      <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
-                        {edu.score}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <TimelineColumn items={qualifications.education} lineColor="rgba(124,58,237,0.5)" />
           </div>
 
-          {/* Experience */}
-          <div className="animate__animated animate__slideInRight">
-            <div className="flex items-center gap-3 mb-10">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white">
-                <i className="ri-briefcase-line text-xl"></i>
-              </div>
-              <h3 className="text-2xl font-bold text-white dark:text-white">Experience</h3>
-              <div className="flex-1 h-1 bg-gradient-to-r from-green-500 to-transparent rounded-full ml-4"></div>
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "28px" }}>
+              <div style={{
+                width: "36px", height: "36px", borderRadius: "9px",
+                background: "rgba(76,215,246,0.10)", border: "1px solid rgba(76,215,246,0.25)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                color: "var(--clr-cyan)", fontSize: "1rem",
+              }}><i className="ri-briefcase-line"></i></div>
+              <h3 style={{ fontWeight: 700, fontSize: "1.05rem", color: "var(--text-primary)" }}>Experience</h3>
             </div>
-            <div className="space-y-6 relative">
-              {/* Vertical Line */}
-              <div className="absolute left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-green-500 via-emerald-500 to-transparent rounded-full"></div>
-              
-              {qualifications.experience.map((exp, i) => (
-                <div key={i} className="relative pl-20 animate__animated animate__fadeInUp" style={{ animationDelay: `${i * 0.1}s` }}>
-                  {/* Timeline Dot */}
-                  <div className={`absolute left-0 w-14 h-14 rounded-full bg-gradient-to-br ${exp.color} p-1 shadow-lg flex items-center justify-center text-white text-xl z-10`}>
-                    <i className={exp.icon}></i>
-                  </div>
-
-                  {/* Card */}
-                  <div className={`group bg-gray-900 dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border-l-4 ${exp.borderColor} border-l-2 backdrop-blur-sm hover:bg-opacity-80 dark:hover:bg-opacity-80`}>
-                    <h4 className="text-lg font-bold text-white dark:text-white mb-2 group-hover:text-green-400 dark:group-hover:text-green-400 transition-colors">
-                      {exp.title}
-                    </h4>
-                    <p className="text-sm text-gray-300 dark:text-gray-400 mb-2 font-medium">
-                      {exp.institution}
-                    </p>
-                    {exp.description && (
-                      <p className="text-sm text-gray-400 dark:text-gray-400 mb-3 italic font-medium">
-                        {exp.description}
-                      </p>
-                    )}
-                    <span className="inline-block text-xs font-bold text-gray-300 dark:text-gray-300 uppercase tracking-wider bg-gray-700 dark:bg-gray-700 px-3 py-1 rounded-full">
-                      {exp.period}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <TimelineColumn items={qualifications.experience} lineColor="rgba(76,215,246,0.5)" />
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .qual-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+        }
+      `}</style>
     </section>
-  );
+  )
 }
