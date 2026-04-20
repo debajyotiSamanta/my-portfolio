@@ -11,7 +11,7 @@ export default function Services() {
     },
     {
       icon: "ri-code-s-slash-line",
-      title: "Web Development",
+      title: "Full-Stack Development",
       desc: "Building responsive, performant websites using modern technologies. From concept to deployment with clean, scalable code.",
       accent: "var(--clr-cyan)",
       glow: "rgba(76,215,246,0.20)",
@@ -29,7 +29,7 @@ export default function Services() {
     },
     {
       icon: "ri-computer-line",
-      title: "Full-Stack Engineering",
+      title: "Software Developer",
       desc: "Developing robust, scalable software solutions with clean architecture. Expertise spanning the full product stack from API to UI.",
       accent: "#6ee7b7",
       glow: "rgba(52,211,153,0.20)",
