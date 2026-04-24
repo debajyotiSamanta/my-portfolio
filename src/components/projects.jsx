@@ -44,7 +44,7 @@ export default function Projects() {
       img: project4, title: "Fitness Tracker Dashboard",
       tag: "Web", tagColor: "chip-violet",
       desc: "Monitor fitness goals, track workouts and visualize progress through interactive charts.",
-      link: "https://debajyotisamanta.github.io/Fitness-Tracker-Dashboard/",
+      link: "https://fitness-tracker-dashboard-gray.vercel.app/",
     },
     {
       img: todo, title: "To-Do List App",
