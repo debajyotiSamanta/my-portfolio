@@ -38,7 +38,7 @@ export default function Projects() {
       img: solarSystem, title: "3D Solar System",
       tag: "Web", tagColor: "chip-violet",
       desc: "Visually stunning 3D solar system simulation — explore planets and celestial bodies interactively.",
-      link: "https://debajyotisamanta.github.io/Solar_system/",
+      link: "https://solar-system-five-rho.vercel.app/",
     },
     {
       img: project4, title: "Fitness Tracker Dashboard",
