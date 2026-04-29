@@ -9,6 +9,7 @@ import solarSystem from "../assets/solar_system.png"
 import todo from "../assets/todo.png"
 import pfm from "../assets/pfm.png"
 import mentorship from "../assets/mentorship.png"
+import musicHub from "../assets/Music Hub.png"
 
 export default function Projects() {
   const featured = {
@@ -39,6 +40,12 @@ export default function Projects() {
       tag: "Web", tagColor: "chip-violet",
       desc: "Visually stunning 3D solar system simulation — explore planets and celestial bodies interactively.",
       link: "https://solar-system-five-rho.vercel.app/",
+    },
+    {
+      img: musicHub, title: "Music Hub",
+      tag: "React", tagColor: "chip-pink",
+      desc: "A modern music player built using Vite + React that allows you to play and control music.",
+      link: "https://my-music-hub-ashen.vercel.app/",
     },
     {
       img: project4, title: "Fitness Tracker Dashboard",
