@@ -232,12 +232,12 @@ export default function Home() {
             <div style={{
               position: "absolute",
               bottom: "-16px", left: "-24px",
-              background: "rgba(27,31,44,0.90)",
-              backdropFilter: "blur(12px)",
-              border: "1px solid rgba(124,58,237,0.25)",
-              borderRadius: "12px",
+              background: "rgba(18, 22, 36, 0.65)",
+              backdropFilter: "blur(20px)",
+              border: "1px solid rgba(255, 255, 255, 0.12)",
+              borderRadius: "20px",
               padding: "14px 20px",
-              boxShadow: "0 8px 32px rgba(0,0,0,0.5), 0 0 20px rgba(124,58,237,0.15)",
+              boxShadow: "0 20px 40px rgba(0,0,0,0.45), 0 0 20px rgba(139,92,246,0.15)",
               zIndex: 4,
               animation: "float 4s ease-in-out infinite",
             }}>
@@ -248,12 +248,12 @@ export default function Home() {
             <div style={{
               position: "absolute",
               top: "-16px", right: "-24px",
-              background: "rgba(27,31,44,0.90)",
-              backdropFilter: "blur(12px)",
-              border: "1px solid rgba(76,215,246,0.25)",
-              borderRadius: "12px",
+              background: "rgba(18, 22, 36, 0.65)",
+              backdropFilter: "blur(20px)",
+              border: "1px solid rgba(255, 255, 255, 0.12)",
+              borderRadius: "20px",
               padding: "14px 20px",
-              boxShadow: "0 8px 32px rgba(0,0,0,0.5), 0 0 20px rgba(76,215,246,0.15)",
+              boxShadow: "0 20px 40px rgba(0,0,0,0.45), 0 0 20px rgba(0,210,253,0.15)",
               zIndex: 4,
               animation: "float 4s ease-in-out infinite 2s",
             }}>
@@ -305,7 +305,7 @@ export default function Home() {
               <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "14px" }}>
                 <div style={{
                   width: "44px", height: "44px",
-                  borderRadius: "10px",
+                  borderRadius: "50%",
                   background: card.bg,
                   border: `1px solid ${card.glow}`,
                   display: "flex", alignItems: "center", justifyContent: "center",

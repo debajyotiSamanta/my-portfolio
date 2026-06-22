@@ -127,7 +127,7 @@ export default function Skills() {
           <div className="glass-card" style={{ padding: "32px 28px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "28px" }}>
               <div style={{
-                width: "40px", height: "40px", borderRadius: "10px",
+                width: "40px", height: "40px", borderRadius: "50%",
                 background: "rgba(124,58,237,0.15)", border: "1px solid rgba(124,58,237,0.3)",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 color: "var(--clr-primary-dim)", fontSize: "1.1rem",
@@ -160,7 +160,7 @@ export default function Skills() {
           <div className="glass-card" style={{ padding: "32px 28px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "28px" }}>
               <div style={{
-                width: "40px", height: "40px", borderRadius: "10px",
+                width: "40px", height: "40px", borderRadius: "50%",
                 background: "rgba(76,215,246,0.10)", border: "1px solid rgba(76,215,246,0.25)",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 color: "var(--clr-cyan)", fontSize: "1.1rem",
@@ -202,24 +202,28 @@ export default function Skills() {
               key={i}
               className="animate-float"
               style={{
-                display: "flex", alignItems: "center", gap: "8px",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
                 padding: "8px 16px",
-                background: "rgba(30,36,51,0.70)",
-                border: "1px solid rgba(255,255,255,0.07)",
+                background: "rgba(18, 22, 36, 0.45)",
+                border: "1px solid rgba(255,255,255,0.08)",
                 borderRadius: "999px",
-                backdropFilter: "blur(8px)",
-                transition: "border-color 0.25s ease, box-shadow 0.25s ease",
+                backdropFilter: "blur(12px)",
+                transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
                 cursor: "default",
                 animationDelay: `${i * 0.15}s`, // Dynamic stagger delay
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "rgba(124,58,237,0.40)";
-                e.currentTarget.style.boxShadow = "0 0 16px rgba(124,58,237,0.20)";
+                e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.25)";
+                e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.35), 0 0 15px rgba(139, 92, 246, 0.25)";
+                e.currentTarget.style.transform = "scale(1.06) translateY(-2px)";
                 e.currentTarget.style.animationPlayState = "paused";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)";
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
                 e.currentTarget.style.boxShadow = "none";
+                e.currentTarget.style.transform = "scale(1) translateY(0)";
                 e.currentTarget.style.animationPlayState = "running";
               }}
             >

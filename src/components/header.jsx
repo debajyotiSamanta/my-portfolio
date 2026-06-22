@@ -25,44 +25,44 @@ export default function Header() {
     <header
       style={{
         position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
+        top: "16px",
+        left: "16px",
+        right: "16px",
         zIndex: 1000,
-        transition: "all 0.35s ease",
+        transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
         background: scrolled
-          ? "rgba(10, 14, 26, 0.88)"
-          : "rgba(10, 14, 26, 0.60)",
-        backdropFilter: "blur(20px)",
-        WebkitBackdropFilter: "blur(20px)",
-        borderBottom: scrolled
-          ? "1px solid rgba(124, 58, 237, 0.20)"
-          : "1px solid rgba(255,255,255,0.04)",
-        boxShadow: scrolled ? "0 4px 40px rgba(0,0,0,0.5)" : "none",
+          ? "rgba(10, 15, 30, 0.55)"
+          : "rgba(10, 15, 30, 0.35)",
+        backdropFilter: "blur(28px)",
+        WebkitBackdropFilter: "blur(28px)",
+        border: "1px solid rgba(255, 255, 255, 0.08)",
+        borderRadius: isMenuOpen ? "24px" : "999px",
+        boxShadow: "0 25px 50px rgba(0, 0, 0, 0.45)",
+        maxWidth: "1280px",
+        margin: "0 auto",
+        overflow: "hidden",
       }}
     >
       <nav style={{
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: "14px 32px",
-        maxWidth: "1280px",
-        margin: "0 auto",
+        padding: "10px 24px",
       }}>
         {/* Logo */}
         <a href="#home" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "12px" }}>
           <div style={{
-            width: "40px",
-            height: "40px",
-            borderRadius: "10px",
-            background: "linear-gradient(135deg, #7C3AED, #4cd7f6)",
+            width: "36px",
+            height: "36px",
+            borderRadius: "50%",
+            background: "linear-gradient(135deg, var(--clr-primary), var(--clr-cyan))",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             color: "white",
             fontWeight: 800,
-            fontSize: "1rem",
-            boxShadow: "0 4px 20px rgba(124,58,237,0.45)",
+            fontSize: "0.9rem",
+            boxShadow: "0 4px 20px rgba(139,92,246,0.45)",
             letterSpacing: "-0.02em",
           }}>
             DS
@@ -73,13 +73,13 @@ export default function Header() {
               fontWeight: 700,
               letterSpacing: "0.15em",
               textTransform: "uppercase",
-              background: "linear-gradient(135deg, #d2bbff, #4cd7f6)",
+              background: "linear-gradient(135deg, var(--clr-primary-dim), var(--clr-cyan))",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
             }}>Debajyoti</span>
             <span style={{
-              fontSize: "0.6rem",
+              fontSize: "0.55rem",
               fontWeight: 500,
               color: "var(--text-muted)",
               letterSpacing: "0.2em",
@@ -108,17 +108,19 @@ export default function Header() {
                   textDecoration: "none",
                   fontSize: "0.875rem",
                   fontWeight: 500,
-                  borderRadius: "8px",
-                  transition: "all 0.25s ease",
+                  borderRadius: "999px",
+                  transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
                   letterSpacing: "0.01em",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.color = "var(--clr-primary-dim)";
-                  e.currentTarget.style.background = "rgba(124,58,237,0.10)";
+                  e.currentTarget.style.color = "white";
+                  e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)";
+                  e.currentTarget.style.boxShadow = "inset 0 1px 1px rgba(255,255,255,0.1)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.color = "var(--text-secondary)";
                   e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.boxShadow = "none";
                 }}
               >
                 {link.label}
@@ -132,7 +134,7 @@ export default function Header() {
           <a
             href="#contact"
             className="btn-primary desktop-cta"
-            style={{ fontSize: "0.8rem", padding: "9px 20px" }}
+            style={{ fontSize: "0.8rem", padding: "8px 18px" }}
           >
             Hire Me ✦
           </a>
@@ -144,7 +146,7 @@ export default function Header() {
             style={{
               background: "rgba(255,255,255,0.05)",
               border: "1px solid rgba(255,255,255,0.08)",
-              borderRadius: "8px",
+              borderRadius: "50%",
               padding: "8px",
               cursor: "pointer",
               color: "var(--text-primary)",
@@ -152,8 +154,8 @@ export default function Header() {
               display: "none",
               alignItems: "center",
               justifyContent: "center",
-              width: "40px",
-              height: "40px",
+              width: "36px",
+              height: "36px",
               transition: "all 0.25s ease",
             }}
             aria-label="Toggle menu"
@@ -166,9 +168,9 @@ export default function Header() {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div style={{
-          background: "rgba(10, 14, 26, 0.97)",
-          backdropFilter: "blur(20px)",
-          borderTop: "1px solid rgba(255,255,255,0.06)",
+          background: "rgba(10, 15, 30, 0.55)",
+          backdropFilter: "blur(28px)",
+          borderTop: "1px solid rgba(255,255,255,0.08)",
           padding: "16px 24px 24px",
         }}>
           <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "4px" }}>
@@ -185,12 +187,12 @@ export default function Header() {
                     textDecoration: "none",
                     fontSize: "0.95rem",
                     fontWeight: 500,
-                    borderRadius: "10px",
+                    borderRadius: "999px",
                     transition: "all 0.2s ease",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.color = "var(--clr-primary-dim)";
-                    e.currentTarget.style.background = "rgba(124,58,237,0.10)";
+                    e.currentTarget.style.color = "white";
+                    e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.color = "var(--text-secondary)";
