@@ -11,6 +11,7 @@ import todo from "../assets/todo.png"
 import pfm from "../assets/pfm.png"
 import mentorship from "../assets/mentorship.png"
 import musicHub from "../assets/Music Hub.png"
+import localFix from "../assets/localFix1.png"
 
 export default function Projects() {
   const [activeCategory, setActiveCategory] = useState("All");
@@ -28,6 +29,24 @@ export default function Projects() {
       desc: "A one-on-one mentorship platform with real-time WebRTC video/audio, collaborative multilingual code editor, and secure role-based authentication. Built for seamless mentor-student connections.",
       tech: ["React", "Node.js", "WebRTC", "MongoDB", "Express"],
       link: "https://mentorship-platform-frontend-delta.vercel.app/",
+    },
+    {
+      img: musicHub,
+      title: "Music Hub — Premium Streaming Platform",
+      tag: "Full-Stack",
+      tagColor: "chip-cyan",
+      desc: "A full-stack music streaming platform with user accounts, custom playlists, secure MongoDB database integration, and premium audio playback queue management.",
+      tech: ["React", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
+      link: "https://my-music-hub-ashen.vercel.app/",
+    },
+    {
+      img: localFix,
+      title: "LocalFix — Local Service Provider Platform",
+      tag: "Full-Stack",
+      tagColor: "chip-cyan",
+      desc: "A comprehensive platform connecting local service providers with customers. Features include service listings, user reviews, secure messaging, and geo-location-based search to facilitate seamless local service discovery and bookings.",
+      tech: ["React", "Node.js", "MongoDB", "Express", "Tailwind CSS"],
+      link: "https://locallie.vercel.app/",
     },
     {
       img: pfm,
@@ -55,15 +74,6 @@ export default function Projects() {
       desc: "Visually stunning 3D solar system simulation — explore planets and celestial bodies interactively utilizing WebGL shaders.",
       tech: ["HTML5", "CSS3", "JavaScript", "Three.js", "WebGL"],
       link: "https://solar-system-five-rho.vercel.app/",
-    },
-    {
-      img: musicHub,
-      title: "Music Hub — Premium Streaming Platform",
-      tag: "Full-Stack",
-      tagColor: "chip-cyan",
-      desc: "A full-stack music streaming platform with user accounts, custom playlists, secure MongoDB database integration, and premium audio playback queue management.",
-      tech: ["React", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
-      link: "https://my-music-hub-ashen.vercel.app/",
     },
     {
       img: project4,
