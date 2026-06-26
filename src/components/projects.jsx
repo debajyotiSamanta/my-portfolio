@@ -11,7 +11,7 @@ import todo from "../assets/todo.png"
 import pfm from "../assets/pfm.png"
 import mentorship from "../assets/mentorship.png"
 import musicHub from "../assets/Music Hub.png"
-import localFix from "../assets/localFix1.png"
+import localFix from "../assets/LocalFix1.png"
 
 export default function Projects() {
   const [activeCategory, setActiveCategory] = useState("All");
