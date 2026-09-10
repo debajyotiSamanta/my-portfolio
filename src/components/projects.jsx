@@ -64,7 +64,7 @@ export default function Projects() {
       tagColor: "chip-pink",
       desc: "Fun and interactive multiplayer Ludo game with smooth gameplay and engaging real-time visuals utilizing WebSockets.",
       tech: ["HTML5", "CSS3", "JavaScript", "Socket.io", "Node.js"],
-      link: "https://playludoroom.hackerspacemsit.in/",
+      link: "https://golden-pixie-4d1097.netlify.app/",
     },
     {
       img: solarSystem,
