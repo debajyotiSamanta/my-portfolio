@@ -1,279 +1,399 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { usePortfolio } from "../context/PortfolioContext";
 
 export default function Contact() {
+  const { portfolioData, addMessage } = usePortfolio();
+  const personal = portfolioData?.personal || {};
+  const socials  = portfolioData?.socials || [];
+  const contactConfig = portfolioData?.contact || {};
+
   const nameRef    = useRef();
   const emailRef   = useRef();
   const subjectRef = useRef();
-  const projectRef = useRef();
-  const msgRef     = useRef();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const name    = nameRef.current?.value;
-    const email   = emailRef.current?.value;
-    const subject = subjectRef.current?.value;
-
-    if (!name || !email || !subject) {
-      if (msgRef.current) {
-        msgRef.current.textContent = "Please fill all required fields.";
-        msgRef.current.style.color = "#f87171";
-      }
-    } else {
-      if (msgRef.current) {
-        msgRef.current.textContent = "✦ Message sent successfully!";
-        msgRef.current.style.color = "#6ee7b7";
-      }
-      setTimeout(() => {
-        if (msgRef.current) msgRef.current.textContent = "";
-        if (nameRef.current) nameRef.current.value = "";
-        if (emailRef.current) emailRef.current.value = "";
-        if (subjectRef.current) subjectRef.current.value = "";
-        if (projectRef.current) projectRef.current.value = "";
-      }, 4000);
-    }
-  };
+  const msgBodyRef = useRef();
+  const statusRef  = useRef();
+  const [sending, setSending] = useState(false);
 
   const infoCards = [
     {
       icon: "ri-mail-line",
       label: "Email Me",
-      value: "debajyotisamanta2003@gmail.com",
-      href: "mailto:debajyotisamanta2003@gmail.com",
+      value: personal.email || "debajyotisamanta2003@gmail.com",
+      href: `mailto:${personal.email || "debajyotisamanta2003@gmail.com"}`,
       accent: "var(--clr-primary-dim)",
       glow: "rgba(124,58,237,0.25)",
       bg: "rgba(124,58,237,0.08)",
+      border: "rgba(124,58,237,0.20)",
     },
     {
       icon: "ri-whatsapp-line",
       label: "WhatsApp",
-      value: "+91 9564555918",
-      href: "https://api.whatsapp.com/send?phone=919564555918&text=Hello!",
-      accent: "#6ee7b7",
-      glow: "rgba(52,211,153,0.20)",
-      bg: "rgba(52,211,153,0.06)",
+      value: personal.whatsapp || "+91 9564 555 918",
+      href: personal.whatsappUrl || "https://api.whatsapp.com/send?phone=919564555918&text=Hello!",
+      accent: "var(--clr-green-dim)",
+      glow: "rgba(16,185,129,0.22)",
+      bg: "rgba(16,185,129,0.06)",
+      border: "rgba(16,185,129,0.18)",
     },
     {
-      icon: "ri-map-pin-line",
-      label: "Based In",
-      value: "West Bengal, India 🇮🇳",
+      icon: "ri-map-pin-2-line",
+      label: "Location",
+      value: personal.location || "West Bengal, India",
       href: null,
-      accent: "var(--clr-cyan)",
-      glow: "rgba(76,215,246,0.20)",
-      bg: "rgba(76,215,246,0.06)",
+      accent: "var(--clr-cyan-bright)",
+      glow: "rgba(6,182,212,0.20)",
+      bg: "rgba(6,182,212,0.06)",
+      border: "rgba(6,182,212,0.18)",
     },
   ];
 
-  const socials = [
-    { href: "https://www.linkedin.com/in/debajyoti-samanta-b49b292b5/", icon: "ri-linkedin-box-fill", color: "#0A66C2" },
-    { href: "https://github.com/debajyotiSamanta",                       icon: "ri-github-fill",           color: "#6e5494" },
-    { href: "https://www.instagram.com/unique_engineer_07/",              icon: "ri-instagram-fill",        color: "#E1306C" },
-    { href: "https://www.facebook.com/debajyoti.samanta.588680",          icon: "ri-facebook-circle-fill",  color: "#1877F2" },
+  const availability = contactConfig.availability || [
+    "Freelance Projects",
+    "Full-time Roles",
+    "Open Source",
+    "Collaborations"
   ];
 
-  const availability = ["Freelance Projects", "Full-time Roles", "Collaborations"];
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const name    = nameRef.current?.value?.trim();
+    const email   = emailRef.current?.value?.trim();
+    const subject = subjectRef.current?.value?.trim();
+    const message = msgBodyRef.current?.value?.trim();
+
+    if (!name || !email || !subject) {
+      if (statusRef.current) {
+        statusRef.current.textContent = "⚠ Please fill all required fields.";
+        statusRef.current.style.color = "#f87171";
+      }
+      return;
+    }
+
+    setSending(true);
+
+    // Save message directly to owner's inbox in real-time
+    addMessage({ name, email, subject, message });
+
+    setTimeout(() => {
+      setSending(false);
+      if (statusRef.current) {
+        statusRef.current.textContent = "✓ Message successfully sent and stored in inbox! I'll reply within 24 hours.";
+        statusRef.current.style.color = "var(--clr-green-dim)";
+      }
+      if (nameRef.current)    nameRef.current.value = "";
+      if (emailRef.current)   emailRef.current.value = "";
+      if (subjectRef.current) subjectRef.current.value = "";
+      if (msgBodyRef.current) msgBodyRef.current.value = "";
+      setTimeout(() => {
+        if (statusRef.current) statusRef.current.textContent = "";
+      }, 6000);
+    }, 700);
+  };
 
   return (
     <section
       id="contact"
       className="dot-grid section-kv"
-      style={{ background: "var(--bg-base)" }}
+      style={{
+        background: "var(--bg-base)",
+        position: "relative",
+        overflow: "hidden",
+        padding: "100px 20px",
+      }}
     >
+      {/* Background orbs */}
       <div style={{
-        position: "absolute", top: "0", right: "-10%",
+        position: "absolute", top: "10%", left: "-8%",
+        width: "550px", height: "550px",
+        background: "radial-gradient(circle, rgba(124,58,237,0.10) 0%, transparent 65%)",
+        borderRadius: "50%", pointerEvents: "none",
+      }} />
+      <div style={{
+        position: "absolute", bottom: "10%", right: "-8%",
         width: "500px", height: "500px",
-        background: "radial-gradient(circle, rgba(124,58,237,0.10) 0%, transparent 70%)",
-        borderRadius: "50%", pointerEvents: "none",
-      }} />
-      <div style={{
-        position: "absolute", bottom: "0", left: "-10%",
-        width: "400px", height: "400px",
-        background: "radial-gradient(circle, rgba(76,215,246,0.07) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgba(6,182,212,0.08) 0%, transparent 65%)",
         borderRadius: "50%", pointerEvents: "none",
       }} />
 
-      <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: "1140px", margin: "0 auto", position: "relative", zIndex: 1 }}>
 
-        {/* Header */}
+        {/* Section Header */}
         <div style={{ textAlign: "center", marginBottom: "64px" }}>
-          <span className="section-overline">Say Hello</span>
-          <h2 style={{
-            fontSize: "clamp(2.2rem, 5vw, 3.8rem)",
-            fontWeight: 800, letterSpacing: "-0.04em",
-            color: "var(--text-primary)", marginTop: "12px", marginBottom: "16px", lineHeight: 1.1,
-          }}>
-            Let's Build Something{" "}
-            <span className="gradient-text">Extraordinary</span>
+          <span className="section-overline">Initiate Dialogue</span>
+          <h2 className="section-title">
+            Get In Touch
           </h2>
-          <p style={{ color: "var(--text-secondary)", fontSize: "1rem", maxWidth: "480px", margin: "0 auto" }}>
-            Ready to transform your ideas into exceptional digital experiences? Let's connect.
+          <p className="section-subtitle">
+            {contactConfig.subheading || "Have a project in mind, need a full-stack engineer, or want to collaborate? My inbox is always open."}
           </p>
         </div>
 
-        {/* 60/40 Split */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1.1fr", gap: "40px" }} className="contact-grid">
+        {/* Two-Column Grid */}
+        <div
+          className="contact-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1.3fr",
+            gap: "48px",
+            alignItems: "start",
+          }}
+        >
+          {/* ── Left Column: Contact Cards ── */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
 
-          {/* LEFT — Contact Info */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-
-            {/* Info Cards */}
-            {infoCards.map((card, i) => {
-              const inner = (
-                <>
-                  <div style={{
-                    width: "44px", height: "44px", borderRadius: "10px",
-                    background: card.bg, border: `1px solid ${card.glow}`,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    color: card.accent, fontSize: "1.2rem", flexShrink: 0,
-                    boxShadow: `0 0 16px ${card.glow}`,
-                  }}>
-                    <i className={card.icon}></i>
-                  </div>
-                  <div>
-                    <p style={{ fontSize: "0.7rem", color: "var(--text-muted)", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "4px" }}>
-                      {card.label}
-                    </p>
-                    <p style={{ fontSize: "0.9rem", color: card.href ? card.accent : "var(--text-secondary)", fontWeight: 500, wordBreak: "break-all" }}>
-                      {card.value}
-                    </p>
-                  </div>
-                </>
-              );
-
-              return card.href ? (
-                <a
-                  key={i}
-                  href={card.href}
-                  target={card.href.startsWith("mailto") ? undefined : "_blank"}
-                  rel="noreferrer"
-                  className="glass-card"
-                  style={{ display: "flex", alignItems: "center", gap: "16px", padding: "20px 22px", textDecoration: "none" }}
-                >
-                  {inner}
-                </a>
-              ) : (
-                <div key={i} className="glass-card" style={{ display: "flex", alignItems: "center", gap: "16px", padding: "20px 22px" }}>
-                  {inner}
-                </div>
-              );
-            })}
-
-            {/* Socials */}
-            <div style={{ display: "flex", gap: "10px", paddingTop: "4px" }}>
-              {socials.map((s, i) => (
-                <a
-                  key={i}
-                  href={s.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{
-                    width: "44px", height: "44px", borderRadius: "50%",
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    color: "var(--text-secondary)", fontSize: "1.2rem",
-                    textDecoration: "none", transition: "all 0.25s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.color = "white";
-                    e.currentTarget.style.background = s.color + "28";
-                    e.currentTarget.style.borderColor = s.color + "60";
-                    e.currentTarget.style.transform = "translateY(-3px)";
-                    e.currentTarget.style.boxShadow = `0 0 16px ${s.color}44`;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.color = "var(--text-secondary)";
-                    e.currentTarget.style.background = "rgba(255,255,255,0.05)";
-                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-                    e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.boxShadow = "none";
-                  }}
-                >
-                  <i className={s.icon}></i>
-                </a>
-              ))}
+            {/* Availability pill */}
+            <div
+              className="glass-card"
+              style={{ padding: "20px 22px", borderRadius: "18px" }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
+                <span className="live-dot" />
+                <span style={{
+                  fontSize: "0.74rem", fontWeight: 700,
+                  color: "var(--clr-cyan-bright)", fontFamily: "var(--font-mono)",
+                  letterSpacing: "0.10em", textTransform: "uppercase",
+                }}>
+                  Current Availability
+                </span>
+              </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                {availability.map((tag, i) => (
+                  <span
+                    key={i}
+                    style={{
+                      padding: "4px 12px",
+                      background: "rgba(255,255,255,0.04)",
+                      border: "1px solid var(--border-ghost)",
+                      borderRadius: "999px",
+                      fontSize: "0.74rem", color: "var(--text-secondary)",
+                      fontFamily: "var(--font-mono)",
+                    }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
             </div>
 
-            {/* Availability */}
-            <div style={{ paddingTop: "4px" }}>
-              <p style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "10px" }}>
-                Currently available for
-              </p>
-              <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-                {availability.map((a, i) => (
-                  <span key={i} className="chip chip-violet">{a}</span>
+            {/* Direct Cards */}
+            {infoCards.map((c, i) => (
+              <div
+                key={i}
+                className="glass-card"
+                style={{
+                  padding: "20px 22px",
+                  borderRadius: "18px",
+                  display: "flex", alignItems: "center", gap: "16px",
+                  transition: "all 0.3s ease",
+                  cursor: c.href ? "pointer" : "default",
+                }}
+                onClick={() => { if (c.href) window.open(c.href, "_blank"); }}
+              >
+                <div style={{
+                  width: "48px", height: "48px", borderRadius: "14px",
+                  background: c.bg, border: `1px solid ${c.border}`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  color: c.accent, fontSize: "1.25rem",
+                  boxShadow: `0 0 20px ${c.glow}`,
+                  flexShrink: 0,
+                }}>
+                  <i className={c.icon} />
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <span style={{
+                    fontSize: "0.72rem", color: "var(--text-muted)",
+                    fontFamily: "var(--font-mono)", textTransform: "uppercase",
+                    letterSpacing: "0.08em", display: "block",
+                  }}>
+                    {c.label}
+                  </span>
+                  <span style={{
+                    fontSize: "0.90rem", fontWeight: 600, color: "var(--text-primary)",
+                    whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+                    display: "block", marginTop: "2px",
+                  }}>
+                    {c.value}
+                  </span>
+                </div>
+                {c.href && (
+                  <i className="ri-arrow-right-up-line" style={{ color: "var(--text-muted)", fontSize: "1.1rem" }} />
+                )}
+              </div>
+            ))}
+
+            {/* Socials Link Row */}
+            <div
+              className="glass-card"
+              style={{
+                padding: "20px 22px",
+                borderRadius: "18px",
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+              }}
+            >
+              <span style={{ fontSize: "0.80rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
+                Social Channels
+              </span>
+              <div style={{ display: "flex", gap: "8px" }}>
+                {socials.map((s, i) => (
+                  <a
+                    key={s.id || i}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.name}
+                    style={{
+                      width: "36px", height: "36px", borderRadius: "10px",
+                      background: "rgba(255,255,255,0.05)",
+                      border: "1px solid var(--border-ghost)",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      color: "var(--text-muted)", fontSize: "1.05rem",
+                      textDecoration: "none", transition: "all 0.25s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = s.color;
+                      e.currentTarget.style.background = `${s.color}15`;
+                      e.currentTarget.style.borderColor = `${s.color}40`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = "var(--text-muted)";
+                      e.currentTarget.style.background = "rgba(255,255,255,0.05)";
+                      e.currentTarget.style.borderColor = "var(--border-ghost)";
+                    }}
+                  >
+                    <i className={s.icon} />
+                  </a>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* RIGHT — Form */}
+          {/* ── Right Column: Message Form ── */}
           <div
-            style={{
-              background: "rgba(27,31,44,0.75)",
-              border: "1px solid rgba(124,58,237,0.18)",
-              borderRadius: "20px",
-              padding: "36px 32px",
-              backdropFilter: "blur(12px)",
-              boxShadow: "0 8px 40px rgba(0,0,0,0.4), 0 0 30px rgba(124,58,237,0.08)",
-            }}
+            className="glass-card"
+            style={{ padding: "36px 32px", borderRadius: "24px" }}
           >
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }} className="form-row">
+            <h3 style={{
+              fontSize: "1.25rem", fontWeight: 700, color: "var(--text-primary)",
+              fontFamily: "var(--font-display)", marginBottom: "8px",
+            }}>
+              Send a Message
+            </h3>
+            <p style={{
+              fontSize: "0.85rem", color: "var(--text-muted)",
+              marginBottom: "26px", lineHeight: 1.6,
+            }}>
+              Fill out this form and I will get back to your email within 24 hours.
+            </p>
+
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }} className="form-two-col">
                 <div>
-                  <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--text-secondary)", marginBottom: "8px", letterSpacing: "0.05em" }}>
+                  <label style={{ fontSize: "0.75rem", color: "var(--text-muted)", display: "block", marginBottom: "6px" }}>
                     Your Name *
                   </label>
-                  <input ref={nameRef} type="text" className="kv-input" placeholder="John Doe" />
+                  <input
+                    ref={nameRef}
+                    type="text"
+                    placeholder="John Doe"
+                    required
+                    style={formInputStyle}
+                  />
                 </div>
                 <div>
-                  <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--text-secondary)", marginBottom: "8px", letterSpacing: "0.05em" }}>
-                    Your Email *
+                  <label style={{ fontSize: "0.75rem", color: "var(--text-muted)", display: "block", marginBottom: "6px" }}>
+                    Email Address *
                   </label>
-                  <input ref={emailRef} type="email" className="kv-input" placeholder="john@example.com" />
+                  <input
+                    ref={emailRef}
+                    type="email"
+                    placeholder="john@example.com"
+                    required
+                    style={formInputStyle}
+                  />
                 </div>
               </div>
 
               <div>
-                <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--text-secondary)", marginBottom: "8px", letterSpacing: "0.05em" }}>
+                <label style={{ fontSize: "0.75rem", color: "var(--text-muted)", display: "block", marginBottom: "6px" }}>
                   Subject *
                 </label>
-                <input ref={subjectRef} type="text" id="contact-project" className="kv-input" placeholder="Project inquiry..." />
-              </div>
-
-              <div>
-                <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--text-secondary)", marginBottom: "8px", letterSpacing: "0.05em" }}>
-                  Your Message
-                </label>
-                <textarea
-                  ref={projectRef}
-                  id="contact-name"
-                  rows={5}
-                  className="kv-input"
-                  placeholder="Tell me about your project, timelines, and goals..."
-                  style={{ resize: "vertical", fontFamily: "inherit" }}
+                <input
+                  ref={subjectRef}
+                  type="text"
+                  placeholder="Project Collaboration / Opportunity"
+                  required
+                  style={formInputStyle}
                 />
               </div>
 
-              <p ref={msgRef} id="contact-message" style={{ minHeight: "1.4rem", fontSize: "0.85rem", fontWeight: 600, textAlign: "center" }} />
+              <div>
+                <label style={{ fontSize: "0.75rem", color: "var(--text-muted)", display: "block", marginBottom: "6px" }}>
+                  Message *
+                </label>
+                <textarea
+                  ref={msgBodyRef}
+                  rows={4}
+                  placeholder="Tell me about your project, timeline, or idea..."
+                  required
+                  style={{ ...formInputStyle, resize: "vertical" }}
+                />
+              </div>
 
-              <button type="submit" className="btn-primary" style={{ justifyContent: "center", fontSize: "1rem", padding: "14px 28px" }}>
-                Send Message <i className="ri-send-plane-2-line"></i>
-              </button>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px", marginTop: "4px" }}>
+                <button
+                  type="submit"
+                  disabled={sending}
+                  className="btn-primary"
+                  style={{ padding: "12px 28px", fontSize: "0.88rem", gap: "8px" }}
+                >
+                  {sending ? (
+                    <>
+                      <i className="ri-loader-4-line animate-spin" />
+                      <span>Sending...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Transmit Message</span>
+                      <i className="ri-send-plane-fill" />
+                    </>
+                  )}
+                </button>
 
-              <p style={{ textAlign: "center", fontSize: "0.75rem", color: "var(--text-muted)" }}>
-                I'll respond within 24 hours ✦
-              </p>
+                <div
+                  ref={statusRef}
+                  style={{ fontSize: "0.80rem", fontWeight: 600, minHeight: "20px" }}
+                />
+              </div>
             </form>
           </div>
         </div>
       </div>
 
       <style>{`
-        @media (max-width: 900px) {
-          .contact-grid { grid-template-columns: 1fr !important; }
-          .form-row { grid-template-columns: 1fr !important; }
+        @media (max-width: 860px) {
+          .contact-grid {
+            grid-template-columns: 1fr !important;
+            gap: 36px !important;
+          }
+          .form-two-col {
+            grid-template-columns: 1fr !important;
+          }
         }
       `}</style>
     </section>
   );
 }
+
+const formInputStyle = {
+  width: "100%",
+  padding: "12px 16px",
+  background: "rgba(255,255,255,0.04)",
+  border: "1px solid var(--border-subtle)",
+  borderRadius: "12px",
+  color: "white",
+  fontSize: "0.88rem",
+  fontFamily: "var(--font-body)",
+  outline: "none",
+  boxSizing: "border-box",
+  transition: "all 0.25s ease",
+};

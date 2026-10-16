@@ -1,248 +1,354 @@
+import { usePortfolio } from "../context/PortfolioContext";
+
+const NAV = [
+  { href: "#home",          label: "Home"     },
+  { href: "#skills",        label: "Skills"   },
+  { href: "#qualification", label: "Journey"  },
+  { href: "#services",      label: "Services" },
+  { href: "#projects",      label: "Work"     },
+  { href: "#contact",       label: "Contact"  },
+];
+
+const SERVICES_LIST = [
+  "Web Development",
+  "UI/UX Design",
+  "React Applications",
+  "Full-Stack Solutions",
+  "REST APIs & WebSockets",
+  "Brand Identity Design",
+];
+
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
+  const { portfolioData } = usePortfolio();
+  const personal = portfolioData?.personal || {};
+  const socials  = portfolioData?.socials || [];
+  const year     = new Date().getFullYear();
 
-  const socials = [
-    { href: "https://www.linkedin.com/in/debajyoti-samanta-b49b292b5/", icon: "ri-linkedin-box-fill",   color: "#0A66C2", label: "LinkedIn"  },
-    { href: "https://github.com/debajyotiSamanta",                       icon: "ri-github-fill",          color: "#6e5494", label: "GitHub"    },
-    { href: "https://www.instagram.com/unique_engineer_07/",              icon: "ri-instagram-fill",       color: "#E1306C", label: "Instagram" },
-    { href: "https://www.facebook.com/debajyoti.samanta.588680",          icon: "ri-facebook-circle-fill", color: "#1877F2", label: "Facebook"  },
-  ];
-
-  const nav = [
-    { href: "#home",          label: "Home"          },
-    { href: "#skills",        label: "Skills"        },
-    { href: "#qualification", label: "Journey"       },
-    { href: "#services",      label: "Services"      },
-    { href: "#projects",      label: "Projects"      },
-    { href: "#contact",       label: "Contact"       },
-  ];
-
-  const services = [
-    "Web Development",
-    "UI/UX Design",
-    "React Applications",
-    "Full-Stack Solutions",
-    "API Integration",
-  ];
-
-  const contact = [
-    { icon: "ri-mail-line",      value: "debajyotisamanta2003@gmail.com", href: "mailto:debajyotisamanta2003@gmail.com" },
-    { icon: "ri-whatsapp-line",  value: "+91 9564555918",                  href: "https://api.whatsapp.com/send?phone=919564555918" },
-    { icon: "ri-map-pin-line",   value: "West Bengal, India",              href: null },
+  const contactList = [
+    { icon: "ri-mail-line",     value: personal.email || "debajyotisamanta2003@gmail.com", href: `mailto:${personal.email || "debajyotisamanta2003@gmail.com"}` },
+    { icon: "ri-whatsapp-line", value: personal.whatsapp || "+91 9564 555 918",              href: personal.whatsappUrl || "https://api.whatsapp.com/send?phone=919564555918" },
+    { icon: "ri-map-pin-line",  value: personal.location || "West Bengal, India",            href: null },
   ];
 
   return (
     <footer style={{
       position: "relative",
-      background: "var(--bg-base)",
-      borderTop: "1px solid rgba(255,255,255,0.05)",
+      background: "var(--bg-void)",
+      borderTop: "1px solid rgba(255,255,255,0.06)",
       overflow: "hidden",
     }}>
-      {/* Orb glows */}
+      {/* Background orbs */}
       <div style={{
         position: "absolute", top: 0, right: "-5%",
         width: "400px", height: "300px",
-        background: "radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgba(124,58,237,0.07) 0%, transparent 70%)",
         borderRadius: "50%", pointerEvents: "none",
       }} />
       <div style={{
         position: "absolute", bottom: 0, left: "-5%",
         width: "350px", height: "300px",
-        background: "radial-gradient(circle, rgba(76,215,246,0.06) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgba(6,182,212,0.05) 0%, transparent 70%)",
         borderRadius: "50%", pointerEvents: "none",
       }} />
 
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1 }}>
+      <div style={{
+        maxWidth: "1140px", margin: "0 auto",
+        padding: "0 20px",
+        position: "relative", zIndex: 1,
+      }}>
 
-        {/* CTA Banner */}
+        {/* ── CTA Banner ── */}
         <div style={{
           margin: "64px 0 56px",
-          background: "rgba(27,31,44,0.80)",
+          background: "linear-gradient(135deg, rgba(18,22,40,0.85) 0%, rgba(10,14,28,0.92) 100%)",
           border: "1px solid rgba(124,58,237,0.20)",
-          borderRadius: "20px",
-          padding: "48px 40px",
+          borderRadius: "26px", padding: "48px 32px",
           textAlign: "center",
-          backdropFilter: "blur(12px)",
-          boxShadow: "0 0 60px rgba(124,58,237,0.08)",
-        }}>
-          <h3 style={{
-            fontSize: "clamp(1.6rem, 3vw, 2.4rem)",
-            fontWeight: 800, letterSpacing: "-0.03em",
-            color: "var(--text-primary)", marginBottom: "12px",
+          backdropFilter: "blur(20px)",
+          boxShadow: "0 0 80px rgba(124,58,237,0.08), 0 40px 80px rgba(0,0,0,0.40)",
+          position: "relative", overflow: "hidden",
+        }} className="footer-cta-banner">
+          {/* Top gradient line */}
+          <div style={{
+            position: "absolute", top: 0, left: "15%", right: "15%", height: "2px",
+            background: "linear-gradient(90deg, transparent, var(--clr-primary-mid), var(--clr-cyan), transparent)",
+            borderRadius: "1px",
+          }} />
+
+          <span className="section-overline" style={{ display: "inline-block", marginBottom: "12px" }}>
+            Collaboration
+          </span>
+          <h2 style={{
+            fontSize: "clamp(1.9rem, 4vw, 3rem)",
+            fontWeight: 800, color: "var(--text-primary)",
+            fontFamily: "var(--font-display)", letterSpacing: "-0.03em",
+            marginBottom: "14px", lineHeight: 1.15,
           }}>
-            Ready to Create Something{" "}
-            <span className="gradient-text">Extraordinary?</span>
-          </h3>
-          <p style={{ color: "var(--text-secondary)", marginBottom: "28px", fontSize: "0.95rem" }}>
-            Let's collaborate and bring your digital vision to life with creativity and innovation.
+            Ready to Build Your Next Product?
+          </h2>
+          <p style={{
+            fontSize: "1rem", color: "var(--text-secondary)",
+            maxWidth: "520px", margin: "0 auto 32px auto", lineHeight: 1.65,
+          }}>
+            Whether you need a full-stack engineer, interactive web experience, or design system — let's connect and make it happen.
           </p>
-          <a href="#contact" className="btn-primary" style={{ fontSize: "0.95rem" }}>
-            Start Your Project <i className="ri-arrow-right-line"></i>
-          </a>
+
+          <div style={{ display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap" }}>
+            <a
+              href="#contact"
+              className="btn-primary"
+              style={{ padding: "13px 28px", fontSize: "0.9rem", gap: "8px" }}
+            >
+              <span>Start a Project</span>
+              <i className="ri-arrow-right-line" />
+            </a>
+            {personal.resumeUrl && (
+              <a
+                href={personal.resumeUrl}
+                download={personal.resumeName || "Debajyoti_Samanta_Resume.pdf"}
+                className="btn-ghost"
+                style={{ padding: "13px 24px", fontSize: "0.9rem", gap: "8px" }}
+              >
+                <i className="ri-file-download-line" style={{ color: "var(--clr-cyan-bright)" }} />
+                <span>Resume</span>
+              </a>
+            )}
+            {personal.cvUrl && (
+              <a
+                href={personal.cvUrl}
+                download={personal.cvName || "Debajyoti_Samanta_CV.pdf"}
+                className="btn-ghost"
+                style={{ padding: "13px 24px", fontSize: "0.9rem", gap: "8px" }}
+              >
+                <i className="ri-article-line" style={{ color: "var(--clr-primary-dim)" }} />
+                <span>Curriculum Vitae</span>
+              </a>
+            )}
+          </div>
         </div>
 
-        {/* Divider */}
-        <div style={{ height: "1px", background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent)", marginBottom: "48px" }} />
-
-        {/* 4-column grid */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "1.4fr 1fr 1fr 1.3fr",
-          gap: "40px",
-          marginBottom: "48px",
-        }} className="footer-grid">
-
-          {/* Brand */}
+        {/* ── 4-Column Grid ── */}
+        <div
+          className="footer-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1.4fr 1fr 1fr 1.2fr",
+            gap: "40px",
+            paddingBottom: "56px",
+            borderBottom: "1px solid rgba(255,255,255,0.06)",
+          }}
+        >
+          {/* Col 1: Brand info */}
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
+            <a
+              href="#home"
+              style={{
+                textDecoration: "none", display: "inline-flex",
+                alignItems: "center", gap: "10px", marginBottom: "16px",
+              }}
+            >
               <div style={{
-                width: "40px", height: "40px", borderRadius: "10px",
-                background: "linear-gradient(135deg, #7C3AED, #4cd7f6)",
+                width: "36px", height: "36px", borderRadius: "10px",
+                background: "linear-gradient(135deg, var(--clr-primary), var(--clr-cyan))",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                color: "white", fontWeight: 800, fontSize: "0.9rem",
-                boxShadow: "0 4px 16px rgba(124,58,237,0.45)",
-              }}>DS</div>
-              <div>
-                <p style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.15em", color: "var(--text-primary)", textTransform: "uppercase" }}>Debajyoti Samanta</p>
-                <p style={{ fontSize: "0.6rem", color: "var(--text-muted)", letterSpacing: "0.18em", textTransform: "uppercase" }}>Full Stack Developer</p>
+                fontWeight: 800, fontSize: "0.95rem", color: "white",
+              }}>
+                {(personal.name || "DS").split(" ").map(w => w[0]).join("").slice(0, 2) || "DS"}
               </div>
-            </div>
-            <p style={{ fontSize: "0.83rem", color: "var(--text-secondary)", lineHeight: 1.7, marginBottom: "20px" }}>
-              Crafting beautiful, responsive digital experiences with modern technologies and creative vision.
+              <span style={{
+                fontWeight: 700, fontSize: "1.1rem", color: "white",
+                fontFamily: "var(--font-display)", letterSpacing: "-0.02em",
+              }}>
+                {personal.name || "Debajyoti Samanta"}
+              </span>
+            </a>
+            <p style={{
+              fontSize: "0.85rem", color: "var(--text-muted)",
+              lineHeight: 1.7, marginBottom: "20px", maxWidth: "280px",
+            }}>
+              {personal.bioIntro || "Full-Stack Developer & UI/UX Designer crafting high-performance, pixel-perfect digital experiences."}
             </p>
+            {/* Social icons */}
             <div style={{ display: "flex", gap: "8px" }}>
               {socials.map((s, i) => (
                 <a
-                  key={i}
+                  key={s.id || i}
                   href={s.href}
                   target="_blank"
-                  rel="noreferrer"
-                  title={s.label}
+                  rel="noopener noreferrer"
+                  aria-label={s.name}
                   style={{
-                    width: "36px", height: "36px", borderRadius: "50%",
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(255,255,255,0.07)",
+                    width: "36px", height: "36px", borderRadius: "10px",
+                    background: "rgba(255,255,255,0.04)",
+                    border: "1px solid var(--border-ghost)",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     color: "var(--text-muted)", fontSize: "1rem",
                     textDecoration: "none", transition: "all 0.25s ease",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.color = "white";
-                    e.currentTarget.style.background = s.color + "25";
-                    e.currentTarget.style.borderColor = s.color + "55";
+                    e.currentTarget.style.color = s.color;
+                    e.currentTarget.style.borderColor = `${s.color}50`;
                     e.currentTarget.style.transform = "translateY(-2px)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.color = "var(--text-muted)";
-                    e.currentTarget.style.background = "rgba(255,255,255,0.05)";
-                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)";
+                    e.currentTarget.style.borderColor = "var(--border-ghost)";
                     e.currentTarget.style.transform = "translateY(0)";
                   }}
                 >
-                  <i className={s.icon}></i>
+                  <i className={s.icon} />
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Navigation */}
+          {/* Col 2: Navigation */}
           <div>
-            <h4 style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-primary)", marginBottom: "16px" }}>
+            <h4 style={{
+              fontSize: "0.78rem", fontWeight: 700, textTransform: "uppercase",
+              letterSpacing: "0.14em", color: "var(--text-primary)",
+              fontFamily: "var(--font-mono)", marginBottom: "18px",
+            }}>
               Navigation
             </h4>
-            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "10px" }}>
-              {nav.map((link, i) => (
-                <li key={i}>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "10px" }}>
+              {NAV.map((l) => (
+                <li key={l.href}>
                   <a
-                    href={link.href}
-                    style={{ fontSize: "0.85rem", color: "var(--text-secondary)", textDecoration: "none", transition: "all 0.2s ease", display: "inline-block" }}
-                    onMouseEnter={(e) => { e.currentTarget.style.color = "var(--clr-primary-dim)"; e.currentTarget.style.transform = "translateX(4px)"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.color = "var(--text-secondary)";  e.currentTarget.style.transform = "translateX(0)"; }}
+                    href={l.href}
+                    style={{
+                      fontSize: "0.85rem", color: "var(--text-secondary)",
+                      textDecoration: "none", transition: "color 0.2s ease",
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
                   >
-                    {link.label}
+                    {l.label}
                   </a>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Services */}
+          {/* Col 3: Services */}
           <div>
-            <h4 style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-primary)", marginBottom: "16px" }}>
-              Services
+            <h4 style={{
+              fontSize: "0.78rem", fontWeight: 700, textTransform: "uppercase",
+              letterSpacing: "0.14em", color: "var(--text-primary)",
+              fontFamily: "var(--font-mono)", marginBottom: "18px",
+            }}>
+              Capabilities
             </h4>
-            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "10px" }}>
-              {services.map((s, i) => (
-                <li key={i} style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>{s}</li>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "10px" }}>
+              {SERVICES_LIST.map((srv, i) => (
+                <li key={i} style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
+                  {srv}
+                </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Col 4: Contact */}
           <div>
-            <h4 style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-primary)", marginBottom: "16px" }}>
-              Get in Touch
+            <h4 style={{
+              fontSize: "0.78rem", fontWeight: 700, textTransform: "uppercase",
+              letterSpacing: "0.14em", color: "var(--text-primary)",
+              fontFamily: "var(--font-mono)", marginBottom: "18px",
+            }}>
+              Contact Info
             </h4>
-            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "14px" }}>
-              {contact.map((item, i) => {
-                const inner = (
-                  <>
-                    <i className={item.icon} style={{ color: "var(--clr-primary-dim)", flexShrink: 0, marginTop: "1px" }}></i>
-                    <span style={{ fontSize: "0.82rem", color: "var(--text-secondary)", wordBreak: "break-all" }}>{item.value}</span>
-                  </>
-                );
-                return item.href ? (
-                  <li key={i}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              {contactList.map((c, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <i className={c.icon} style={{ color: "var(--clr-primary-dim)", fontSize: "1rem" }} />
+                  {c.href ? (
                     <a
-                      href={item.href}
-                      target={item.href.startsWith("mailto") ? undefined : "_blank"}
-                      rel="noreferrer"
-                      style={{ display: "flex", gap: "10px", alignItems: "flex-start", textDecoration: "none", transition: "color 0.2s ease" }}
-                      onMouseEnter={(e) => { e.currentTarget.querySelectorAll("span, i").forEach(el => el.style.color = "var(--clr-cyan)"); }}
-                      onMouseLeave={(e) => { e.currentTarget.querySelector("i").style.color = "var(--clr-primary-dim)"; e.currentTarget.querySelector("span").style.color = "var(--text-secondary)"; }}
+                      href={c.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        fontSize: "0.82rem", color: "var(--text-secondary)",
+                        textDecoration: "none", wordBreak: "break-all",
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
                     >
-                      {inner}
+                      {c.value}
                     </a>
-                  </li>
-                ) : (
-                  <li key={i} style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>{inner}</li>
-                );
-              })}
-            </ul>
+                  ) : (
+                    <span style={{ fontSize: "0.82rem", color: "var(--text-secondary)" }}>
+                      {c.value}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Divider */}
-        <div style={{ height: "1px", background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent)", marginBottom: "28px" }} />
-
-        {/* Bottom bar */}
+        {/* ── Bottom Bar ── */}
         <div style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: "12px",
-          paddingBottom: "32px",
-          fontSize: "0.78rem",
-          color: "var(--text-muted)",
-        }} className="footer-bottom">
-          <span>© {currentYear} Debajyoti Samanta. All rights reserved.</span>
-          <span>
-            Built with{" "}
-            <span style={{ color: "#f87171", animation: "pulse-glow 1.5s ease-in-out infinite" }}>❤</span>
-            {" "}& passion
-          </span>
-          <span>Designed & developed by Debajyoti Samanta</span>
+          padding: "24px 0 32px",
+          display: "flex", justifyContent: "space-between", alignItems: "center",
+          flexWrap: "wrap", gap: "16px",
+        }} className="footer-bottom-bar">
+          <p style={{
+            fontSize: "0.78rem", color: "var(--text-muted)",
+            margin: 0, fontFamily: "var(--font-mono)",
+          }}>
+            © {year} {personal.name || "Debajyoti Samanta"}. All rights reserved.
+          </p>
+
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            style={{
+              padding: "7px 16px",
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid var(--border-ghost)",
+              borderRadius: "999px",
+              color: "var(--text-secondary)",
+              fontSize: "0.76rem",
+              fontFamily: "var(--font-mono)",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              transition: "all 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "white";
+              e.currentTarget.style.background = "rgba(255,255,255,0.08)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "var(--text-secondary)";
+              e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+            }}
+          >
+            <span>Back to top</span>
+            <i className="ri-arrow-up-line" />
+          </button>
         </div>
       </div>
 
       <style>{`
         @media (max-width: 900px) {
-          .footer-grid { grid-template-columns: 1fr 1fr !important; }
+          .footer-grid {
+            grid-template-columns: 1fr 1fr !important;
+            gap: 32px !important;
+          }
         }
-        @media (max-width: 540px) {
-          .footer-grid   { grid-template-columns: 1fr !important; }
-          .footer-bottom { flex-direction: column; text-align: center; }
+        @media (max-width: 560px) {
+          .footer-grid {
+            grid-template-columns: 1fr !important;
+            gap: 28px !important;
+          }
+          .footer-cta-banner {
+            padding: 32px 20px !important;
+          }
+          .footer-bottom-bar {
+            flex-direction: column !important;
+            text-align: center !important;
+          }
         }
       `}</style>
     </footer>

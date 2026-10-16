@@ -1,92 +1,117 @@
+import { usePortfolio } from "../context/PortfolioContext";
+
 export default function Testimonial() {
-  const testimonials = [
-    {
-      quote: "Debajyoti's attention to detail and modern design approach transformed our vision into reality. Highly professional and excellent communication throughout the project.",
-      name: "Sarah Johnson",
-      subtitle: "Startup Founder",
-      avatar: "SJ",
-      rating: 5,
-      accent: "var(--clr-primary-dim)",
-      glow: "rgba(124,58,237,0.20)",
-      bg: "rgba(124,58,237,0.08)",
-    },
-    {
-      quote: "I believe in building secure, scalable applications that protect user data. Authentication and security are crucial for earning trust and delivering great experiences.",
-      name: "Debajyoti Samanta",
-      subtitle: "Full Stack Developer",
-      avatar: "DS",
-      rating: 5,
-      accent: "var(--clr-cyan)",
-      glow: "rgba(76,215,246,0.16)",
-      bg: "rgba(76,215,246,0.06)",
-    },
-  ];
+  const { portfolioData } = usePortfolio();
+  const testimonials = portfolioData?.testimonials || [];
 
   return (
     <section
+      id="testimonials"
       className="dot-grid section-kv"
-      style={{ background: "var(--bg-container)" }}
+      style={{ background: "var(--bg-container)", position: "relative", overflow: "hidden", padding: "100px 20px" }}
     >
       <div style={{
-        position: "absolute", top: "10%", left: "-5%",
-        width: "400px", height: "400px",
-        background: "radial-gradient(circle, rgba(124,58,237,0.07) 0%, transparent 70%)",
+        position: "absolute", top: "5%", left: "-6%",
+        width: "450px", height: "450px",
+        background: "radial-gradient(circle, rgba(124,58,237,0.06) 0%, transparent 70%)",
+        borderRadius: "50%", pointerEvents: "none",
+      }} />
+      <div style={{
+        position: "absolute", bottom: "5%", right: "-6%",
+        width: "350px", height: "350px",
+        background: "radial-gradient(circle, rgba(6,182,212,0.05) 0%, transparent 70%)",
         borderRadius: "50%", pointerEvents: "none",
       }} />
 
-      <div style={{ maxWidth: "900px", margin: "0 auto", position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: "1140px", margin: "0 auto", position: "relative", zIndex: 1 }}>
 
         {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "56px" }}>
-          <span className="section-overline">Testimonials</span>
-          <h2 style={{
-            fontSize: "clamp(2rem, 4vw, 3.2rem)",
-            fontWeight: 800, letterSpacing: "-0.04em",
-            color: "var(--text-primary)", marginTop: "12px", marginBottom: "16px",
-          }}>
-            Words of{" "}
-            <span className="gradient-text-violet">Trust</span>
+        <div style={{ textAlign: "center", marginBottom: "64px" }}>
+          <span className="section-overline">Peer Endorsements</span>
+          <h2 className="section-title">
+            What People Say
           </h2>
-          <p style={{ color: "var(--text-secondary)", fontSize: "1rem" }}>
-            Feedback from clients and collaborators
+          <p className="section-subtitle">
+            Feedback from team collaborators, campus peers, and project partners
           </p>
         </div>
 
-        {/* Grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }} className="testimonial-grid">
+        {/* Testimonials Grid */}
+        <div
+          className="testimonial-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: "24px",
+          }}
+        >
           {testimonials.map((t, i) => (
-            <div key={i} className="glass-card" style={{ padding: "32px 28px" }}>
-              {/* Stars */}
-              <div style={{ display: "flex", gap: "4px", marginBottom: "20px" }}>
-                {[...Array(t.rating)].map((_, j) => (
-                  <i key={j} className="ri-star-fill" style={{ color: "#fbbf24", fontSize: "0.9rem" }}></i>
+            <div
+              key={t.id || i}
+              className="glass-card"
+              style={{
+                padding: "32px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                borderRadius: "22px",
+                position: "relative",
+              }}
+            >
+              {/* Quote marks */}
+              <div style={{
+                position: "absolute", top: "20px", right: "24px",
+                color: t.accent || "var(--clr-primary-dim)", opacity: 0.18,
+                fontSize: "3rem", fontFamily: "Georgia, serif", lineHeight: 1,
+                pointerEvents: "none",
+              }}>
+                "
+              </div>
+
+              {/* Star Rating */}
+              <div style={{ display: "flex", gap: "4px", marginBottom: "16px" }}>
+                {[...Array(t.rating || 5)].map((_, s) => (
+                  <i
+                    key={s}
+                    className="ri-star-fill"
+                    style={{ color: "#f59e0b", fontSize: "0.95rem" }}
+                  />
                 ))}
               </div>
 
-              {/* Quote */}
+              {/* Quote Text */}
               <p style={{
-                fontSize: "0.9rem", color: "var(--text-secondary)",
-                lineHeight: 1.75, fontStyle: "italic", marginBottom: "28px",
+                fontSize: "0.92rem", color: "var(--text-secondary)",
+                lineHeight: 1.7, margin: "0 0 24px 0",
+                fontStyle: "italic",
               }}>
                 "{t.quote}"
               </p>
 
               {/* Author */}
-              <div style={{ display: "flex", alignItems: "center", gap: "12px", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                 <div style={{
-                  width: "44px", height: "44px", borderRadius: "50%",
-                  background: t.bg,
-                  border: `2px solid ${t.glow}`,
+                  width: "42px", height: "42px", borderRadius: "50%",
+                  background: t.bg || "rgba(124,58,237,0.12)",
+                  border: `1px solid ${t.border || "rgba(124,58,237,0.3)"}`,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  color: t.accent, fontWeight: 800, fontSize: "0.85rem",
-                  boxShadow: `0 0 12px ${t.glow}`,
-                  flexShrink: 0,
+                  color: t.accent || "var(--clr-primary-dim)", fontWeight: 700,
+                  fontSize: "0.85rem", flexShrink: 0,
+                  fontFamily: "var(--font-mono)",
                 }}>
                   {t.avatar}
                 </div>
                 <div>
-                  <p style={{ fontWeight: 700, fontSize: "0.9rem", color: "var(--text-primary)" }}>{t.name}</p>
-                  <p style={{ fontSize: "0.78rem", color: t.accent, fontWeight: 600 }}>{t.subtitle}</p>
+                  <h4 style={{
+                    fontSize: "0.95rem", fontWeight: 700,
+                    color: "var(--text-primary)", fontFamily: "var(--font-display)",
+                    margin: 0,
+                  }}>
+                    {t.name}
+                  </h4>
+                  <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
+                    {t.role}
+                  </span>
                 </div>
               </div>
             </div>
@@ -95,8 +120,10 @@ export default function Testimonial() {
       </div>
 
       <style>{`
-        @media (max-width: 640px) {
-          .testimonial-grid { grid-template-columns: 1fr !important; }
+        @media (max-width: 768px) {
+          .testimonial-grid {
+            grid-template-columns: 1fr !important;
+          }
         }
       `}</style>
     </section>

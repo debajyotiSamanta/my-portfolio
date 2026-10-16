@@ -1,100 +1,89 @@
 import { useEffect } from "react";
-import Cursor from "./components/cursor";
-import Particles from "./components/particles";
-
-// Components
-import Contact from "./components/contact";
-import Footer from "./components/footer";
-import Header from "./components/header";
-import Home from "./components/home";
-import Projects from "./components/projects";
+import { PortfolioProvider } from "./context/PortfolioContext";
+import Cursor      from "./components/cursor";
+import Particles   from "./components/particles";
+import Header      from "./components/header";
+import Home        from "./components/home";
+import Skills      from "./components/skills";
 import Qualification from "./components/qualifications";
-import Services from "./components/services";
-import Skills from "./components/skills";
+import Services    from "./components/services";
+import Projects    from "./components/projects";
 import Testimonial from "./components/testimonial";
+import Contact     from "./components/contact";
+import Footer      from "./components/footer";
+import AdminPanel  from "./components/AdminPanel";
 
-function App() {
+function PortfolioMain() {
   useEffect(() => {
-    // Global Scroll Reveal logic for the new redesign
-    const observerOptions = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.15, // Trigger when 15% of the element is visible
-    };
+    // ── Scroll Reveal Observer ──
+    const revealOptions = { root: null, rootMargin: "0px", threshold: 0.10 };
 
-    const observer = new IntersectionObserver((entries, obs) => {
+    const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("active");
-          // Optional: Stop observing after it animates once
-          // obs.unobserve(entry.target); 
         }
       });
-    }, observerOptions);
+    }, revealOptions);
 
-    // Grab elements we want to animate
-    const revealElements = document.querySelectorAll(
-      ".glass-card, .section-overline, .stats-grid > div, .projects-grid > div, .featured-card, .qual-grid > div, .testimonial-grid > div"
+    const revealEls = document.querySelectorAll(
+      ".glass-card, .section-overline, .stats-grid > div, .testimonial-grid > div"
     );
-
-    revealElements.forEach((el, index) => {
+    revealEls.forEach((el, i) => {
       el.classList.add("reveal-on-scroll");
-      // Add a slight staggered delay to grid items
-      el.style.transitionDelay = `${(index % 4) * 0.1}s`;
-      observer.observe(el);
+      el.style.transitionDelay = `${(i % 5) * 0.08}s`;
+      revealObserver.observe(el);
     });
 
-    // 1. Interactive 3D Tilt Effect for All Cards
-    const tiltCards = document.querySelectorAll(".glass-card, .featured-card, .projects-grid > div, .services-grid > div");
-    tiltCards.forEach(card => {
-      card.addEventListener("mousemove", (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left; 
-        const y = e.clientY - rect.top;
-        
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        const maxTilt = 8; // Degrees
-        const rotateX = ((y - centerY) / centerY) * -maxTilt;
-        const rotateY = ((x - centerX) / centerX) * maxTilt;
-        
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
-        // Increase shine on hover direction
-        if (card.classList.contains("glass-card")) {
-          card.style.boxShadow = `0 16px 32px rgba(0,0,0,0.4), 0 0 30px rgba(124,58,237,0.25)`;
-        }
-      });
-      
-      card.addEventListener("mouseleave", () => {
-        // Reset immediately smoothly when mouse leaves
-        card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)`;
-        card.style.boxShadow = "";
-      });
-    });
+    // ── 3D Tilt on Desktop Only ──
+    const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    const tiltHandlers = new Map();
 
-    // 2. Parallax effect for Background Orbs based on Mouse movement
+    if (!isTouchDevice && window.innerWidth > 900) {
+      const tiltCards = document.querySelectorAll(".glass-card");
+      tiltCards.forEach((card) => {
+        const onMove = (e) => {
+          const rect = card.getBoundingClientRect();
+          const x    = e.clientX - rect.left;
+          const y    = e.clientY - rect.top;
+          const cx   = rect.width  / 2;
+          const cy   = rect.height / 2;
+          const maxT = 5;
+          const rotX = ((y - cy) / cy) * -maxT;
+          const rotY = ((x - cx) / cx) *  maxT;
+          card.style.transform = `perspective(1200px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-3px) scale(1.01)`;
+        };
+        const onLeave = () => {
+          card.style.transform = "perspective(1200px) rotateX(0deg) rotateY(0deg) translateY(0px) scale(1)";
+        };
+        card.addEventListener("mousemove", onMove);
+        card.addEventListener("mouseleave", onLeave);
+        tiltHandlers.set(card, { onMove, onLeave });
+      });
+    }
+
+    // ── Parallax Orbs (Desktop Only) ──
     const orbs = document.querySelectorAll("section > div[style*='radial-gradient']");
-    const handleParallax = (e) => {
-      const mouseX = e.clientX / window.innerWidth;
-      const mouseY = e.clientY / window.innerHeight;
-      
+    const onParallax = (e) => {
+      const mx = e.clientX / window.innerWidth;
+      const my = e.clientY / window.innerHeight;
       orbs.forEach((orb, i) => {
-        const factor = (i % 2 === 0) ? 40 : -40; // Alternate direction
-        // Ensure transition is smooth for parallax
-        orb.style.transition = "transform 1.5s cubic-bezier(0.23, 1, 0.32, 1)";
-        orb.style.transform = `translate(${mouseX * factor}px, ${mouseY * factor}px)`;
+        const f = i % 2 === 0 ? 30 : -30;
+        orb.style.transition = "transform 1.8s cubic-bezier(0.23, 1, 0.32, 1)";
+        orb.style.transform  = `translate(${mx * f}px, ${my * f}px)`;
       });
     };
-    
-    // Only apply heavy mouse events on desktop
-    if (window.innerWidth > 768) {
-      window.addEventListener("mousemove", handleParallax);
+    if (window.innerWidth > 900) {
+      window.addEventListener("mousemove", onParallax, { passive: true });
     }
 
     return () => {
-      observer.disconnect();
-      window.removeEventListener("mousemove", handleParallax);
+      revealObserver.disconnect();
+      tiltHandlers.forEach(({ onMove, onLeave }, card) => {
+        card.removeEventListener("mousemove", onMove);
+        card.removeEventListener("mouseleave", onLeave);
+      });
+      window.removeEventListener("mousemove", onParallax);
     };
   }, []);
 
@@ -103,7 +92,7 @@ function App() {
       <Cursor />
       <Particles />
       <Header />
-      <main className="main" style={{ minHeight: "100vh" }}>
+      <main style={{ position: "relative", zIndex: 2 }}>
         <Home />
         <Skills />
         <Qualification />
@@ -113,8 +102,17 @@ function App() {
         <Contact />
       </main>
       <Footer />
+      <AdminPanel />
     </>
   );
 }
-export default App;
 
+function App() {
+  return (
+    <PortfolioProvider>
+      <PortfolioMain />
+    </PortfolioProvider>
+  );
+}
+
+export default App;

@@ -1,14 +1,47 @@
-import myImage from "../assets/my_image.png";
-import myResume from "../assets/my_resume.pdf";
-import myCV from "../assets/my_CV.pdf";
+import { useEffect, useRef, useState } from "react";
+import { usePortfolio } from "../context/PortfolioContext";
+
+function useTypewriter(words, { typingSpeed = 80, erasingSpeed = 45, pauseTime = 2200 } = {}) {
+  const [display, setDisplay] = useState("");
+  const [wordIdx, setWordIdx] = useState(0);
+  const [typing, setTyping]   = useState(true);
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    if (!words || words.length === 0) return;
+    const currentWord = words[wordIdx % words.length] || "";
+
+    if (typing) {
+      if (display.length < currentWord.length) {
+        timerRef.current = setTimeout(() => setDisplay(currentWord.slice(0, display.length + 1)), typingSpeed);
+      } else {
+        timerRef.current = setTimeout(() => setTyping(false), pauseTime);
+      }
+    } else {
+      if (display.length > 0) {
+        timerRef.current = setTimeout(() => setDisplay(display.slice(0, -1)), erasingSpeed);
+      } else {
+        setWordIdx((i) => (i + 1) % words.length);
+        setTyping(true);
+      }
+    }
+    return () => clearTimeout(timerRef.current);
+  }, [display, typing, wordIdx, words, typingSpeed, erasingSpeed, pauseTime]);
+
+  return display;
+}
 
 export default function Home() {
-  const socials = [
-    { href: "https://www.linkedin.com/in/debajyoti-samanta-b49b292b5/", icon: "ri-linkedin-box-fill", label: "LinkedIn", color: "#0A66C2" },
-    { href: "https://github.com/debajyotiSamanta", icon: "ri-github-fill", label: "GitHub", color: "#6e5494" },
-    { href: "https://www.instagram.com/unique_engineer_07/", icon: "ri-instagram-fill", label: "Instagram", color: "#E1306C" },
-    { href: "https://www.facebook.com/debajyoti.samanta.588680", icon: "ri-facebook-circle-fill", label: "Facebook", color: "#1877F2" },
-  ];
+  const { portfolioData, resolveImage } = usePortfolio();
+  const personal = portfolioData?.personal || {};
+  const stats    = portfolioData?.stats || [];
+  const socials  = portfolioData?.socials || [];
+
+  const roles = personal.roles?.length ? personal.roles : ["Full-Stack Developer", "UI/UX Designer"];
+  const role = useTypewriter(roles);
+  const [imgLoaded, setImgLoaded] = useState(false);
+
+  const avatarSrc = resolveImage(personal.avatarKey, personal.avatar);
 
   return (
     <section
@@ -16,211 +49,273 @@ export default function Home() {
       className="dot-grid"
       style={{
         minHeight: "100vh",
-        background: "radial-gradient(ellipse 80% 60% at 70% 10%, rgba(124,58,237,0.12) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 10% 90%, rgba(76,215,246,0.08) 0%, transparent 60%), var(--bg-base)",
+        background: "var(--bg-void)",
         display: "flex",
         alignItems: "center",
-        padding: "120px 24px 80px",
+        justifyContent: "center",
+        padding: "120px 20px 80px",
         position: "relative",
         overflow: "hidden",
       }}
     >
-      {/* Orb glows */}
+      {/* ── Background Aurora Orbs ── */}
       <div style={{
-        position: "absolute", top: "-10%", right: "-5%",
-        width: "600px", height: "600px",
-        background: "radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%)",
+        position: "absolute", top: "10%", left: "-8%",
+        width: "550px", height: "550px",
+        background: "radial-gradient(circle, rgba(124, 58, 237, 0.16) 0%, transparent 65%)",
         borderRadius: "50%", pointerEvents: "none", zIndex: 0,
+        filter: "blur(20px)",
       }} />
       <div style={{
-        position: "absolute", bottom: "-15%", left: "-10%",
+        position: "absolute", top: "25%", right: "-8%",
         width: "500px", height: "500px",
-        background: "radial-gradient(circle, rgba(76,215,246,0.10) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 65%)",
+        borderRadius: "50%", pointerEvents: "none", zIndex: 0,
+        filter: "blur(20px)",
+      }} />
+      <div style={{
+        position: "absolute", bottom: "5%", left: "30%",
+        width: "400px", height: "400px",
+        background: "radial-gradient(circle, rgba(236, 72, 153, 0.10) 0%, transparent 65%)",
         borderRadius: "50%", pointerEvents: "none", zIndex: 0,
       }} />
 
-      <div style={{ maxWidth: "1280px", width: "100%", margin: "0 auto", position: "relative", zIndex: 2 }}>
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "48px",
-          alignItems: "center",
-        }} className="hero-grid">
+      {/* ── Main Content Container ── */}
+      <div style={{
+        maxWidth: "1140px",
+        width: "100%",
+        margin: "0 auto",
+        position: "relative",
+        zIndex: 1,
+      }}>
+        <div
+          className="hero-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1.15fr 0.85fr",
+            gap: "56px",
+            alignItems: "center",
+          }}
+        >
+          {/* ── LEFT COLUMN: Bio & CTAs ── */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
 
-          {/* ── LEFT COLUMN ── */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
-
-            {/* Available badge */}
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
-              <span style={{
-                display: "inline-flex", alignItems: "center", gap: "8px",
-                padding: "6px 16px",
-                background: "rgba(52,211,153,0.10)",
-                border: "1px solid rgba(52,211,153,0.25)",
-                borderRadius: "999px",
-                fontSize: "0.78rem", fontWeight: 600, color: "#6ee7b7",
-                letterSpacing: "0.03em",
-              }}>
-                <span style={{
-                  width: "7px", height: "7px", borderRadius: "50%",
-                  background: "#34d399",
-                  boxShadow: "0 0 8px #34d399",
-                  animation: "pulse-glow 2s ease-in-out infinite",
-                }} />
-                ✦ Available for Work
+            {/* Status Chip */}
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <div className="chip-cyan" style={{ display: "inline-flex", alignItems: "center", gap: "7px", padding: "6px 14px", borderRadius: "999px" }}>
+                <span className="live-dot" />
+                <span style={{ fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                  {personal.status || "Available for work"}
+                </span>
+              </div>
+              <span style={{ fontSize: "0.80rem", color: "var(--text-muted)" }}>•</span>
+              <span style={{ fontSize: "0.80rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
+                {personal.location || "West Bengal, India"}
               </span>
             </div>
 
-            {/* Name */}
-            <div style={{ lineHeight: 1.05 }}>
-              <p style={{ color: "var(--text-muted)", fontSize: "1.1rem", marginBottom: "6px", fontWeight: 500 }}>
-                Hi, I'm
-              </p>
-              <h1 style={{
-                fontSize: "clamp(3rem, 7vw, 5.5rem)",
-                fontWeight: 800,
-                letterSpacing: "-0.04em",
-                color: "var(--text-primary)",
-                margin: 0,
-              }}>
-                Debajyoti
-              </h1>
-              <h1 style={{
-                fontSize: "clamp(3rem, 7vw, 5.5rem)",
-                fontWeight: 800,
-                letterSpacing: "-0.04em",
-                margin: 0,
-                background: "linear-gradient(135deg, #d2bbff 0%, #4cd7f6 50%, #ffb0cd 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}>
-                Samanta
-              </h1>
-            </div>
-
-            {/* Subtitle */}
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <div style={{ width: "32px", height: "2px", background: "var(--clr-cyan)", borderRadius: "999px" }} />
+            {/* Main Headline */}
+            <div>
               <p style={{
-                fontSize: "1.15rem", fontWeight: 600, color: "var(--clr-cyan)",
-                letterSpacing: "0.01em",
+                fontSize: "1rem", fontWeight: 600, color: "var(--text-secondary)",
+                letterSpacing: "0.04em", marginBottom: "8px",
               }}>
-                Full-Stack Developer
-                <span style={{ animation: "blink-cursor 1s step-end infinite", marginLeft: "2px" }}>|</span>
+                Hello, I'm
               </p>
+              <h1 style={{
+                fontSize: "clamp(2.6rem, 5.5vw, 4.4rem)",
+                fontWeight: 800,
+                letterSpacing: "-0.04em",
+                lineHeight: 1.05,
+                margin: "0 0 12px 0",
+              }}>
+                <span style={{
+                  background: "linear-gradient(135deg, #ffffff 40%, var(--clr-primary-dim) 80%, var(--clr-cyan-bright) 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}>
+                  {personal.name || "Debajyoti Samanta"}
+                </span>
+              </h1>
+
+              {/* Dynamic Typewriter */}
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", minHeight: "2.4rem" }}>
+                <span style={{
+                  fontSize: "clamp(1.2rem, 2.5vw, 1.85rem)",
+                  fontWeight: 700,
+                  fontFamily: "var(--font-display)",
+                  letterSpacing: "-0.02em",
+                  color: "var(--clr-cyan-bright)",
+                }}>
+                  {role}
+                </span>
+                <span style={{
+                  display: "inline-block", width: "2.5px", height: "1.4em",
+                  backgroundColor: "var(--clr-primary-mid)",
+                  animation: "blink-cursor 0.9s infinite",
+                  verticalAlign: "middle",
+                }} />
+              </div>
             </div>
 
-            {/* Bio */}
+            {/* Intro Description */}
             <p style={{
-              fontSize: "1rem",
-              color: "var(--text-secondary)",
-              lineHeight: 1.75,
-              maxWidth: "520px",
+              fontSize: "1.05rem", color: "var(--text-secondary)",
+              lineHeight: 1.7, maxWidth: "520px", margin: 0,
             }}>
-              I craft beautiful, responsive digital experiences with modern web technologies.
-              Transforming ideas into pixel-perfect, interactive realities that matter.
+              {personal.bioIntro || "Crafting beautiful, robust digital experiences with modern web technologies, fluid animations, and high-performance architectures."}
             </p>
 
-            {/* CTA Buttons */}
-            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-              <a href="#projects" className="btn-primary">
-                View My Work <i className="ri-arrow-right-line"></i>
+            {/* Action Buttons */}
+            <div style={{ display: "flex", gap: "14px", flexWrap: "wrap", alignItems: "center", marginTop: "4px" }}>
+              <a
+                href="#projects"
+                className="btn-primary"
+                style={{ padding: "12px 26px", fontSize: "0.9rem", gap: "8px" }}
+              >
+                <span>Explore Work</span>
+                <i className="ri-arrow-down-line" />
               </a>
-              <a href="#contact" className="btn-ghost">
-                Start a Project <i className="ri-mail-line"></i>
-              </a>
-              <a href={myResume} download="Debajyoti_Samanta_Resume.pdf" className="btn-glass" style={{ borderColor: "var(--clr-cyan)", color: "var(--clr-cyan)" }}>
-                Resume <i className="ri-download-line"></i>
-              </a>
-              <a href={myCV} download="Debajyoti_Samanta_CV.pdf" className="btn-glass" style={{ borderColor: "var(--clr-cyan)", color: "var(--clr-cyan)" }}>
-                Download CV <i className="ri-download-cloud-2-line"></i>
-              </a>
+
+              {personal.resumeUrl && (
+                <a
+                  href={personal.resumeUrl}
+                  download={personal.resumeName || "Debajyoti_Samanta_Resume.pdf"}
+                  className="btn-ghost"
+                  style={{ padding: "12px 22px", fontSize: "0.9rem", gap: "8px" }}
+                >
+                  <i className="ri-file-download-line" style={{ color: "var(--clr-cyan-bright)" }} />
+                  <span>Resume</span>
+                </a>
+              )}
+
+              {personal.cvUrl && (
+                <a
+                  href={personal.cvUrl}
+                  download={personal.cvName || "Debajyoti_Samanta_CV.pdf"}
+                  className="btn-ghost"
+                  style={{ padding: "12px 22px", fontSize: "0.9rem", gap: "8px" }}
+                >
+                  <i className="ri-article-line" style={{ color: "var(--clr-primary-dim)" }} />
+                  <span>Curriculum Vitae</span>
+                </a>
+              )}
             </div>
 
-            {/* Socials */}
-            <div style={{ display: "flex", gap: "12px", paddingTop: "4px" }}>
-              {socials.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  title={s.label}
-                  style={{
-                    width: "44px", height: "44px",
-                    borderRadius: "50%",
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    color: "var(--text-secondary)",
-                    fontSize: "1.2rem",
-                    textDecoration: "none",
-                    transition: "all 0.25s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.color = "white";
-                    e.currentTarget.style.background = s.color + "33";
-                    e.currentTarget.style.borderColor = s.color + "66";
-                    e.currentTarget.style.boxShadow = `0 0 16px ${s.color}44`;
-                    e.currentTarget.style.transform = "translateY(-3px) scale(1.1)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.color = "var(--text-secondary)";
-                    e.currentTarget.style.background = "rgba(255,255,255,0.05)";
-                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-                    e.currentTarget.style.boxShadow = "none";
-                    e.currentTarget.style.transform = "translateY(0) scale(1)";
-                  }}
-                >
-                  <i className={s.icon}></i>
-                </a>
-              ))}
+            {/* Socials Row */}
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "8px" }}>
+              <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.12em" }}>
+                Connect
+              </span>
+              <div style={{ height: "1px", width: "32px", background: "var(--border-subtle)" }} />
+              <div style={{ display: "flex", gap: "10px" }}>
+                {socials.map((s, i) => (
+                  <a
+                    key={s.id || i}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.name}
+                    style={{
+                      width: "38px", height: "38px", borderRadius: "10px",
+                      background: "rgba(255,255,255,0.04)",
+                      border: "1px solid var(--border-ghost)",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      color: "var(--text-muted)", fontSize: "1.1rem",
+                      textDecoration: "none", transition: "all 0.25s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = s.color;
+                      e.currentTarget.style.background = `${s.color}15`;
+                      e.currentTarget.style.borderColor = `${s.color}40`;
+                      e.currentTarget.style.boxShadow = `0 0 16px ${s.color}30`;
+                      e.currentTarget.style.transform = "translateY(-3px)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = "var(--text-muted)";
+                      e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+                      e.currentTarget.style.borderColor = "var(--border-ghost)";
+                      e.currentTarget.style.boxShadow = "none";
+                      e.currentTarget.style.transform = "translateY(0)";
+                    }}
+                  >
+                    <i className={s.icon} />
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* ── RIGHT COLUMN — Image ── */}
-          <div style={{ position: "relative", display: "flex", justifyContent: "center" }}>
-            {/* Background violet orb */}
-            <div style={{
+          {/* ── RIGHT COLUMN: Responsive Avatar + Accent Rings ── */}
+          <div className="hero-avatar-wrapper" style={{
+            position: "relative",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+          }}>
+            {/* Outer rotating ring */}
+            <div className="hero-ring-outer" style={{
               position: "absolute",
-              width: "380px", height: "380px",
-              borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(124,58,237,0.30) 0%, rgba(124,58,237,0) 70%)",
-              filter: "blur(40px)",
+              width: "360px", height: "360px", borderRadius: "50%",
+              background: "conic-gradient(from 0deg, transparent 70%, rgba(124,58,237,0.45) 80%, rgba(6,182,212,0.45) 90%, transparent 100%)",
+              animation: "rotate-ring 9s linear infinite",
               zIndex: 0,
             }} />
 
-            {/* Rotating outer ring */}
-            <div className="animate-float" style={{
-              position: "relative", width: "320px", height: "320px",
-              borderRadius: "50%", zIndex: 1,
-            }}>
+            {/* Inner counter-ring */}
+            <div className="hero-ring-inner" style={{
+              position: "absolute",
+              width: "330px", height: "330px", borderRadius: "50%",
+              background: "conic-gradient(from 180deg, transparent 60%, rgba(236,72,153,0.35) 75%, transparent 90%)",
+              animation: "rotate-ring-reverse 12s linear infinite",
+              zIndex: 0,
+            }} />
+
+            {/* Glow orb */}
+            <div style={{
+              position: "absolute",
+              width: "300px", height: "300px", borderRadius: "50%",
+              background: "radial-gradient(circle, rgba(124,58,237,0.22) 0%, transparent 70%)",
+              filter: "blur(28px)", zIndex: 0,
+            }} />
+
+            {/* Profile image container */}
+            <div
+              className="animate-float hero-avatar-box"
+              style={{
+                position: "relative",
+                width: "280px", height: "280px",
+                zIndex: 1,
+              }}
+            >
+              {/* Image border ring */}
               <div style={{
-                position: "absolute", inset: "-8px",
-                borderRadius: "50%",
-                background: "conic-gradient(from 0deg, #7C3AED, #4cd7f6, #ffb0cd, #7C3AED)",
-                animation: "rotate-ring 5s linear infinite",
+                position: "absolute", inset: "-3px", borderRadius: "50%",
+                background: "linear-gradient(135deg, var(--clr-primary), var(--clr-cyan), var(--clr-pink), var(--clr-primary))",
+                backgroundSize: "300% 300%",
+                animation: "aurora-shift 6s ease-in-out infinite",
                 zIndex: 1,
               }} />
               <div style={{
-                position: "absolute", inset: "-4px",
+                position: "absolute", inset: "0",
                 borderRadius: "50%",
-                background: "var(--bg-base)",
+                background: "var(--bg-void)",
                 zIndex: 2,
               }} />
               <div style={{
-                position: "absolute", inset: "4px",
-                borderRadius: "50%",
-                overflow: "hidden",
-                zIndex: 3,
+                position: "absolute", inset: "5px",
+                borderRadius: "50%", overflow: "hidden", zIndex: 3,
               }}>
                 <img
-                  src={myImage}
-                  alt="Debajyoti Samanta"
+                  src={avatarSrc}
+                  alt={personal.name || "Debajyoti Samanta"}
+                  onLoad={() => setImgLoaded(true)}
                   style={{
                     width: "100%", height: "100%",
-                    objectFit: "cover",
-                    transition: "transform 0.5s ease",
+                    objectFit: "cover", objectPosition: "top",
+                    transition: "transform 0.6s ease",
+                    opacity: imgLoaded ? 1 : 0,
                   }}
                   onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.06)")}
                   onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
@@ -228,158 +323,145 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Floating Stat Cards */}
-            <div style={{
-              position: "absolute",
-              bottom: "-16px", left: "-24px",
-              background: "rgba(18, 22, 36, 0.65)",
-              backdropFilter: "blur(20px)",
-              border: "1px solid rgba(255, 255, 255, 0.12)",
-              borderRadius: "20px",
-              padding: "14px 20px",
-              boxShadow: "0 20px 40px rgba(0,0,0,0.45), 0 0 20px rgba(139,92,246,0.15)",
-              zIndex: 4,
-              animation: "float 4s ease-in-out infinite",
-            }}>
-              <div style={{ fontSize: "1.6rem", fontWeight: 800, color: "var(--clr-primary-dim)", lineHeight: 1 }}>15+</div>
-              <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontWeight: 600, marginTop: "2px", letterSpacing: "0.05em" }}>PROJECTS</div>
-            </div>
-
-            <div style={{
-              position: "absolute",
-              top: "-16px", right: "-24px",
-              background: "rgba(18, 22, 36, 0.65)",
-              backdropFilter: "blur(20px)",
-              border: "1px solid rgba(255, 255, 255, 0.12)",
-              borderRadius: "20px",
-              padding: "14px 20px",
-              boxShadow: "0 20px 40px rgba(0,0,0,0.45), 0 0 20px rgba(0,210,253,0.15)",
-              zIndex: 4,
-              animation: "float 4s ease-in-out infinite 2s",
-            }}>
-              <div style={{ fontSize: "1.6rem", fontWeight: 800, color: "var(--clr-cyan)", lineHeight: 1 }}>3+</div>
-              <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontWeight: 600, marginTop: "2px", letterSpacing: "0.05em" }}>YRS EXP</div>
+            {/* Floating Stat Badges - Desktop/Tablet */}
+            <div className="hero-floating-badges">
+              {stats.slice(0, 3).map((st, i) => {
+                const positions = [
+                  { bottom: "-12px", left: "-20px", delay: "0s" },
+                  { top: "-12px", right: "-16px", delay: "1.4s" },
+                  { bottom: "35px", right: "-28px", delay: "0.7s" },
+                ];
+                const pos = positions[i] || positions[0];
+                return (
+                  <div
+                    key={st.id || i}
+                    style={{
+                      position: "absolute",
+                      bottom: pos.bottom, top: pos.top,
+                      left: pos.left, right: pos.right,
+                      background: "rgba(10, 14, 28, 0.85)",
+                      backdropFilter: "blur(24px)",
+                      WebkitBackdropFilter: "blur(24px)",
+                      border: "1px solid rgba(255, 255, 255, 0.12)",
+                      borderRadius: "16px",
+                      padding: "10px 16px",
+                      boxShadow: "0 16px 36px rgba(0,0,0,0.50), 0 0 20px rgba(124,92,246,0.12)",
+                      zIndex: 4,
+                      animation: `float 4.5s ease-in-out infinite ${pos.delay}`,
+                      textAlign: "center",
+                      minWidth: "75px",
+                    }}
+                  >
+                    <div style={{
+                      fontSize: "1.35rem", fontWeight: 800, color: st.color,
+                      lineHeight: 1, fontFamily: "var(--font-display)",
+                      letterSpacing: "-0.04em",
+                    }}>
+                      {st.value}
+                    </div>
+                    <div style={{
+                      fontSize: "0.62rem", color: "var(--text-muted)",
+                      fontWeight: 600, marginTop: "4px",
+                      letterSpacing: "0.08em", textTransform: "uppercase",
+                      fontFamily: "var(--font-mono)",
+                    }}>
+                      {st.label}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
 
-        {/* ── Info Cards ── */}
-        <div style={{
+        {/* ── Stats Grid Row (No internship, completely responsive) ── */}
+        <div className="hero-stats" style={{
           display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: "20px",
-          marginTop: "72px",
-        }} className="info-cards-grid">
-          {[
-            {
-              icon: "ri-user-heart-line",
-              title: "About Me",
-              color: "var(--clr-primary)",
-              glow: "rgba(124,58,237,0.25)",
-              bg: "rgba(124,58,237,0.08)",
-              text: "Passionate IT student at Meghnad Saha Institute of Technology. I craft elegant solutions to complex problems with modern web technologies.",
-            },
-            {
-              icon: "ri-mail-send-line",
-              title: "Get in Touch",
-              color: "var(--clr-cyan)",
-              glow: "rgba(76,215,246,0.20)",
-              bg: "rgba(76,215,246,0.06)",
-              text: null,
-              email: "debajyotisamanta2003@gmail.com",
-            },
-            {
-              icon: "ri-lightbulb-flash-line",
-              title: "Expertise",
-              color: "var(--clr-pink)",
-              glow: "rgba(255,176,205,0.20)",
-              bg: "rgba(255,176,205,0.06)",
-              list: ["React & Modern JavaScript", "Responsive Web Design", "UI/UX Development", "Full-Stack Development"],
-            },
-          ].map((card, i) => (
+          gridTemplateColumns: `repeat(${stats.length || 4}, 1fr)`,
+          gap: "16px",
+          marginTop: "70px",
+        }}>
+          {stats.map((s, i) => (
             <div
-              key={i}
+              key={s.id || i}
               className="glass-card"
-              style={{ padding: "28px 24px" }}
+              style={{ padding: "22px 18px", textAlign: "center" }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "14px" }}>
-                <div style={{
-                  width: "44px", height: "44px",
-                  borderRadius: "50%",
-                  background: card.bg,
-                  border: `1px solid ${card.glow}`,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: "1.3rem", color: card.color,
-                  boxShadow: `0 0 16px ${card.glow}`,
-                }}>
-                  <i className={card.icon}></i>
-                </div>
-                <h3 style={{ fontWeight: 700, fontSize: "1rem", color: "var(--text-primary)" }}>
-                  {card.title}
-                </h3>
+              <div style={{
+                fontSize: "clamp(1.8rem, 3vw, 2.3rem)",
+                fontWeight: 800,
+                color: s.color,
+                textShadow: `0 0 24px ${s.glow}`,
+                letterSpacing: "-0.05em",
+                fontFamily: "var(--font-display)",
+                lineHeight: 1,
+              }}>
+                {s.value}
               </div>
-              {card.text && (
-                <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", lineHeight: 1.65 }}>
-                  {card.text}
-                </p>
-              )}
-              {card.email && (
-                <a href={`mailto:${card.email}`} style={{
-                  fontSize: "0.85rem", color: "var(--clr-cyan)",
-                  textDecoration: "none", wordBreak: "break-all", fontWeight: 500,
-                }}>
-                  {card.email}
-                </a>
-              )}
-              {card.list && (
-                <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "8px" }}>
-                  {card.list.map((item, j) => (
-                    <li key={j} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.85rem", color: "var(--text-secondary)" }}>
-                      <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: "var(--clr-pink)", flexShrink: 0 }} />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              )}
+              <div style={{
+                fontSize: "0.68rem", color: "var(--text-muted)",
+                fontWeight: 600, marginTop: "6px",
+                letterSpacing: "0.12em", textTransform: "uppercase",
+                fontFamily: "var(--font-mono)",
+              }}>
+                {s.label}
+              </div>
             </div>
           ))}
         </div>
 
-        {/* Scroll indicator */}
-        <div style={{ textAlign: "center", marginTop: "64px", opacity: 0.6 }}>
-          <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "12px", letterSpacing: "0.15em", textTransform: "uppercase" }}>
-            Scroll to Explore
-          </p>
-          <div style={{
-            width: "24px", height: "40px",
-            border: "1.5px solid rgba(255,255,255,0.15)",
-            borderRadius: "12px",
-            margin: "0 auto",
-            display: "flex",
-            justifyContent: "center",
-            paddingTop: "6px",
-          }}>
+        {/* ── Scroll Indicator ── */}
+        <div style={{ textAlign: "center", marginTop: "50px" }}>
+          <div
+            style={{
+              display: "inline-flex", flexDirection: "column",
+              alignItems: "center", gap: "8px", opacity: 0.6,
+              cursor: "pointer",
+            }}
+            onClick={() => document.getElementById("skills")?.scrollIntoView({ behavior: "smooth" })}
+          >
+            <p style={{
+              fontSize: "0.65rem", color: "var(--text-muted)",
+              letterSpacing: "0.22em", textTransform: "uppercase",
+              fontFamily: "var(--font-mono)", margin: 0,
+            }}>
+              Scroll to explore
+            </p>
             <div style={{
-              width: "3px", height: "8px",
-              borderRadius: "2px",
-              background: "linear-gradient(to bottom, var(--clr-primary), var(--clr-cyan))",
-              animation: "float 1.5s ease-in-out infinite",
-            }} />
+              width: "20px", height: "34px",
+              border: "1.5px solid rgba(255,255,255,0.14)",
+              borderRadius: "10px",
+              display: "flex", justifyContent: "center",
+              paddingTop: "5px",
+            }}>
+              <div style={{
+                width: "3px", height: "7px", borderRadius: "2px",
+                background: "linear-gradient(to bottom, var(--clr-primary), var(--clr-cyan))",
+                animation: "float 1.6s ease-in-out infinite",
+              }} />
+            </div>
           </div>
         </div>
       </div>
 
       <style>{`
         @media (max-width: 900px) {
-          .hero-grid { grid-template-columns: 1fr !important; }
-          .info-cards-grid { grid-template-columns: 1fr !important; }
+          .hero-grid  { grid-template-columns: 1fr !important; gap: 40px !important; text-align: center; }
+          .hero-grid > div:first-child { align-items: center; }
+          .hero-grid > div:last-child { order: -1; }
+          .hero-stats { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
         }
-        @media (max-width: 640px) {
-          .info-cards-grid { grid-template-columns: 1fr !important; }
+        @media (max-width: 600px) {
+          .hero-avatar-box { width: 220px !important; height: 220px !important; }
+          .hero-ring-outer { width: 270px !important; height: 270px !important; }
+          .hero-ring-inner { width: 250px !important; height: 250px !important; }
+          .hero-floating-badges { display: none !important; }
+          .hero-stats { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
         }
-        @keyframes blink-cursor {
-          0%, 100% { opacity: 1; }
-          50%       { opacity: 0; }
+        @keyframes blink-cursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        @keyframes aurora-shift {
+          0%, 100% { background-position: 0% 50%; }
+          50%       { background-position: 100% 50%; }
         }
       `}</style>
     </section>

@@ -1,247 +1,124 @@
-import { useState, useEffect } from "react"
-import ludo from "../assets/ludo.png"
-import personalLib from "../assets/personal book library.png"
-import project1 from "../assets/project1.png"
-import project2 from "../assets/project2.png"
-import project3 from "../assets/project3.png"
-import project4 from "../assets/project4.png"
-import project5 from "../assets/project5.png"
-import solarSystem from "../assets/solar_system.png"
-import todo from "../assets/todo.png"
-import pfm from "../assets/pfm.png"
-import mentorship from "../assets/mentorship.png"
-import musicHub from "../assets/Music Hub.png"
-import localFix from "../assets/LocalFix1.png"
+import { useState, useRef } from "react";
+import { usePortfolio } from "../context/PortfolioContext";
 
 export default function Projects() {
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const { portfolioData, resolveImage } = usePortfolio();
+  const allProjects = portfolioData?.projects || [];
+  const categories  = portfolioData?.projectsCategories || ["All", "Full-Stack", "Game", "Web", "React"];
 
-  const categories = ["All", "Full-Stack", "Game", "Web", "React"];
+  const [activeCat, setActiveCat] = useState("All");
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [fading, setFading]       = useState(false);
+  const dockRef = useRef(null);
 
-  const allProjects = [
-    {
-      img: mentorship,
-      title: "MentorSpace — Mentorship Platform",
-      tag: "Full-Stack",
-      tagColor: "chip-cyan",
-      desc: "A one-on-one mentorship platform with real-time WebRTC video/audio, collaborative multilingual code editor, and secure role-based authentication. Built for seamless mentor-student connections.",
-      tech: ["React", "Node.js", "WebRTC", "MongoDB", "Express"],
-      link: "https://mentorship-platform-frontend-delta.vercel.app/",
-    },
-    {
-      img: musicHub,
-      title: "Music Hub — Premium Streaming Platform",
-      tag: "Full-Stack",
-      tagColor: "chip-cyan",
-      desc: "A full-stack music streaming platform with user accounts, custom playlists, secure MongoDB database integration, and premium audio playback queue management.",
-      tech: ["React", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
-      link: "https://my-music-hub-ashen.vercel.app/",
-    },
-    {
-      img: localFix,
-      title: "LocalFix — Local Service Provider Platform",
-      tag: "Full-Stack",
-      tagColor: "chip-cyan",
-      desc: "A comprehensive platform connecting local service providers with customers. Features include service listings, user reviews, secure messaging, and geo-location-based search to facilitate seamless local service discovery and bookings.",
-      tech: ["React", "Node.js", "MongoDB", "Express", "Tailwind CSS"],
-      link: "https://locallie.vercel.app/",
-    },
-    {
-      img: pfm,
-      title: "Personal Finance Manager",
-      tag: "Full-Stack",
-      tagColor: "chip-cyan",
-      desc: "Track income, expenses, set budgets and monitor spending habits through an intuitive dashboard interface with custom reports.",
-      tech: ["React", "Node.js", "MongoDB", "Express", "Tailwind CSS"],
-      link: "https://personal-finance-manager-orcin.vercel.app/",
-    },
-    {
-      img: ludo,
-      title: "Ludo Multiplayer Game",
-      tag: "Game",
-      tagColor: "chip-pink",
-      desc: "Fun and interactive multiplayer Ludo game with smooth gameplay and engaging real-time visuals utilizing WebSockets.",
-      tech: ["HTML5", "CSS3", "JavaScript", "Socket.io", "Node.js"],
-      link: "https://golden-pixie-4d1097.netlify.app/",
-    },
-    {
-      img: solarSystem,
-      title: "3D Solar System",
-      tag: "Web",
-      tagColor: "chip-violet",
-      desc: "Visually stunning 3D solar system simulation — explore planets and celestial bodies interactively utilizing WebGL shaders.",
-      tech: ["HTML5", "CSS3", "JavaScript", "Three.js", "WebGL"],
-      link: "https://solar-system-five-rho.vercel.app/",
-    },
-    {
-      img: project4,
-      title: "Fitness Tracker Dashboard",
-      tag: "Web",
-      tagColor: "chip-violet",
-      desc: "Monitor fitness goals, track workouts and visualize progress through interactive graphs and custom routines.",
-      tech: ["HTML5", "CSS3", "JavaScript", "Chart.js", "LocalStorage"],
-      link: "https://fitness-tracker-dashboard-gray.vercel.app/",
-    },
-    {
-      img: todo,
-      title: "To-Do List App",
-      tag: "React",
-      tagColor: "chip-cyan",
-      desc: "Clean and efficient React task manager with intuitive UI and category filters for managing daily to-dos.",
-      tech: ["React", "Vite", "CSS3 Modules", "LocalStorage", "JavaScript"],
-      link: "https://todo-sigma-snowy.vercel.app/",
-    },
-    {
-      img: personalLib,
-      title: "Personal Book Library",
-      tag: "Web",
-      tagColor: "chip-violet",
-      desc: "Manage your book collection, add new entries, rate titles, and track reading progress through a sleek responsive interface.",
-      tech: ["HTML5", "CSS3", "JavaScript", "JSON Store", "Responsive"],
-      link: "https://debajyotisamanta.github.io/Personal-Book-Library/",
-    },
-    {
-      img: project1,
-      title: "Responsive Web Page Design",
-      tag: "Web",
-      tagColor: "chip-violet",
-      desc: "Visually stunning responsive web page showcasing modern design principles, fluid typography, and premium sections.",
-      tech: ["HTML5", "CSS3", "Responsive", "UI/UX", "Vanilla JS"],
-      link: "https://debajyotisamanta.github.io/CODECANVAS/",
-    },
-    {
-      img: project2,
-      title: "Responsive Landing Page",
-      tag: "Web",
-      tagColor: "chip-violet",
-      desc: "Sleek landing page with modern aesthetics, clean grids, and smooth scrolling animations for an engaging experience.",
-      tech: ["HTML5", "CSS3", "Animations", "UI/UX", "Mobile First"],
-      link: "https://debajyotisamanta.github.io/CodeClauseInternship_ResponsiveLandingPage/",
-    },
-    {
-      img: project3,
-      title: "Age Calculator Studio",
-      tag: "Web",
-      tagColor: "chip-violet",
-      desc: "Intuitive age calculator web app — precise time calculation results with a clean, glassmorphic layout.",
-      tech: ["HTML5", "CSS3", "JavaScript", "DateTime API", "Glassmorphism"],
-      link: "https://code-alpha-project-age-calculator-tau.vercel.app/",
-    },
-    {
-      img: project5,
-      title: "Event Management System",
-      tag: "Web",
-      tagColor: "chip-violet",
-      desc: "Comprehensive event management system — create, manage and track events with detailed client listings.",
-      tech: ["HTML5", "CSS3", "JavaScript", "LocalDB", "Event Planning"],
-      link: "https://debajyotisamanta.github.io/CodeClauseInternship_Event_management_System/",
-    },
-  ];
-
-  // Filter projects by category
-  const filteredProjects = activeCategory === "All"
+  const filtered = activeCat === "All"
     ? allProjects
-    : allProjects.filter(p => p.tag === activeCategory);
+    : allProjects.filter((p) => p.tag === activeCat);
 
-  // Trigger brief fade-out transition when active index changes
-  useEffect(() => {
-    setIsTransitioning(true);
-    const timer = setTimeout(() => setIsTransitioning(false), 300);
-    return () => clearTimeout(timer);
-  }, [activeIndex]);
-
-  const selectCategory = (cat) => {
-    setActiveCategory(cat);
-    setActiveIndex(0);
+  const activeProject = filtered[activeIdx] || filtered[0] || {
+    title: "Project Showcase",
+    subtitle: "Web Application",
+    tag: "Web",
+    desc: "Explore my interactive development portfolio.",
+    tech: ["React", "JavaScript"],
+    link: "#",
+    accentColor: "#22d3ee",
   };
 
-  const activeProject = filteredProjects[activeIndex] || filteredProjects[0] || allProjects[0];
+  const selectCat = (cat) => {
+    setActiveCat(cat);
+    setActiveIdx(0);
+  };
 
-  const handleNext = () => {
-    setActiveIndex((prev) => (prev + 1) % filteredProjects.length);
+  const selectIdx = (idx) => {
+    if (idx === activeIdx) return;
+    setFading(true);
+    setTimeout(() => {
+      setActiveIdx(idx);
+      setFading(false);
+    }, 180);
   };
 
   const handlePrev = () => {
-    setActiveIndex((prev) => (prev - 1 + filteredProjects.length) % filteredProjects.length);
+    const next = (activeIdx - 1 + filtered.length) % filtered.length;
+    selectIdx(next);
   };
+
+  const handleNext = () => {
+    const next = (activeIdx + 1) % filtered.length;
+    selectIdx(next);
+  };
+
+  const activeImgSrc = resolveImage(activeProject.imgKey, activeProject.img);
 
   return (
     <section
       id="projects"
       className="dot-grid section-kv"
-      style={{ background: "var(--bg-surface)", position: "relative", overflow: "hidden" }}
+      style={{
+        background: "var(--bg-base)",
+        position: "relative",
+        overflow: "hidden",
+        padding: "100px 20px",
+      }}
     >
-      {/* Background Glow */}
+      {/* Background orbs */}
       <div style={{
-        position: "absolute", top: "10%", right: "-5%",
-        width: "500px", height: "500px",
-        background: "radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%)",
+        position: "absolute", top: "15%", left: "-8%",
+        width: "550px", height: "550px",
+        background: "radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 65%)",
+        borderRadius: "50%", pointerEvents: "none",
+      }} />
+      <div style={{
+        position: "absolute", bottom: "15%", right: "-8%",
+        width: "550px", height: "550px",
+        background: "radial-gradient(circle, rgba(6,182,212,0.07) 0%, transparent 65%)",
         borderRadius: "50%", pointerEvents: "none",
       }} />
 
-      <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: "1140px", margin: "0 auto", position: "relative", zIndex: 1 }}>
 
         {/* Section Header */}
-        <div style={{ textAlign: "center", marginBottom: "40px" }}>
-          <span className="section-overline">Featured Work</span>
-          <h2 style={{
-            fontSize: "clamp(2.4rem, 5vw, 3.8rem)",
-            fontWeight: 800, letterSpacing: "-0.04em",
-            color: "var(--text-primary)", marginTop: "12px", marginBottom: "16px", lineHeight: 1.1,
-          }}>
-            Projects Showcase
+        <div style={{ textAlign: "center", marginBottom: "48px" }}>
+          <span className="section-overline">Portfolio Works</span>
+          <h2 className="section-title">
+            Featured Projects
           </h2>
-          <p style={{ color: "var(--text-secondary)", fontSize: "1rem", maxWidth: "520px", margin: "0 auto" }}>
-            Explore an interactive cinematic gallery of my web and full-stack creations
+          <p className="section-subtitle">
+            An interactive gallery of my full-stack web applications, architectures, and games
           </p>
         </div>
 
-        {/* Floating Category Filter Dock */}
+        {/* Category Filter Pills (Responsive wrapping) */}
         <div style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "8px",
-          marginBottom: "40px",
-          background: "rgba(10, 15, 30, 0.35)",
-          backdropFilter: "blur(20px)",
-          border: "1px solid rgba(255, 255, 255, 0.08)",
-          borderRadius: "9999px",
-          padding: "8px",
-          width: "fit-content",
-          margin: "0 auto 40px auto",
-          boxShadow: "0 15px 35px rgba(0,0,0,0.25)"
+          display: "flex", justifyContent: "center",
+          flexWrap: "wrap",
+          gap: "8px", marginBottom: "40px",
+          background: "rgba(7, 10, 22, 0.45)",
+          backdropFilter: "blur(24px)",
+          border: "1px solid var(--border-ghost)",
+          borderRadius: "999px", padding: "6px",
+          width: "fit-content", margin: "0 auto 44px auto",
+          boxShadow: "var(--shadow-sm)",
+          maxWidth: "100%",
         }}>
           {categories.map((cat) => (
             <button
               key={cat}
-              onClick={() => selectCategory(cat)}
+              onClick={() => selectCat(cat)}
               style={{
-                padding: "8px 20px",
-                background: activeCategory === cat ? "rgba(255, 255, 255, 0.08)" : "transparent",
+                padding: "8px 18px",
+                background: activeCat === cat
+                  ? "rgba(124,58,237,0.22)"
+                  : "transparent",
                 border: "1px solid",
-                borderColor: activeCategory === cat ? "rgba(255, 255, 255, 0.15)" : "transparent",
-                borderRadius: "9999px",
-                color: activeCategory === cat ? "white" : "var(--text-secondary)",
-                cursor: "pointer",
-                fontSize: "0.85rem",
-                fontWeight: 600,
-                transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                outline: "none",
-                boxShadow: activeCategory === cat ? "0 0 12px rgba(255,255,255,0.08)" : "none"
-              }}
-              onMouseEnter={(e) => {
-                if (activeCategory !== cat) {
-                  e.currentTarget.style.background = "rgba(255, 255, 255, 0.04)";
-                  e.currentTarget.style.color = "white";
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (activeCategory !== cat) {
-                  e.currentTarget.style.background = "transparent";
-                  e.currentTarget.style.color = "var(--text-secondary)";
-                }
+                borderColor: activeCat === cat ? "rgba(124,58,237,0.4)" : "transparent",
+                borderRadius: "999px",
+                color: activeCat === cat ? "white" : "var(--text-secondary)",
+                cursor: "pointer", fontSize: "0.82rem", fontWeight: 600,
+                transition: "all 0.25s ease", outline: "none",
+                boxShadow: activeCat === cat ? "0 0 14px rgba(124,58,237,0.25)" : "none",
+                fontFamily: "var(--font-body)",
               }}
             >
               {cat}
@@ -249,314 +126,267 @@ export default function Projects() {
           ))}
         </div>
 
-        {/* Master Cinema Showcase Console */}
-        <div className="glass-card" style={{
+        {/* ── Cinema Showcase ── */}
+        <div className="glass-card showcase-card" style={{
           display: "grid",
-          gridTemplateColumns: "1.1fr 0.9fr",
-          gap: "48px",
-          padding: "48px",
-          borderRadius: "32px",
-          boxShadow: "0 40px 80px rgba(0, 0, 0, 0.55)",
-          marginBottom: "40px",
+          gridTemplateColumns: "1.15fr 0.85fr",
+          gap: "44px", padding: "40px",
+          borderRadius: "30px",
+          boxShadow: "0 40px 90px rgba(0,0,0,0.60)",
+          marginBottom: "28px",
+          border: "1px solid rgba(255,255,255,0.08)",
+          alignItems: "center",
           position: "relative",
           overflow: "hidden",
-          alignItems: "center",
-          border: "1px solid rgba(255, 255, 255, 0.1)"
         }}>
-          {/* Dynamic Radial glow based on active category */}
+          {/* Dynamic ambient glow */}
           <div style={{
-            position: "absolute",
-            top: "-30%",
-            left: "-20%",
-            width: "500px",
-            height: "500px",
-            background: "radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%)",
-            borderRadius: "50%",
-            pointerEvents: "none",
-            zIndex: 0
+            position: "absolute", top: "-20%", left: "-15%",
+            width: "450px", height: "450px",
+            background: `radial-gradient(circle, ${activeProject.accentColor || "#22d3ee"}15 0%, transparent 70%)`,
+            borderRadius: "50%", pointerEvents: "none", zIndex: 0,
+            transition: "background 0.5s ease",
           }} />
 
-          {/* Left Visual Column */}
+          {/* ── Image Column ── */}
           <div style={{
-            position: "relative",
-            borderRadius: "24px",
-            overflow: "hidden",
-            boxShadow: "0 25px 50px rgba(0, 0, 0, 0.5)",
-            border: "1px solid rgba(255, 255, 255, 0.12)",
-            height: "360px",
-            zIndex: 1,
-            opacity: isTransitioning ? 0 : 1,
-            transform: isTransitioning ? "scale(0.97)" : "scale(1)",
-            transition: "opacity 0.3s ease, transform 0.3s ease",
-          }}>
+            position: "relative", borderRadius: "20px", overflow: "hidden",
+            boxShadow: `0 24px 60px rgba(0,0,0,0.55), 0 0 30px ${activeProject.accentColor || "#22d3ee"}15`,
+            border: "1px solid rgba(255,255,255,0.10)",
+            height: "330px", zIndex: 1,
+            opacity: fading ? 0 : 1,
+            transform: fading ? "scale(0.97)" : "scale(1)",
+            transition: "opacity 0.2s ease, transform 0.2s ease",
+          }} className="showcase-img-box">
             <img
-              src={activeProject.img}
+              src={activeImgSrc}
               alt={activeProject.title}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                transition: "transform 8s ease",
-              }}
-              className="showcase-img"
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
             />
-            {/* Dark glassmorphic gradient overlay */}
+            {/* Overlay gradient */}
             <div style={{
-              position: "absolute",
-              inset: 0,
-              background: "linear-gradient(to top, rgba(10, 15, 30, 0.7) 0%, transparent 60%)",
+              position: "absolute", inset: 0,
+              background: `linear-gradient(to top, rgba(5,8,18,0.7) 0%, transparent 60%)`,
             }} />
-            {/* Category tag */}
-            <span style={{
-              position: "absolute",
-              top: "20px",
-              left: "20px",
-              padding: "6px 14px",
-              background: "rgba(10, 15, 30, 0.65)",
-              border: "1px solid rgba(255,255,255,0.15)",
-              backdropFilter: "blur(10px)",
-              borderRadius: "9999px",
-              fontSize: "0.72rem",
-              fontWeight: 700,
-              color: "white",
-              letterSpacing: "0.05em",
-              textTransform: "uppercase"
+            {/* Category badge */}
+            <div style={{
+              position: "absolute", top: "16px", left: "16px",
+              display: "flex", alignItems: "center", gap: "8px",
             }}>
-              ✦ {activeProject.tag}
-            </span>
+              <span style={{
+                padding: "5px 12px",
+                background: "rgba(5,8,18,0.75)",
+                backdropFilter: "blur(12px)",
+                border: "1px solid rgba(255,255,255,0.15)",
+                borderRadius: "999px",
+                fontSize: "0.72rem", fontWeight: 700,
+                color: activeProject.accentColor || "var(--clr-cyan-bright)",
+                fontFamily: "var(--font-mono)",
+                letterSpacing: "0.06em",
+              }}>
+                {activeProject.tag}
+              </span>
+            </div>
           </div>
 
-          {/* Right Details Column */}
+          {/* ── Info Column ── */}
           <div style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
+            display: "flex", flexDirection: "column", gap: "20px",
             zIndex: 1,
-            opacity: isTransitioning ? 0 : 1,
-            transform: isTransitioning ? "translateY(10px)" : "translateY(0)",
-            transition: "opacity 0.3s ease, transform 0.3s ease",
+            opacity: fading ? 0 : 1,
+            transition: "opacity 0.2s ease",
           }}>
-            <h3 style={{
-              fontSize: "2rem",
-              fontWeight: 800,
-              color: "var(--text-primary)",
-              marginBottom: "20px",
-              letterSpacing: "-0.03em",
-              lineHeight: 1.15
-            }}>
-              {activeProject.title}
-            </h3>
-            
+            <div>
+              <span style={{
+                fontSize: "0.74rem", fontWeight: 700,
+                color: activeProject.accentColor || "var(--clr-cyan-bright)",
+                fontFamily: "var(--font-mono)",
+                letterSpacing: "0.12em", textTransform: "uppercase",
+                display: "block", marginBottom: "6px",
+              }}>
+                {activeProject.subtitle}
+              </span>
+              <h3 style={{
+                fontSize: "clamp(1.6rem, 3.2vw, 2.2rem)",
+                fontWeight: 800, color: "var(--text-primary)",
+                fontFamily: "var(--font-display)", letterSpacing: "-0.03em",
+                margin: 0,
+              }}>
+                {activeProject.title}
+              </h3>
+            </div>
+
             <p style={{
-              fontSize: "0.98rem",
-              color: "var(--text-secondary)",
-              lineHeight: 1.7,
-              marginBottom: "32px",
+              fontSize: "0.92rem", color: "var(--text-secondary)",
+              lineHeight: 1.7, margin: 0,
             }}>
               {activeProject.desc}
             </p>
 
-            <h4 style={{
-              fontSize: "0.72rem",
-              fontWeight: 800,
-              textTransform: "uppercase",
-              letterSpacing: "0.15em",
-              color: "var(--text-muted)",
-              marginBottom: "16px"
-            }}>
-              Technologies Utilized ✦
-            </h4>
-
-            {/* Tech badges */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "40px" }}>
-              {activeProject.tech?.map((t, idx) => (
-                <span key={idx} style={{
-                  padding: "6px 16px",
-                  background: "rgba(255, 255, 255, 0.05)",
-                  border: "1px solid rgba(255, 255, 255, 0.10)",
-                  borderRadius: "9999px",
-                  fontSize: "0.75rem",
-                  fontWeight: 600,
-                  color: "white",
-                  letterSpacing: "0.02em",
-                  boxShadow: "0 4px 10px rgba(0,0,0,0.15)"
-                }}>
-                  {t}
-                </span>
-              ))}
+            {/* Tech stack */}
+            <div>
+              <span style={{
+                fontSize: "0.70rem", color: "var(--text-muted)",
+                fontFamily: "var(--font-mono)", letterSpacing: "0.12em",
+                textTransform: "uppercase", display: "block", marginBottom: "10px",
+              }}>
+                Tech Stack
+              </span>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                {activeProject.tech?.map((t, i) => (
+                  <span
+                    key={i}
+                    style={{
+                      padding: "5px 12px",
+                      background: "rgba(255,255,255,0.04)",
+                      border: "1px solid var(--border-ghost)",
+                      borderRadius: "8px",
+                      fontSize: "0.75rem", fontWeight: 600,
+                      color: "var(--text-secondary)",
+                      fontFamily: "var(--font-mono)",
+                    }}
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
             </div>
 
-            {/* View Live button */}
-            <a
-              href={activeProject.link}
-              target="_blank"
-              rel="noreferrer"
-              className="btn-primary"
-              style={{
-                alignSelf: "flex-start",
-                padding: "14px 32px",
-                fontSize: "0.95rem",
-                boxShadow: "0 10px 30px rgba(139,92,246,0.4)"
-              }}
-            >
-              Launch App <i className="ri-arrow-right-up-line"></i>
-            </a>
+            {/* Action buttons */}
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginTop: "6px" }}>
+              {activeProject.link && (
+                <a
+                  href={activeProject.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary"
+                  style={{
+                    padding: "10px 22px", fontSize: "0.85rem", gap: "8px",
+                    background: `linear-gradient(135deg, ${activeProject.accentColor || "var(--clr-primary)"}, var(--clr-primary))`,
+                  }}
+                >
+                  <span>Live Demo</span>
+                  <i className="ri-external-link-line" />
+                </a>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Bottom Floating Selector Dock */}
+        {/* ── Carousel Dock / Thumbnails ── */}
         <div style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "16px",
-          background: "rgba(10, 15, 30, 0.25)",
-          backdropFilter: "blur(20px)",
-          border: "1px solid rgba(255, 255, 255, 0.08)",
-          borderRadius: "28px",
-          padding: "14px 20px",
-          boxShadow: "0 20px 40px rgba(0,0,0,0.3)"
+          display: "flex", alignItems: "center", gap: "12px",
+          maxWidth: "100%", width: "100%",
         }}>
-          {/* Prev project */}
+          {/* Prev */}
           <button
             onClick={handlePrev}
             style={{
-              width: "40px",
-              height: "40px",
-              borderRadius: "50%",
-              background: "rgba(255,255,255,0.04)",
-              border: "1px solid rgba(255,255,255,0.08)",
-              color: "white",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "1.2rem",
-              transition: "all 0.3s ease",
-              outline: "none",
+              width: "38px", height: "38px", borderRadius: "50%",
+              background: "rgba(255,255,255,0.05)",
+              border: "1px solid rgba(255,255,255,0.10)",
+              color: "white", cursor: "pointer",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: "1.1rem", transition: "all 0.25s ease", outline: "none",
+              flexShrink: 0,
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = "rgba(255,255,255,0.08)";
-              e.currentTarget.style.transform = "scale(1.05)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "rgba(255,255,255,0.04)";
-              e.currentTarget.style.transform = "scale(1)";
-            }}
+            aria-label="Previous project"
           >
-            <i className="ri-arrow-left-s-line"></i>
+            <i className="ri-arrow-left-s-line" />
           </button>
 
-          {/* Thumbnail list container */}
-          <div style={{
-            display: "flex",
-            gap: "12px",
-            flex: 1,
-            overflowX: "auto",
-            padding: "4px 0",
-            scrollbarWidth: "none", // Firefox
-            msOverflowStyle: "none", // IE
-          }} className="dock-scrollbar">
-            {filteredProjects.map((p, idx) => {
-              const isActive = activeIndex === idx;
+          {/* Thumbnails Row */}
+          <div
+            ref={dockRef}
+            style={{
+              display: "flex", gap: "10px",
+              overflowX: "auto", padding: "6px 2px",
+              flex: 1, scrollBehavior: "smooth",
+            }}
+            className="dock-scrollbar"
+          >
+            {filtered.map((p, idx) => {
+              const isActive = activeIdx === idx;
+              const thumbImg = resolveImage(p.imgKey, p.img);
               return (
                 <div
-                  key={idx}
-                  onClick={() => setActiveIndex(idx)}
+                  key={p.id || idx}
+                  onClick={() => selectIdx(idx)}
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px",
-                    padding: "8px 16px",
-                    background: isActive ? "rgba(255, 255, 255, 0.08)" : "transparent",
+                    display: "flex", alignItems: "center", gap: "9px",
+                    padding: "7px 14px",
+                    background: isActive ? "rgba(124,58,237,0.18)" : "rgba(255,255,255,0.03)",
                     border: "1px solid",
-                    borderColor: isActive ? "rgba(255, 255, 255, 0.16)" : "transparent",
-                    borderRadius: "16px",
-                    cursor: "pointer",
-                    transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                    borderColor: isActive ? "rgba(124,58,237,0.35)" : "var(--border-ghost)",
+                    borderRadius: "12px", cursor: "pointer",
+                    transition: "all 0.25s ease",
                     flexShrink: 0,
-                    boxShadow: isActive ? "0 8px 24px rgba(0,0,0,0.3)" : "none",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!isActive) {
-                      e.currentTarget.style.background = "rgba(255, 255, 255, 0.03)";
-                      e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.06)";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isActive) {
-                      e.currentTarget.style.background = "transparent";
-                      e.currentTarget.style.borderColor = "transparent";
-                    }
+                    boxShadow: isActive ? "0 6px 20px rgba(124,58,237,0.25)" : "none",
                   }}
                 >
                   <img
-                    src={p.img}
+                    src={thumbImg}
                     alt={p.title}
                     style={{
-                      width: "40px",
-                      height: "28px",
-                      objectFit: "cover",
-                      borderRadius: "8px",
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      opacity: isActive ? 1 : 0.7,
-                      transition: "opacity 0.3s ease"
+                      width: "36px", height: "24px", objectFit: "cover",
+                      borderRadius: "6px",
+                      opacity: isActive ? 1 : 0.65,
                     }}
                   />
                   <span style={{
-                    fontSize: "0.78rem",
-                    fontWeight: 600,
+                    fontSize: "0.78rem", fontWeight: isActive ? 700 : 500,
                     color: isActive ? "white" : "var(--text-secondary)",
-                    whiteSpace: "nowrap"
+                    whiteSpace: "nowrap", fontFamily: "var(--font-body)",
                   }}>
-                    {p.title.split("—")[0].split("-")[0].trim()}
+                    {p.title}
                   </span>
                 </div>
               );
             })}
           </div>
 
-          {/* Next project */}
+          {/* Next */}
           <button
             onClick={handleNext}
             style={{
-              width: "40px",
-              height: "40px",
-              borderRadius: "50%",
-              background: "rgba(255,255,255,0.04)",
-              border: "1px solid rgba(255,255,255,0.08)",
-              color: "white",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "1.2rem",
-              transition: "all 0.3s ease",
-              outline: "none",
+              width: "38px", height: "38px", borderRadius: "50%",
+              background: "rgba(255,255,255,0.05)",
+              border: "1px solid rgba(255,255,255,0.10)",
+              color: "white", cursor: "pointer",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: "1.1rem", transition: "all 0.25s ease", outline: "none",
+              flexShrink: 0,
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = "rgba(255,255,255,0.08)";
-              e.currentTarget.style.transform = "scale(1.05)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "rgba(255,255,255,0.04)";
-              e.currentTarget.style.transform = "scale(1)";
-            }}
+            aria-label="Next project"
           >
-            <i className="ri-arrow-right-s-line"></i>
+            <i className="ri-arrow-right-s-line" />
           </button>
         </div>
 
+        {/* Project count */}
+        <div style={{ textAlign: "center", marginTop: "18px" }}>
+          <span style={{
+            fontSize: "0.72rem", color: "var(--text-muted)",
+            fontFamily: "var(--font-mono)", letterSpacing: "0.10em",
+          }}>
+            {activeIdx + 1} / {filtered.length} projects
+          </span>
+        </div>
       </div>
 
       <style>{`
-        .dock-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
+        .dock-scrollbar::-webkit-scrollbar { display: none; }
         @media (max-width: 900px) {
-          .glass-card { grid-template-columns: 1fr !important; gap: 24px !important; padding: 28px !important; }
-          .showcase-img { height: 260px !important; }
+          .showcase-card {
+            grid-template-columns: 1fr !important;
+            gap: 24px !important;
+            padding: 24px !important;
+          }
+          .showcase-img-box {
+            height: 230px !important;
+          }
         }
       `}</style>
     </section>
-  )
+  );
 }

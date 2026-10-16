@@ -1,245 +1,215 @@
-import cpp from "../assets/c++.svg"
-import c from "../assets/c-1.svg"
-import css from "../assets/css-3.svg"
-import figma from "../assets/figma-1.svg"
-import git from "../assets/git-icon.svg"
-import github from "../assets/github.png"
-import html from "../assets/html-1.svg"
-import java from "../assets/java.png"
-import js from "../assets/logo-javascript.svg"
-import nodejs from "../assets/nodejs-1.svg"
-import python from "../assets/python-5.svg"
-import react from "../assets/react-2.svg"
-import tailwind from "../assets/Tailwind_CSS.png"
-import sql from "../assets/sql.png"
+import { useEffect, useRef } from "react";
+import { usePortfolio } from "../context/PortfolioContext";
+
+function SkillBar({ name, level, color }) {
+  const fillRef = useRef(null);
+
+  useEffect(() => {
+    const el = fillRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        el.style.width = `${level}%`;
+        obs.disconnect();
+      }
+    }, { threshold: 0.2 });
+    el.style.width = "0%";
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [level]);
+
+  return (
+    <div>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", alignItems: "center" }}>
+        <span style={{ fontSize: "0.86rem", fontWeight: 600, color: "var(--text-secondary)", fontFamily: "var(--font-body)" }}>
+          {name}
+        </span>
+        <span style={{
+          fontSize: "0.72rem", fontWeight: 700, color: "var(--text-muted)",
+          fontFamily: "var(--font-mono)",
+        }}>
+          {level}%
+        </span>
+      </div>
+      <div style={{
+        height: "5px", width: "100%",
+        backgroundColor: "rgba(255,255,255,0.06)",
+        borderRadius: "999px", overflow: "hidden",
+      }}>
+        <div
+          ref={fillRef}
+          style={{
+            height: "100%", borderRadius: "999px",
+            background: color || "linear-gradient(90deg, var(--clr-primary), var(--clr-cyan))",
+            transition: "width 1.2s cubic-bezier(0.16, 1, 0.3, 1)",
+            width: "0%",
+          }}
+        />
+      </div>
+    </div>
+  );
+}
 
 export default function Skills() {
-  const frontendSkills = [
-    { name: "HTML5 & CSS3",    pct: 95, color: "violet" },
-    { name: "React.js",         pct: 90, color: "violet" },
-    { name: "JavaScript ES6+",  pct: 88, color: "violet" },
-    { name: "Tailwind CSS",     pct: 85, color: "cyan"   },
-    { name: "Responsive Design",pct: 92, color: "pink"   },
-  ]
-
-  const backendSkills = [
-    { name: "Node.js & Express", pct: 80, color: "cyan"   },
-    { name: "MongoDB",           pct: 78, color: "cyan"   },
-    { name: "Python",            pct: 72, color: "pink"   },
-    { name: "Git & GitHub",      pct: 90, color: "pink"   },
-    { name: "REST APIs",         pct: 85, color: "violet" },
-    { name: "WebRTC",            pct: 70, color: "violet" },
-  ]
-
-  const techIcons = [
-    { img: html,     name: "HTML" },
-    { img: css,      name: "CSS" },
-    { img: js,       name: "JavaScript" },
-    { img: react,    name: "React" },
-    { img: tailwind, name: "Tailwind" },
-    { img: nodejs,   name: "Node.js" },
-    { img: python,   name: "Python" },
-    { img: git,      name: "Git" },
-    { img: github,   name: "GitHub" },
-    { img: figma,    name: "Figma" },
-    { img: sql,      name: "SQL" },
-    { img: java,     name: "Java" },
-    { img: c,        name: "C" },
-    { img: cpp,      name: "C++" },
-  ]
-
-  const stats = [
-    { value: "15+",  label: "Projects",     color: "var(--clr-primary-dim)", glow: "var(--clr-primary-glow)" },
-    { value: "3+",   label: "Years Exp",    color: "var(--clr-cyan)",        glow: "var(--clr-cyan-glow)"   },
-    { value: "14+",  label: "Technologies", color: "var(--clr-pink)",        glow: "var(--clr-pink-glow)"   },
-    { value: "100%", label: "Dedication",   color: "var(--clr-primary-dim)", glow: "var(--clr-primary-glow)" },
-  ]
-
-  const barColor = { violet: "skill-bar-violet", cyan: "skill-bar-cyan", pink: "skill-bar-pink" }
+  const { portfolioData, resolveImage } = usePortfolio();
+  const categories = portfolioData?.skillsCategories || [];
+  const frameworksAndTools = portfolioData?.frameworksAndTools || [];
 
   return (
     <section
       id="skills"
       className="dot-grid section-kv"
-      style={{ background: "var(--bg-surface)" }}
+      style={{
+        background: "var(--bg-base)",
+        position: "relative",
+        overflow: "hidden",
+        padding: "100px 20px",
+      }}
     >
-      {/* Orb accent */}
+      {/* Background orbs */}
       <div style={{
-        position: "absolute", top: "10%", right: "-5%",
-        width: "400px", height: "400px",
-        background: "radial-gradient(circle, rgba(76,215,246,0.08) 0%, transparent 70%)",
+        position: "absolute", top: "20%", left: "-6%",
+        width: "480px", height: "480px",
+        background: "radial-gradient(circle, rgba(124,58,237,0.09) 0%, transparent 65%)",
+        borderRadius: "50%", pointerEvents: "none",
+      }} />
+      <div style={{
+        position: "absolute", bottom: "10%", right: "-6%",
+        width: "450px", height: "450px",
+        background: "radial-gradient(circle, rgba(6,182,212,0.08) 0%, transparent 65%)",
         borderRadius: "50%", pointerEvents: "none",
       }} />
 
-      <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: "1140px", margin: "0 auto", position: "relative", zIndex: 1 }}>
 
-        {/* Section Header */}
-        <div style={{ textAlign: "center", marginBottom: "56px" }}>
-          <span className="section-overline">Technical Arsenal</span>
-          <h2 style={{
-            fontSize: "clamp(2.4rem, 5vw, 3.8rem)",
-            fontWeight: 800,
-            letterSpacing: "-0.04em",
-            marginTop: "12px",
-            marginBottom: "16px",
-            color: "var(--text-primary)",
-            lineHeight: 1.1,
-          }}>
-            Skills &{" "}
-            <span className="gradient-text">Expertise</span>
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: "60px" }}>
+          <span className="section-overline">Core Capabilities</span>
+          <h2 className="section-title">
+            Technical Proficiency
           </h2>
-          <p style={{ color: "var(--text-secondary)", fontSize: "1rem", maxWidth: "520px", margin: "0 auto" }}>
-            Technologies and tools I use to craft world-class digital experiences
+          <p className="section-subtitle">
+            A specialized toolkit spanning modern frontend architectures, backend APIs, and UI/UX design
           </p>
         </div>
 
-        {/* Stats row */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: "16px",
-          marginBottom: "56px",
-        }} className="stats-grid">
-          {stats.map((s, i) => (
-            <div key={i} className="glass-card" style={{
-              padding: "24px 20px",
-              textAlign: "center",
-              borderColor: "rgba(255,255,255,0.07)",
-            }}>
-              <div style={{
-                fontSize: "2rem", fontWeight: 800, color: s.color,
-                textShadow: `0 0 20px ${s.glow}`,
-                letterSpacing: "-0.04em",
-              }}>{s.value}</div>
-              <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontWeight: 600, marginTop: "4px", letterSpacing: "0.1em", textTransform: "uppercase" }}>
-                {s.label}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Skill bars — 2 columns */}
-        <div style={{
-          display: "grid", gridTemplateColumns: "1fr 1fr", gap: "32px", marginBottom: "56px",
-        }} className="skills-columns">
-
-          {/* Frontend */}
-          <div className="glass-card" style={{ padding: "32px 28px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "28px" }}>
-              <div style={{
-                width: "40px", height: "40px", borderRadius: "50%",
-                background: "rgba(124,58,237,0.15)", border: "1px solid rgba(124,58,237,0.3)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                color: "var(--clr-primary-dim)", fontSize: "1.1rem",
-              }}>
-                <i className="ri-braces-line"></i>
-              </div>
-              <h3 style={{ fontWeight: 700, fontSize: "1rem", color: "var(--text-primary)" }}>
-                Frontend Development
-              </h3>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-              {frontendSkills.map((sk, i) => (
-                <div key={i}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-                    <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)" }}>{sk.name}</span>
-                    <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--text-muted)" }}>{sk.pct}%</span>
-                  </div>
-                  <div className="skill-bar-track">
-                    <div
-                      className={`skill-bar-fill ${barColor[sk.color]}`}
-                      style={{ width: `${sk.pct}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Backend */}
-          <div className="glass-card" style={{ padding: "32px 28px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "28px" }}>
-              <div style={{
-                width: "40px", height: "40px", borderRadius: "50%",
-                background: "rgba(76,215,246,0.10)", border: "1px solid rgba(76,215,246,0.25)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                color: "var(--clr-cyan)", fontSize: "1.1rem",
-              }}>
-                <i className="ri-server-line"></i>
-              </div>
-              <h3 style={{ fontWeight: 700, fontSize: "1rem", color: "var(--text-primary)" }}>
-                Backend & Tools
-              </h3>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-              {backendSkills.map((sk, i) => (
-                <div key={i}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-                    <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)" }}>{sk.name}</span>
-                    <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--text-muted)" }}>{sk.pct}%</span>
-                  </div>
-                  <div className="skill-bar-track">
-                    <div
-                      className={`skill-bar-fill ${barColor[sk.color]}`}
-                      style={{ width: `${sk.pct}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Tech Icon Grid */}
-        <div style={{ textAlign: "center", marginBottom: "24px" }}>
-          <span className="section-overline">Tech Stack</span>
-        </div>
-        <div style={{
-          display: "flex", flexWrap: "wrap", gap: "12px", justifyContent: "center",
-        }}>
-          {techIcons.map((t, i) => (
+        {/* Skills Cards Grid */}
+        <div
+          className="skills-columns"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: "24px",
+            marginBottom: "64px",
+          }}
+        >
+          {categories.map((cat, i) => (
             <div
-              key={i}
-              className="animate-float"
+              key={cat.id || i}
+              className="glass-card"
               style={{
+                padding: "32px 26px",
                 display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "8px 16px",
-                background: "rgba(18, 22, 36, 0.45)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: "999px",
-                backdropFilter: "blur(12px)",
-                transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                cursor: "default",
-                animationDelay: `${i * 0.15}s`, // Dynamic stagger delay
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.25)";
-                e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.35), 0 0 15px rgba(139, 92, 246, 0.25)";
-                e.currentTarget.style.transform = "scale(1.06) translateY(-2px)";
-                e.currentTarget.style.animationPlayState = "paused";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-                e.currentTarget.style.boxShadow = "none";
-                e.currentTarget.style.transform = "scale(1) translateY(0)";
-                e.currentTarget.style.animationPlayState = "running";
+                flexDirection: "column",
+                borderRadius: "24px",
               }}
             >
-              <img src={t.img} alt={t.name} style={{ width: "20px", height: "20px", objectFit: "contain" }} />
-              <span style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--text-secondary)" }}>{t.name}</span>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "26px" }}>
+                <div style={{
+                  width: "42px", height: "42px", borderRadius: "12px",
+                  background: cat.bg || "rgba(124,58,237,0.10)",
+                  border: `1px solid ${cat.border || "rgba(124,58,237,0.22)"}`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  color: cat.color || "var(--clr-primary-dim)", fontSize: "1.15rem",
+                  boxShadow: `0 0 18px ${cat.glow || "rgba(124,58,237,0.2)"}`,
+                  flexShrink: 0,
+                }}>
+                  <i className={cat.icon || "ri-code-box-line"} />
+                </div>
+                <div>
+                  <h3 style={{
+                    fontWeight: 700, fontSize: "1.05rem",
+                    color: "var(--text-primary)", fontFamily: "var(--font-display)",
+                    margin: 0,
+                  }}>
+                    {cat.label}
+                  </h3>
+                  <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
+                    {cat.skills?.length || 0} Specializations
+                  </span>
+                </div>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+                {cat.skills?.map((sk, skIdx) => (
+                  <SkillBar
+                    key={skIdx}
+                    name={sk.name}
+                    level={sk.level}
+                    color={`linear-gradient(90deg, ${cat.color || "var(--clr-primary)"}, var(--clr-cyan-bright))`}
+                  />
+                ))}
+              </div>
             </div>
           ))}
+        </div>
+
+        {/* Tech Icon Grid (Dynamic Frameworks & Tools) */}
+        <div style={{ textAlign: "center", marginBottom: "24px" }}>
+          <span className="section-overline">Frameworks & Tools</span>
+        </div>
+        <div style={{
+          display: "flex", flexWrap: "wrap",
+          gap: "10px", justifyContent: "center",
+          maxWidth: "900px", margin: "0 auto",
+        }}>
+          {frameworksAndTools.map((t, i) => {
+            const iconImg = resolveImage(t.imgKey, t.img);
+            const hue = t.hue || "#06b6d4";
+
+            return (
+              <div
+                key={t.id || i}
+                className="tech-badge animate-float"
+                style={{ animationDelay: `${(i % 5) * 0.15}s`, cursor: "default" }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = hue + "55";
+                  e.currentTarget.style.background  = hue + "12";
+                  e.currentTarget.style.color = "white";
+                  e.currentTarget.style.boxShadow   = `0 8px 24px rgba(0,0,0,0.35), 0 0 16px ${hue}33`;
+                  e.currentTarget.style.transform    = "scale(1.08) translateY(-3px)";
+                  e.currentTarget.style.animationPlayState = "paused";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "var(--border-ghost)";
+                  e.currentTarget.style.background  = "rgba(255,255,255,0.04)";
+                  e.currentTarget.style.color = "var(--text-secondary)";
+                  e.currentTarget.style.boxShadow   = "none";
+                  e.currentTarget.style.transform    = "scale(1) translateY(0)";
+                  e.currentTarget.style.animationPlayState = "running";
+                }}
+              >
+                {iconImg ? (
+                  <img
+                    src={iconImg}
+                    alt={t.name}
+                    style={{ width: "17px", height: "17px", objectFit: "contain" }}
+                  />
+                ) : (
+                  <i className={t.icon || "ri-code-line"} style={{ color: hue, fontSize: "1rem" }} />
+                )}
+                <span>{t.name}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
 
       <style>{`
         @media (max-width: 768px) {
           .skills-columns { grid-template-columns: 1fr !important; }
-          .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
         }
       `}</style>
     </section>
-  )
+  );
 }

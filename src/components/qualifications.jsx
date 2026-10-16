@@ -1,209 +1,245 @@
+import { usePortfolio } from "../context/PortfolioContext";
+
 export default function Qualification() {
-  const qualifications = {
-    education: [
-      {
-        title: "B-Tech (Information Technology)",
-        institution: "Meghnad Saha Institute of Technology",
-        period: "2023 – 2027",
-        score: "Pursuing",
-        icon: "ri-graduation-cap-line",
-        accent: "var(--clr-primary-dim)",
-        glow: "rgba(124,58,237,0.25)",
-        bg: "rgba(124,58,237,0.08)",
-      },
-      {
-        title: "Higher Secondary Education",
-        institution: "Raghunath Bari Ramtarak High School",
-        period: "2020 – 2022",
-        score: "83.8%",
-        icon: "ri-book-open-line",
-        accent: "var(--clr-cyan)",
-        glow: "rgba(76,215,246,0.20)",
-        bg: "rgba(76,215,246,0.06)",
-      },
-      {
-        title: "Secondary Education",
-        institution: "Kaminachak Sasibhusan Kanailal Vidyayatan",
-        period: "2018 – 2020",
-        score: "85%",
-        icon: "ri-pencil-ruler-2-line",
-        accent: "var(--clr-pink)",
-        glow: "rgba(255,176,205,0.20)",
-        bg: "rgba(255,176,205,0.06)",
-      },
-    ],
-    experience: [
-      {
-        title: "Frontend Developer",
-        institution: "Hackerspace — MSIT Official Coding Club",
-        period: "Current",
-        description: "Building responsive web interfaces and mentoring juniors in modern frontend practices.",
-        icon: "ri-code-line",
-        accent: "var(--clr-primary-dim)",
-        glow: "rgba(124,58,237,0.25)",
-        bg: "rgba(124,58,237,0.08)",
-      },
-      {
-        title: "CDP Lead",
-        institution: "Hackerspace — MSIT Official Coding Club",
-        period: "Current",
-        description: "Leading coding development program initiatives and workshops for community growth.",
-        icon: "ri-team-line",
-        accent: "var(--clr-cyan)",
-        glow: "rgba(76,215,246,0.20)",
-        bg: "rgba(76,215,246,0.06)",
-      },
-      {
-        title: "Frontend Developer Intern",
-        institution: "CodeAlpha & CodeClause",
-        period: "2024",
-        description: "Worked on real-world production projects under mentorship, delivering polished UIs.",
-        icon: "ri-briefcase-line",
-        accent: "var(--clr-pink)",
-        glow: "rgba(255,176,205,0.20)",
-        bg: "rgba(255,176,205,0.06)",
-      },
-    ],
-  }
+  const { portfolioData } = usePortfolio();
+  const education  = portfolioData?.education || [];
+  const experience = portfolioData?.experience || [];
 
-  const TimelineColumn = ({ items, lineColor }) => (
-    <div style={{ position: "relative" }}>
-      {/* Vertical line */}
+  const TimelineItem = ({ item, isLast }) => (
+    <div style={{ display: "flex", gap: "16px", alignItems: "flex-start", position: "relative" }}>
+      {/* Icon + line */}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0 }}>
+        <div style={{
+          width: "42px", height: "42px", borderRadius: "12px",
+          background: item.bg || "rgba(124,58,237,0.08)",
+          border: `1px solid ${item.border || "rgba(124,58,237,0.22)"}`,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          color: item.accent || "var(--clr-primary-dim)", fontSize: "1.05rem",
+          boxShadow: `0 0 18px ${item.glow || "rgba(124,58,237,0.25)"}`,
+          zIndex: 1, flexShrink: 0,
+        }}>
+          <i className={item.icon || "ri-briefcase-line"} />
+        </div>
+        {!isLast && (
+          <div style={{
+            width: "2px", flex: 1, minHeight: "28px",
+            background: `linear-gradient(to bottom, ${item.border || "rgba(255,255,255,0.15)"}, transparent)`,
+            borderRadius: "2px", marginTop: "4px",
+          }} />
+        )}
+      </div>
+
+      {/* Content Card */}
       <div style={{
-        position: "absolute",
-        left: "19px",
-        top: "28px",
-        bottom: "28px",
-        width: "2px",
-        background: `linear-gradient(to bottom, ${lineColor}, transparent)`,
-        borderRadius: "2px",
-      }} />
-
-      <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-        {items.map((item, i) => (
-          <div key={i} style={{ display: "flex", gap: "20px", alignItems: "flex-start" }}>
-            {/* Timeline dot / icon */}
-            <div style={{
-              width: "40px", height: "40px",
-              borderRadius: "50%",
-              background: item.bg,
-              border: `2px solid ${item.glow}`,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              color: item.accent, fontSize: "1rem",
-              flexShrink: 0,
-              boxShadow: `0 0 16px ${item.glow}`,
-              zIndex: 1,
+        flex: 1,
+        paddingBottom: isLast ? "0" : "28px",
+      }}>
+        <div
+          className="glass-card"
+          style={{
+            padding: "20px 22px",
+            borderRadius: "18px",
+            transition: "all 0.3s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = item.border || "rgba(255,255,255,0.2)";
+            e.currentTarget.style.boxShadow = `0 12px 32px rgba(0,0,0,0.4), 0 0 20px ${item.glow || "rgba(124,58,237,0.15)"}`;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = "var(--border-ghost)";
+            e.currentTarget.style.boxShadow = "var(--shadow-xs)";
+          }}
+        >
+          {/* Top row */}
+          <div style={{
+            display: "flex", justifyContent: "space-between",
+            alignItems: "flex-start", flexWrap: "wrap", gap: "8px",
+            marginBottom: "8px",
+          }}>
+            <h4 style={{
+              fontSize: "0.98rem", fontWeight: 700,
+              color: "var(--text-primary)", fontFamily: "var(--font-display)",
+              margin: 0,
             }}>
-              <i className={item.icon}></i>
-            </div>
-
-            {/* Card */}
-            <div
-              className="glass-card"
-              style={{ flex: 1, padding: "20px 22px" }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "6px", gap: "12px", flexWrap: "wrap" }}>
-                <h4 style={{ fontWeight: 700, fontSize: "0.95rem", color: "var(--text-primary)", margin: 0 }}>
-                  {item.title}
-                </h4>
-                <span style={{
-                  fontSize: "0.7rem", fontWeight: 700,
-                  color: item.accent,
-                  background: item.bg,
-                  border: `1px solid ${item.glow}`,
-                  borderRadius: "999px",
-                  padding: "2px 10px",
-                  whiteSpace: "nowrap",
-                  letterSpacing: "0.03em",
-                }}>
-                  {item.score || item.period}
-                </span>
-              </div>
-              <p style={{ fontSize: "0.82rem", color: "var(--text-muted)", marginBottom: item.description ? "8px" : 0, fontWeight: 500 }}>
-                {item.institution}
-              </p>
-              {item.description && (
-                <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", lineHeight: 1.6, fontStyle: "italic" }}>
-                  {item.description}
-                </p>
-              )}
-              {item.score && (
-                <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "6px", letterSpacing: "0.08em", textTransform: "uppercase", fontWeight: 600 }}>
-                  {item.period}
-                </p>
-              )}
-            </div>
+              {item.title}
+            </h4>
+            <span className={item.chip || "chip-violet"} style={{ fontSize: "0.68rem", padding: "3px 10px", borderRadius: "999px" }}>
+              {item.period}
+            </span>
           </div>
-        ))}
+
+          {/* Institution */}
+          <div style={{
+            display: "flex", alignItems: "center", gap: "6px",
+            color: item.accent || "var(--clr-cyan-bright)", fontSize: "0.82rem",
+            fontWeight: 500, marginBottom: item.description ? "10px" : "8px",
+          }}>
+            <i className="ri-building-line" style={{ fontSize: "0.85rem", opacity: 0.8 }} />
+            <span>{item.institution}</span>
+          </div>
+
+          {/* Description or Score */}
+          {item.description && (
+            <p style={{
+              fontSize: "0.83rem", color: "var(--text-secondary)",
+              lineHeight: 1.6, margin: 0,
+            }}>
+              {item.description}
+            </p>
+          )}
+
+          {item.score && (
+            <div style={{
+              display: "inline-flex", alignItems: "center", gap: "6px",
+              padding: "4px 12px", borderRadius: "8px",
+              background: "rgba(255,255,255,0.04)", border: "1px solid var(--border-ghost)",
+              fontSize: "0.75rem", color: "var(--text-muted)",
+              fontFamily: "var(--font-mono)", marginTop: "4px",
+            }}>
+              <i className="ri-award-line" style={{ color: item.accent }} />
+              <span>Score: <strong style={{ color: "white" }}>{item.score}</strong></span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
-  )
+  );
 
   return (
     <section
       id="qualification"
       className="dot-grid section-kv"
-      style={{ background: "var(--bg-base)" }}
+      style={{ background: "var(--bg-void)", position: "relative", overflow: "hidden", padding: "100px 20px" }}
     >
+      {/* Background orbs */}
       <div style={{
-        position: "absolute", bottom: "5%", left: "-5%",
-        width: "350px", height: "350px",
-        background: "radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%)",
+        position: "absolute", top: "15%", right: "-8%",
+        width: "500px", height: "500px",
+        background: "radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 65%)",
+        borderRadius: "50%", pointerEvents: "none",
+      }} />
+      <div style={{
+        position: "absolute", bottom: "10%", left: "-8%",
+        width: "450px", height: "450px",
+        background: "radial-gradient(circle, rgba(6,182,212,0.07) 0%, transparent 65%)",
         borderRadius: "50%", pointerEvents: "none",
       }} />
 
-      <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: "1140px", margin: "0 auto", position: "relative", zIndex: 1 }}>
 
-        {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "56px" }}>
-          <span className="section-overline">Background</span>
-          <h2 style={{
-            fontSize: "clamp(2.4rem, 5vw, 3.8rem)",
-            fontWeight: 800, letterSpacing: "-0.04em",
-            color: "var(--text-primary)", marginTop: "12px", marginBottom: "16px", lineHeight: 1.1,
-          }}>
-            My <span className="gradient-text-violet">Journey</span>
+        {/* Section Header */}
+        <div style={{ textAlign: "center", marginBottom: "64px" }}>
+          <span className="section-overline">Track Record</span>
+          <h2 className="section-title">
+            Journey & Experience
           </h2>
-          <p style={{ color: "var(--text-secondary)", fontSize: "1rem", maxWidth: "480px", margin: "0 auto" }}>
-            Education and professional experience that shaped my craft
+          <p className="section-subtitle">
+            My educational background and leadership in student software development
           </p>
         </div>
 
-        {/* 2-column grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "48px" }} className="qual-grid">
+        {/* Two Columns Grid */}
+        <div
+          className="journey-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "48px",
+            alignItems: "start",
+          }}
+        >
+          {/* ── Education Column ── */}
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "28px" }}>
+            <div style={{
+              display: "flex", alignItems: "center", gap: "12px",
+              marginBottom: "32px", paddingBottom: "16px",
+              borderBottom: "1px solid var(--border-ghost)",
+            }}>
               <div style={{
-                width: "36px", height: "36px", borderRadius: "9px",
-                background: "rgba(124,58,237,0.12)", border: "1px solid rgba(124,58,237,0.25)",
+                width: "40px", height: "40px", borderRadius: "10px",
+                background: "rgba(124,58,237,0.12)",
+                border: "1px solid rgba(124,58,237,0.25)",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                color: "var(--clr-primary-dim)", fontSize: "1rem",
-              }}><i className="ri-book-open-line"></i></div>
-              <h3 style={{ fontWeight: 700, fontSize: "1.05rem", color: "var(--text-primary)" }}>Education</h3>
+                color: "var(--clr-primary-dim)", fontSize: "1.1rem",
+              }}>
+                <i className="ri-graduation-cap-line" />
+              </div>
+              <div>
+                <h3 style={{
+                  fontWeight: 700, fontSize: "1.15rem",
+                  color: "var(--text-primary)", fontFamily: "var(--font-display)",
+                  margin: 0,
+                }}>
+                  Education
+                </h3>
+                <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
+                  Academic Foundation
+                </span>
+              </div>
             </div>
-            <TimelineColumn items={qualifications.education} lineColor="rgba(124,58,237,0.5)" />
+
+            <div>
+              {education.map((item, idx) => (
+                <TimelineItem
+                  key={item.id || idx}
+                  item={item}
+                  isLast={idx === education.length - 1}
+                />
+              ))}
+            </div>
           </div>
 
+          {/* ── Experience Column ── */}
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "28px" }}>
+            <div style={{
+              display: "flex", alignItems: "center", gap: "12px",
+              marginBottom: "32px", paddingBottom: "16px",
+              borderBottom: "1px solid var(--border-ghost)",
+            }}>
               <div style={{
-                width: "36px", height: "36px", borderRadius: "9px",
-                background: "rgba(76,215,246,0.10)", border: "1px solid rgba(76,215,246,0.25)",
+                width: "40px", height: "40px", borderRadius: "10px",
+                background: "rgba(6,182,212,0.12)",
+                border: "1px solid rgba(6,182,212,0.25)",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                color: "var(--clr-cyan)", fontSize: "1rem",
-              }}><i className="ri-briefcase-line"></i></div>
-              <h3 style={{ fontWeight: 700, fontSize: "1.05rem", color: "var(--text-primary)" }}>Experience</h3>
+                color: "var(--clr-cyan-bright)", fontSize: "1.1rem",
+              }}>
+                <i className="ri-briefcase-line" />
+              </div>
+              <div>
+                <h3 style={{
+                  fontWeight: 700, fontSize: "1.15rem",
+                  color: "var(--text-primary)", fontFamily: "var(--font-display)",
+                  margin: 0,
+                }}>
+                  Leadership & Experience
+                </h3>
+                <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
+                  Engineering Leadership
+                </span>
+              </div>
             </div>
-            <TimelineColumn items={qualifications.experience} lineColor="rgba(76,215,246,0.5)" />
+
+            <div>
+              {experience.map((item, idx) => (
+                <TimelineItem
+                  key={item.id || idx}
+                  item={item}
+                  isLast={idx === experience.length - 1}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
       <style>{`
-        @media (max-width: 768px) {
-          .qual-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+        @media (max-width: 860px) {
+          .journey-grid {
+            grid-template-columns: 1fr !important;
+            gap: 40px !important;
+          }
         }
       `}</style>
     </section>
-  )
+  );
 }
