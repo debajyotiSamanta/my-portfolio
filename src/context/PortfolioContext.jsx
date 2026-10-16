@@ -175,10 +175,15 @@ export function PortfolioProvider({ children }) {
   const unreadMessagesCount = messages.filter((m) => !m.read).length;
 
   const resolveImage = (imgKey, fallback) => {
-    if (imgKey && ASSET_IMAGES[imgKey]) return ASSET_IMAGES[imgKey];
-    if (typeof imgKey === "string" && (imgKey.startsWith("http") || imgKey.startsWith("data:") || imgKey.startsWith("/"))) {
+    // If fallback is an uploaded base64 data URI or custom URL, prioritize it
+    if (typeof fallback === "string" && (fallback.startsWith("data:") || fallback.startsWith("http://") || fallback.startsWith("https://"))) {
+      return fallback;
+    }
+    // If imgKey is an uploaded base64 data URI or custom URL
+    if (typeof imgKey === "string" && (imgKey.startsWith("data:") || imgKey.startsWith("http://") || imgKey.startsWith("https://") || imgKey.startsWith("/"))) {
       return imgKey;
     }
+    if (imgKey && ASSET_IMAGES[imgKey]) return ASSET_IMAGES[imgKey];
     return fallback || ASSET_IMAGES.mentorship;
   };
 

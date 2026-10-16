@@ -170,7 +170,41 @@ export default function AdminPanel() {
     reader.readAsDataURL(file);
   };
 
-  // ── Frameworks & Tools Helpers ──
+  // ── Profile Photo Upload & Reset Helpers ──
+  const handleAvatarUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (uploadEvent) => {
+      const base64 = uploadEvent.target?.result;
+      if (base64) {
+        setFormData((prev) => ({
+          ...prev,
+          personal: {
+            ...prev.personal,
+            avatar: base64,
+            avatarKey: "",
+          },
+        }));
+        setSaveStatus(`Profile picture updated to "${file.name}". Click "Save All Changes" to apply live.`);
+        setTimeout(() => setSaveStatus(""), 4000);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleResetAvatar = () => {
+    setFormData((prev) => ({
+      ...prev,
+      personal: {
+        ...prev.personal,
+        avatar: ASSET_IMAGES.myImage,
+        avatarKey: "myImage",
+      },
+    }));
+    setSaveStatus("Profile picture reset to default photo.");
+    setTimeout(() => setSaveStatus(""), 4000);
+  };
   const handleAddTool = () => {
     const newTool = {
       id: `tool-${Date.now()}`,
@@ -697,6 +731,111 @@ export default function AdminPanel() {
               {/* ════════ PROFILE & HERO TAB ════════ */}
               {activeTab === "personal" && (
                 <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+                  {/* Profile Photo / Picture Card */}
+                  <div className="admin-card">
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px", flexWrap: "wrap", gap: "12px" }}>
+                      <div>
+                        <h4 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#38bdf8", margin: 0, display: "flex", alignItems: "center", gap: "8px" }}>
+                          <i className="ri-image-circle-line" /> Profile Picture & Hero Avatar
+                        </h4>
+                        <p style={{ fontSize: "0.82rem", color: "#94a3b8", margin: "4px 0 0 0" }}>
+                          Upload your photo from your computer or provide an image URL. It is displayed inside the glowing hero ring.
+                        </p>
+                      </div>
+
+                      {formData.personal.avatar && formData.personal.avatar !== ASSET_IMAGES.myImage && (
+                        <button
+                          type="button"
+                          onClick={handleResetAvatar}
+                          style={{
+                            padding: "6px 14px",
+                            background: "rgba(239, 68, 68, 0.15)",
+                            border: "1px solid rgba(239, 68, 68, 0.35)",
+                            borderRadius: "8px",
+                            color: "#fca5a5",
+                            fontSize: "0.78rem",
+                            fontWeight: 600,
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "6px",
+                          }}
+                        >
+                          <i className="ri-refresh-line" /> Reset to Default Photo
+                        </button>
+                      )}
+                    </div>
+
+                    <div style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "24px",
+                      flexWrap: "wrap",
+                      background: "#0b0f19",
+                      padding: "20px",
+                      borderRadius: "14px",
+                      border: "1px solid #1f293d",
+                    }}>
+                      {/* Avatar Live Preview */}
+                      <div style={{ position: "relative", width: "96px", height: "96px", flexShrink: 0 }}>
+                        <div style={{
+                          position: "absolute", inset: "-3px", borderRadius: "50%",
+                          background: "linear-gradient(135deg, #7c3aed, #06b6d4, #ec4899)",
+                          boxShadow: "0 0 20px rgba(124,58,237,0.35)",
+                        }} />
+                        <div style={{
+                          position: "absolute", inset: "3px", borderRadius: "50%",
+                          overflow: "hidden", background: "#060913",
+                        }}>
+                          <img
+                            src={resolveImage(formData.personal.avatarKey, formData.personal.avatar)}
+                            alt="Profile Avatar Preview"
+                            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top" }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Photo Upload & URL Inputs */}
+                      <div style={{ flex: 1, minWidth: "240px", display: "flex", flexDirection: "column", gap: "12px" }}>
+                        <div>
+                          <label style={labelStyle}>Upload New Picture from Device (PNG / JPG / WEBP)</label>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleAvatarUpload}
+                            style={{
+                              ...inputStyle,
+                              padding: "8px 12px",
+                              cursor: "pointer",
+                              fontSize: "0.82rem",
+                            }}
+                          />
+                        </div>
+
+                        <div>
+                          <label style={labelStyle}>Or Enter Direct Picture URL</label>
+                          <input
+                            type="text"
+                            placeholder="https://example.com/my-photo.jpg or GitHub avatar URL"
+                            value={formData.personal.avatar?.startsWith("data:image") ? "(Custom Uploaded Photo Active)" : (formData.personal.avatar || "")}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setFormData((prev) => ({
+                                ...prev,
+                                personal: {
+                                  ...prev.personal,
+                                  avatar: val,
+                                  avatarKey: "",
+                                },
+                              }));
+                            }}
+                            style={inputStyle}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <div className="admin-card">
                     <h4 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#38bdf8", marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px" }}>
                       <i className="ri-user-star-line" /> Personal Identity & Role
