@@ -49,7 +49,7 @@ export default function Projects() {
     selectIdx(next);
   };
 
-  const activeImgSrc = resolveImage(activeProject.imgKey, activeProject.img);
+  const activeImgSrc = resolveImage(activeProject.imgKey, activeProject.img, activeProject);
 
   return (
     <section
@@ -307,7 +307,7 @@ export default function Projects() {
           >
             {filtered.map((p, idx) => {
               const isActive = activeIdx === idx;
-              const thumbImg = resolveImage(p.imgKey, p.img);
+              const thumbImg = resolveImage(p.imgKey, p.img, p);
               return (
                 <div
                   key={p.id || idx}

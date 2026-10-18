@@ -19,7 +19,7 @@ const SERVICES_LIST = [
 ];
 
 export default function Footer() {
-  const { portfolioData, resolveAssetUrl, resolveDocumentUrl } = usePortfolio();
+  const { portfolioData, resolveAssetUrl, resolveDocumentUrl, downloadOrOpenDocument } = usePortfolio();
   const personal = portfolioData?.personal || {};
   const socials  = portfolioData?.socials || [];
   const year     = new Date().getFullYear();
@@ -106,6 +106,15 @@ export default function Footer() {
               <a
                 href={resolveDocumentUrl ? resolveDocumentUrl(personal.resumeKey || "myResume", personal.resumeUrl) : personal.resumeUrl}
                 download={personal.resumeName || "Debajyoti_Samanta_Resume.pdf"}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => {
+                  const docHref = resolveDocumentUrl ? resolveDocumentUrl(personal.resumeKey || "myResume", personal.resumeUrl) : personal.resumeUrl;
+                  if (downloadOrOpenDocument) {
+                    e.preventDefault();
+                    downloadOrOpenDocument(docHref, personal.resumeName || "Debajyoti_Samanta_Resume.pdf");
+                  }
+                }}
                 className="btn-ghost"
                 style={{ padding: "13px 24px", fontSize: "0.9rem", gap: "8px" }}
               >
@@ -117,6 +126,15 @@ export default function Footer() {
               <a
                 href={resolveDocumentUrl ? resolveDocumentUrl(personal.cvKey || "myCV", personal.cvUrl) : personal.cvUrl}
                 download={personal.cvName || "Debajyoti_Samanta_CV.pdf"}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => {
+                  const docHref = resolveDocumentUrl ? resolveDocumentUrl(personal.cvKey || "myCV", personal.cvUrl) : personal.cvUrl;
+                  if (downloadOrOpenDocument) {
+                    e.preventDefault();
+                    downloadOrOpenDocument(docHref, personal.cvName || "Debajyoti_Samanta_CV.pdf");
+                  }
+                }}
                 className="btn-ghost"
                 style={{ padding: "13px 24px", fontSize: "0.9rem", gap: "8px" }}
               >

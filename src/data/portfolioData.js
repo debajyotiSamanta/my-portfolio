@@ -112,7 +112,24 @@ try {
 
 // Finds ANY resume or CV file regardless of what the user names the file!
 export function findDocumentAsset(kind, preferredFallback) {
-  const normKind = String(kind || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+  if (typeof preferredFallback === "string" && (
+    preferredFallback.startsWith("data:") ||
+    preferredFallback.startsWith("blob:") ||
+    preferredFallback.startsWith("http://") ||
+    preferredFallback.startsWith("https://")
+  )) {
+    return preferredFallback;
+  }
+  if (typeof kind === "string" && (
+    kind.startsWith("data:") ||
+    kind.startsWith("blob:") ||
+    kind.startsWith("http://") ||
+    kind.startsWith("https://")
+  )) {
+    return kind;
+  }
+
+  const normKind = String(kind || preferredFallback || "").toLowerCase().replace(/[^a-z0-9]/g, "");
   const entries = Object.entries(ALL_RAW_ASSETS || {});
 
   // 1. Resume search (matches my_resume.pdf, resume.pdf, Debajyoti_Resume.pdf, any *resume*.pdf)
@@ -125,7 +142,7 @@ export function findDocumentAsset(kind, preferredFallback) {
 
     const fallbackPdf = entries.find(([path]) => {
       const lower = path.toLowerCase();
-      return lower.endsWith(".pdf") && !lower.includes("cv");
+      return lower.endsWith(".pdf") && !lower.includes("cv") && !lower.includes("vitae");
     });
     if (fallbackPdf) return fallbackPdf[1];
 
@@ -158,8 +175,8 @@ export function findDocumentAsset(kind, preferredFallback) {
 }
 
 // Finds ANY image or thumbnail file regardless of what the user names the file!
-export function findImageAsset(query, fallback) {
-  if (!query && !fallback) return ASSET_IMAGES.mentorship;
+export function findImageAsset(query, fallback, projectContext) {
+  if (!query && !fallback && !projectContext) return ASSET_IMAGES.mentorship;
 
   const rawCandidate = query || fallback;
   if (typeof rawCandidate === "string") {
@@ -192,20 +209,45 @@ export function findImageAsset(query, fallback) {
     normQ.includes("myimage") ||
     normQ.includes("myimg") ||
     normQ.includes("photo") ||
-    normQ.includes("debajyoti")
+    normQ.includes("debajyoti") ||
+    normQ.includes("samanta") ||
+    normQ.includes("me") ||
+    normQ.includes("user")
   ) {
     const avatarMatch = entries.find(([path]) => {
       const lower = path.toLowerCase();
       return (
         (lower.endsWith(".png") || lower.endsWith(".jpg") || lower.endsWith(".jpeg") || lower.endsWith(".webp")) &&
-        (lower.includes("image") || lower.includes("img") || lower.includes("avatar") || lower.includes("profile") || lower.includes("photo"))
+        (lower.includes("image") || lower.includes("img") || lower.includes("avatar") || lower.includes("profile") || lower.includes("photo") || lower.includes("debajyoti") || lower.includes("me"))
       );
     });
     if (avatarMatch) return avatarMatch[1];
     return myImage;
   }
 
-  // 4. Project keyword search
+  // 4. Project context matching (matches if user changes or renames the thumbnail file to anything!)
+  if (projectContext && typeof projectContext === "object") {
+    const terms = [
+      projectContext.title,
+      projectContext.subtitle,
+      projectContext.tag,
+      projectContext.id,
+      ...(Array.isArray(projectContext.tech) ? projectContext.tech : []),
+    ]
+      .filter(Boolean)
+      .flatMap((str) => String(str).toLowerCase().split(/[^a-z0-9]+/))
+      .filter((term) => term.length >= 3 && !["and", "the", "for", "with", "app", "web"].includes(term));
+
+    for (const term of terms) {
+      const match = entries.find(([path]) => {
+        const clean = path.replace(/^.*[\\/]/, "").toLowerCase().replace(/[^a-z0-9]/g, "");
+        return clean.includes(term);
+      });
+      if (match) return match[1];
+    }
+  }
+
+  // 5. Query keyword search in ALL_RAW_ASSETS
   if (normQ) {
     const match = entries.find(([path]) => {
       const cleanPath = path.replace(/^.*[\\/]/, "").toLowerCase().replace(/[^a-z0-9]/g, "");
@@ -214,7 +256,7 @@ export function findImageAsset(query, fallback) {
     if (match) return match[1];
   }
 
-  // 5. Fallback search
+  // 6. Fallback search
   if (fallback) {
     const cleanFb = String(fallback).trim().replace(/^\/src\/assets\//, "").replace(/\.[^/.]+$/, "");
     const normFb = cleanFb.toLowerCase().replace(/[^a-z0-9]/g, "");

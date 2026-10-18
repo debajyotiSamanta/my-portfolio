@@ -164,7 +164,7 @@ export default function Skills() {
           maxWidth: "900px", margin: "0 auto",
         }}>
           {frameworksAndTools.map((t, i) => {
-            const iconImg = resolveImage(t.imgKey, t.img);
+            const iconImg = resolveImage(t.imgKey, t.img, t);
             const hue = t.hue || "#06b6d4";
 
             return (

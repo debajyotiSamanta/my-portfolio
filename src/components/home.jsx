@@ -32,7 +32,7 @@ function useTypewriter(words, { typingSpeed = 80, erasingSpeed = 45, pauseTime =
 }
 
 export default function Home() {
-  const { portfolioData, resolveImage, resolveAssetUrl, resolveDocumentUrl } = usePortfolio();
+  const { portfolioData, resolveImage, resolveAssetUrl, resolveDocumentUrl, downloadOrOpenDocument } = usePortfolio();
   const personal = portfolioData?.personal || {};
   const stats    = portfolioData?.stats || [];
   const socials  = portfolioData?.socials || [];
@@ -181,6 +181,15 @@ export default function Home() {
                 <a
                   href={resolveDocumentUrl ? resolveDocumentUrl(personal.resumeKey || "myResume", personal.resumeUrl) : personal.resumeUrl}
                   download={personal.resumeName || "Debajyoti_Samanta_Resume.pdf"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => {
+                    const docHref = resolveDocumentUrl ? resolveDocumentUrl(personal.resumeKey || "myResume", personal.resumeUrl) : personal.resumeUrl;
+                    if (downloadOrOpenDocument) {
+                      e.preventDefault();
+                      downloadOrOpenDocument(docHref, personal.resumeName || "Debajyoti_Samanta_Resume.pdf");
+                    }
+                  }}
                   className="btn-ghost"
                   style={{ padding: "12px 22px", fontSize: "0.9rem", gap: "8px" }}
                 >
@@ -193,6 +202,15 @@ export default function Home() {
                 <a
                   href={resolveDocumentUrl ? resolveDocumentUrl(personal.cvKey || "myCV", personal.cvUrl) : personal.cvUrl}
                   download={personal.cvName || "Debajyoti_Samanta_CV.pdf"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => {
+                    const docHref = resolveDocumentUrl ? resolveDocumentUrl(personal.cvKey || "myCV", personal.cvUrl) : personal.cvUrl;
+                    if (downloadOrOpenDocument) {
+                      e.preventDefault();
+                      downloadOrOpenDocument(docHref, personal.cvName || "Debajyoti_Samanta_CV.pdf");
+                    }
+                  }}
                   className="btn-ghost"
                   style={{ padding: "12px 22px", fontSize: "0.9rem", gap: "8px" }}
                 >

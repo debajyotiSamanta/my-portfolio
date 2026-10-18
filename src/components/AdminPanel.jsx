@@ -1,4 +1,4 @@
-import { useState, useId } from "react";
+import { useState, useEffect, useId } from "react";
 import { usePortfolio } from "../context/PortfolioContext";
 import { ASSET_IMAGES } from "../data/portfolioData";
 
@@ -66,6 +66,7 @@ export default function AdminPanel() {
     unreadMessagesCount,
     cloudConfig,
     updateCloudConfig,
+    refreshFromCloud,
   } = usePortfolio();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -80,6 +81,14 @@ export default function AdminPanel() {
   const [saveStatus, setSaveStatus] = useState("");
   const [importText, setImportText] = useState("");
   const [editingProjectId, setEditingProjectId] = useState(null);
+
+  // Auto-sync formData from cloud updates ONLY when the panel is closed
+  // (avoids overwriting edits the user is actively making)
+  useEffect(() => {
+    if (!isOpen) {
+      setFormData(JSON.parse(JSON.stringify(portfolioData)));
+    }
+  }, [portfolioData, isOpen]);
 
   // Security tab state
   const [oldPin, setOldPin] = useState("");
@@ -798,6 +807,22 @@ export default function AdminPanel() {
               </div>
 
               <div className="admin-modal-header-actions">
+                <button
+                  type="button"
+                  onClick={async () => {
+                    setSaveStatus("Refreshing latest data from cloud...");
+                    await refreshFromCloud();
+                    setSaveStatus("Cloud data refreshed! Latest updates loaded.");
+                    setTimeout(() => setSaveStatus(""), 3000);
+                  }}
+                  className="admin-save-all-btn"
+                  title="Pull latest data from cloud"
+                  style={{ background: "rgba(6,182,212,0.15)", border: "1px solid rgba(6,182,212,0.4)" }}
+                >
+                  <i className="ri-refresh-line" style={{ fontSize: "1rem" }} />
+                  <span className="save-btn-text">Refresh from Cloud</span>
+                </button>
+
                 <button
                   type="button"
                   onClick={handleSaveAll}
@@ -1612,7 +1637,7 @@ export default function AdminPanel() {
                   <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                     {formData.projects.map((proj, idx) => {
                       const isExpanded = editingProjectId === proj.id;
-                      const thumb = resolveImage(proj.imgKey, proj.img);
+                      const thumb = resolveImage(proj.imgKey, proj.img, proj);
 
                       return (
                         <div
@@ -2083,7 +2108,7 @@ export default function AdminPanel() {
                   {/* Tools Grid */}
                   <div className="admin-grid-tools">
                     {(formData.frameworksAndTools || []).map((tool, idx) => {
-                      const toolImg = tool.img || resolveImage(tool.imgKey);
+                      const toolImg = tool.img || resolveImage(tool.imgKey, null, tool);
                       return (
                         <div
                           key={tool.id || idx}

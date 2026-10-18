@@ -28,6 +28,7 @@ function portfolioDataSyncPlugin() {
               const data = JSON.parse(body)
               const targetPath = path.resolve(__dirname, 'src/data/portfolioData.js')
               if (fs.existsSync(targetPath)) {
+                const currentContent = fs.readFileSync(targetPath, 'utf8')
                 const targetExport = 'export const defaultPortfolioData ='
                 const exportMatch = currentContent.indexOf(targetExport)
                 if (exportMatch !== -1) {
