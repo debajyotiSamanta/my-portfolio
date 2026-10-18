@@ -87,6 +87,153 @@ export const ASSET_DOCUMENTS = {
   myCV,
 };
 
+// Automatically discover and bundle ALL files in src/assets/ dynamically!
+// If the user renames or adds any new file with any name, it is automatically indexed and resolved!
+export const ALL_RAW_ASSETS = import.meta.glob("../assets/*", { eager: true, import: "default" });
+
+export const NORMALIZED_ASSETS = {};
+try {
+  for (const [relPath, assetUrl] of Object.entries(ALL_RAW_ASSETS || {})) {
+    const fileNameWithExt = relPath.replace(/^.*[\\/]/, "");
+    const baseName = fileNameWithExt.replace(/\.[^/.]+$/, "");
+    const cleanKey = baseName.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+    NORMALIZED_ASSETS[fileNameWithExt] = assetUrl;
+    NORMALIZED_ASSETS[fileNameWithExt.toLowerCase()] = assetUrl;
+    NORMALIZED_ASSETS[baseName] = assetUrl;
+    NORMALIZED_ASSETS[baseName.toLowerCase()] = assetUrl;
+    if (cleanKey) {
+      NORMALIZED_ASSETS[cleanKey] = assetUrl;
+    }
+  }
+} catch (e) {
+  console.warn("Dynamic asset registry error:", e);
+}
+
+// Finds ANY resume or CV file regardless of what the user names the file!
+export function findDocumentAsset(kind, preferredFallback) {
+  const normKind = String(kind || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+  const entries = Object.entries(ALL_RAW_ASSETS || {});
+
+  // 1. Resume search (matches my_resume.pdf, resume.pdf, Debajyoti_Resume.pdf, any *resume*.pdf)
+  if (normKind.includes("resume")) {
+    const match = entries.find(([path]) => {
+      const lower = path.toLowerCase();
+      return lower.endsWith(".pdf") && lower.includes("resume");
+    });
+    if (match) return match[1];
+
+    const fallbackPdf = entries.find(([path]) => {
+      const lower = path.toLowerCase();
+      return lower.endsWith(".pdf") && !lower.includes("cv");
+    });
+    if (fallbackPdf) return fallbackPdf[1];
+
+    return preferredFallback || myResume || "/resume.pdf";
+  }
+
+  // 2. CV search (matches my_CV.pdf, cv.pdf, Curriculum_Vitae.pdf, any *cv*.pdf)
+  if (normKind.includes("cv") || normKind.includes("curriculum") || normKind.includes("vitae")) {
+    const match = entries.find(([path]) => {
+      const lower = path.toLowerCase();
+      return lower.endsWith(".pdf") && (lower.includes("cv") || lower.includes("vitae") || lower.includes("curriculum"));
+    });
+    if (match) return match[1];
+
+    const anyPdf = entries.find(([path]) => path.toLowerCase().endsWith(".pdf"));
+    if (anyPdf) return anyPdf[1];
+
+    return preferredFallback || myCV || "/cv.pdf";
+  }
+
+  // 3. Fallback search by filename
+  for (const [path, url] of entries) {
+    const clean = path.replace(/^.*[\\/]/, "").toLowerCase().replace(/[^a-z0-9]/g, "");
+    if (clean.includes(normKind) || normKind.includes(clean)) {
+      return url;
+    }
+  }
+
+  return preferredFallback || myResume || "/resume.pdf";
+}
+
+// Finds ANY image or thumbnail file regardless of what the user names the file!
+export function findImageAsset(query, fallback) {
+  if (!query && !fallback) return ASSET_IMAGES.mentorship;
+
+  const rawCandidate = query || fallback;
+  if (typeof rawCandidate === "string") {
+    if (
+      rawCandidate.startsWith("data:") ||
+      rawCandidate.startsWith("blob:") ||
+      rawCandidate.startsWith("http://") ||
+      rawCandidate.startsWith("https://")
+    ) {
+      return rawCandidate;
+    }
+  }
+
+  // 1. Direct match in ASSET_IMAGES
+  if (query && ASSET_IMAGES[query]) return ASSET_IMAGES[query];
+
+  // 2. Normalized key in NORMALIZED_ASSETS
+  const cleanQ = String(query || "").trim().replace(/^\/src\/assets\//, "").replace(/\.[^/.]+$/, "");
+  const normQ = cleanQ.toLowerCase().replace(/[^a-z0-9]/g, "");
+  if (normQ && NORMALIZED_ASSETS[normQ]) {
+    return NORMALIZED_ASSETS[normQ];
+  }
+
+  const entries = Object.entries(ALL_RAW_ASSETS || {});
+
+  // 3. Profile / avatar search (matches my_image, my_img, avatar, profile, photo, debajyoti, etc.)
+  if (
+    normQ.includes("avatar") ||
+    normQ.includes("profile") ||
+    normQ.includes("myimage") ||
+    normQ.includes("myimg") ||
+    normQ.includes("photo") ||
+    normQ.includes("debajyoti")
+  ) {
+    const avatarMatch = entries.find(([path]) => {
+      const lower = path.toLowerCase();
+      return (
+        (lower.endsWith(".png") || lower.endsWith(".jpg") || lower.endsWith(".jpeg") || lower.endsWith(".webp")) &&
+        (lower.includes("image") || lower.includes("img") || lower.includes("avatar") || lower.includes("profile") || lower.includes("photo"))
+      );
+    });
+    if (avatarMatch) return avatarMatch[1];
+    return myImage;
+  }
+
+  // 4. Project keyword search
+  if (normQ) {
+    const match = entries.find(([path]) => {
+      const cleanPath = path.replace(/^.*[\\/]/, "").toLowerCase().replace(/[^a-z0-9]/g, "");
+      return cleanPath.includes(normQ) || normQ.includes(cleanPath);
+    });
+    if (match) return match[1];
+  }
+
+  // 5. Fallback search
+  if (fallback) {
+    const cleanFb = String(fallback).trim().replace(/^\/src\/assets\//, "").replace(/\.[^/.]+$/, "");
+    const normFb = cleanFb.toLowerCase().replace(/[^a-z0-9]/g, "");
+    if (normFb && NORMALIZED_ASSETS[normFb]) {
+      return NORMALIZED_ASSETS[normFb];
+    }
+    const fbMatch = entries.find(([path]) => {
+      const cleanPath = path.replace(/^.*[\\/]/, "").toLowerCase().replace(/[^a-z0-9]/g, "");
+      return cleanPath.includes(normFb) || normFb.includes(cleanPath);
+    });
+    if (fbMatch) return fbMatch[1];
+    if (!fallback.startsWith("/src/assets/") && !fallback.includes("/assets/")) {
+      return fallback;
+    }
+  }
+
+  return ASSET_IMAGES.mentorship;
+}
+
 export const PORTFOLIO_BUILD_TIMESTAMP =
   typeof __PORTFOLIO_BUILD_TIME__ !== "undefined"
     ? __PORTFOLIO_BUILD_TIME__

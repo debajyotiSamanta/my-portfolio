@@ -5,6 +5,8 @@ import {
   PORTFOLIO_BUILD_TIMESTAMP,
   ASSET_IMAGES,
   ASSET_DOCUMENTS,
+  findDocumentAsset,
+  findImageAsset,
   computeDataFingerprint,
   CLOUD_SYNC_CONFIG,
 } from "../data/portfolioData";
@@ -346,7 +348,6 @@ export function PortfolioProvider({ children }) {
   };
 
   const resolveImage = (imgKey, fallback) => {
-    let raw;
     // 1. Prioritize uploaded base64 data URIs, blob URLs, or live web URLs
     if (typeof fallback === "string" && (fallback.startsWith("data:") || fallback.startsWith("blob:") || fallback.startsWith("http://") || fallback.startsWith("https://"))) {
       return fallback;
@@ -355,53 +356,20 @@ export function PortfolioProvider({ children }) {
       return imgKey;
     }
 
-    // 2. Exact match in ASSET_IMAGES
-    if (imgKey && ASSET_IMAGES[imgKey]) {
-      raw = ASSET_IMAGES[imgKey];
-    }
-    // 3. Clean key / filename match (e.g. "my_image" or "LocalFix1" or "solar_system")
-    else if (imgKey) {
-      const cleanKey = String(imgKey).trim().replace(/^\/src\/assets\//, "").replace(/\.[^/.]+$/, "");
-      const normalizedKey = cleanKey.replace(/[\s-_]+(\w)/g, (_, c) => c.toUpperCase());
-      if (ASSET_IMAGES[cleanKey]) {
-        raw = ASSET_IMAGES[cleanKey];
-      } else if (ASSET_IMAGES[normalizedKey]) {
-        raw = ASSET_IMAGES[normalizedKey];
-      }
-    }
-
-    // 4. Fallback checks: if fallback matches an asset name or is not a stale dev path
-    if (!raw && fallback) {
-      const cleanFallback = String(fallback).trim().replace(/^\/src\/assets\//, "").replace(/\.[^/.]+$/, "");
-      const normalizedFallback = cleanFallback.replace(/[\s-_]+(\w)/g, (_, c) => c.toUpperCase());
-      if (ASSET_IMAGES[cleanFallback]) {
-        raw = ASSET_IMAGES[cleanFallback];
-      } else if (ASSET_IMAGES[normalizedFallback]) {
-        raw = ASSET_IMAGES[normalizedFallback];
-      } else if (!fallback.startsWith("/src/assets/") && !fallback.includes("/assets/")) {
-        raw = fallback;
-      }
-    }
-
-    // 5. Ultimate fallback to default mentorship thumbnail
-    if (!raw) {
-      raw = ASSET_IMAGES.mentorship;
-    }
-
+    // 2. Automatically find the asset regardless of file name or casing!
+    const raw = findImageAsset(imgKey, fallback);
     return resolveAssetUrl(raw);
   };
 
   const resolveDocumentUrl = (docKey, fallback) => {
+    // 1. Prioritize uploaded base64 data URIs, blob URLs, or live web URLs
     if (typeof fallback === "string" && (fallback.startsWith("data:") || fallback.startsWith("blob:") || fallback.startsWith("http://") || fallback.startsWith("https://"))) {
       return fallback;
     }
-    if (docKey && ASSET_DOCUMENTS[docKey]) {
-      return resolveAssetUrl(ASSET_DOCUMENTS[docKey]);
-    }
-    if (fallback && !fallback.startsWith("/src/assets/") && !fallback.includes("/assets/")) {
-      return resolveAssetUrl(fallback);
-    }
-    return resolveAssetUrl(ASSET_DOCUMENTS.myResume);
+
+    // 2. Automatically find any resume or CV PDF regardless of exact file name!
+    const raw = findDocumentAsset(docKey || fallback, fallback);
+    return resolveAssetUrl(raw);
   };
 
   return (

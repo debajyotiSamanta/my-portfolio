@@ -315,24 +315,50 @@ export default function AdminPanel() {
   };
 
   // ── Document Upload Helper (Resume & CV) ──
-  const handlePdfUpload = (e, fieldKey, nameKey, defaultName) => {
+  const handlePdfUpload = async (e, fieldKey, nameKey, defaultName) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = (uploadEvent) => {
+    reader.onload = async (uploadEvent) => {
       const base64 = uploadEvent.target?.result;
-      if (base64) {
-        setFormData((prev) => ({
-          ...prev,
-          personal: {
-            ...prev.personal,
-            [fieldKey]: base64,
-            [nameKey]: file.name || defaultName,
-          },
-        }));
-        setSaveStatus(`Uploaded "${file.name}". Click "Save All Changes" to apply live.`);
-        setTimeout(() => setSaveStatus(""), 4000);
+      if (!base64) return;
+
+      let documentUrl = base64;
+      const isLocal = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+
+      if (isLocal) {
+        try {
+          const res = await fetch("/api/save-document", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ filename: file.name, base64 }),
+          });
+          const resData = await res.json();
+          if (resData?.success && resData.url) {
+            documentUrl = resData.url;
+            console.info("[AdminPanel] Saved PDF directly to public directory:", documentUrl);
+          }
+        } catch {
+          // Dev endpoint not active, continue with base64
+        }
       }
+
+      setFormData((prev) => ({
+        ...prev,
+        personal: {
+          ...prev.personal,
+          [fieldKey]: documentUrl,
+          [nameKey]: file.name || defaultName,
+        },
+      }));
+
+      const sizeKb = Math.round(file.size / 1024);
+      if (documentUrl.startsWith("/") || sizeKb <= 60) {
+        setSaveStatus(`Uploaded "${file.name}" (${sizeKb} KB). Click "Save All Changes" to sync across all devices!`);
+      } else {
+        setSaveStatus(`Loaded "${file.name}" (${sizeKb} KB). Note: To make large PDFs visible across all devices, paste a Google Drive / GitHub link below or place the file in the public/ folder.`);
+      }
+      setTimeout(() => setSaveStatus(""), 6000);
     };
     reader.readAsDataURL(file);
   };

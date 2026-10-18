@@ -51,6 +51,39 @@ function portfolioDataSyncPlugin() {
           res.end('Method Not Allowed')
         }
       })
+
+      server.middlewares.use('/api/save-document', (req, res) => {
+        if (req.method === 'POST') {
+          let body = ''
+          req.on('data', (chunk) => { body += chunk })
+          req.on('end', () => {
+            try {
+              const { filename, base64 } = JSON.parse(body)
+              if (!filename || !base64) {
+                res.writeHead(400, { 'Content-Type': 'application/json' })
+                res.end(JSON.stringify({ success: false, message: 'Filename and base64 data required' }))
+                return
+              }
+              const publicDir = path.resolve(__dirname, 'public')
+              if (!fs.existsSync(publicDir)) {
+                fs.mkdirSync(publicDir, { recursive: true })
+              }
+              const safeName = path.basename(filename).replace(/[^a-zA-Z0-9._-]/g, '_')
+              const targetPath = path.resolve(publicDir, safeName)
+              const rawData = base64.replace(/^data:[^;]+;base64,/, '')
+              fs.writeFileSync(targetPath, Buffer.from(rawData, 'base64'))
+              res.writeHead(200, { 'Content-Type': 'application/json' })
+              res.end(JSON.stringify({ success: true, url: `/${safeName}`, filename: safeName }))
+            } catch (err) {
+              res.writeHead(500, { 'Content-Type': 'application/json' })
+              res.end(JSON.stringify({ success: false, error: err.message }))
+            }
+          })
+        } else {
+          res.writeHead(405, { 'Content-Type': 'text/plain' })
+          res.end('Method Not Allowed')
+        }
+      })
     }
   }
 }
