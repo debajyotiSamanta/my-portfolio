@@ -1,11 +1,25 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { defaultPortfolioData, PORTFOLIO_BUILD_VERSION, ASSET_IMAGES, ASSET_DOCUMENTS, computeDataFingerprint, CLOUD_SYNC_CONFIG } from "../data/portfolioData";
+import {
+  defaultPortfolioData,
+  PORTFOLIO_BUILD_VERSION,
+  PORTFOLIO_BUILD_TIMESTAMP,
+  ASSET_IMAGES,
+  ASSET_DOCUMENTS,
+  computeDataFingerprint,
+  CLOUD_SYNC_CONFIG,
+} from "../data/portfolioData";
 
 const STORAGE_DATA_KEY   = "debajyoti_portfolio_data_v3";
 const STORAGE_PIN_KEY    = "debajyoti_portfolio_admin_pin_v2";
 const STORAGE_MSGS_KEY   = "debajyoti_portfolio_messages_v2";
 const STORAGE_CLOUD_KEY  = "debajyoti_portfolio_cloud_v1";
 const DEFAULT_PIN        = "debajyoti2024";
+
+// Session-level asset cache token:
+// In localhost/dev, appends Date.now() on each page load so browsers never serve stale disk cache.
+// In production, uses the unique compile-time build version.
+const IS_DEV = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+const SESSION_CACHE_KEY = IS_DEV ? `dev-${Date.now()}` : PORTFOLIO_BUILD_VERSION;
 
 const PortfolioContext = createContext(null);
 
@@ -22,15 +36,17 @@ export function PortfolioProvider({ children }) {
       const saved = localStorage.getItem(STORAGE_DATA_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
+        const codebaseTs = Date.parse(PORTFOLIO_BUILD_TIMESTAMP) || 0;
+        const savedTs = Date.parse(parsed.lastUpdated) || 0;
+
         // Cache Invalidation Check:
         // When any file in the project (thumbnails, portfolioData.js, text, etc.) is updated:
-        // 1. If PORTFOLIO_BUILD_VERSION changed OR
-        // 2. If the codebase fingerprint changed (i.e. someone edited portfolioData.js directly)
-        // Purge stale local cache so viewers are 100% guaranteed to see the brand new files!
+        // Discard stale local cache so viewers are 100% guaranteed to see the brand new files!
         if (
           parsed &&
           parsed.version === PORTFOLIO_BUILD_VERSION &&
-          parsed._fingerprint === currentFingerprint
+          parsed._fingerprint === currentFingerprint &&
+          savedTs >= codebaseTs
         ) {
           return {
             ...defaultPortfolioData,
@@ -38,7 +54,7 @@ export function PortfolioProvider({ children }) {
             personal: { ...defaultPortfolioData.personal, ...(parsed.personal || {}) },
           };
         } else {
-          console.info("[PortfolioContext] Codebase file update detected. Purged stale local cache to load newest files.");
+          console.info("[PortfolioContext] Codebase file update or new build detected. Purged stale local cache to load newest files.");
           localStorage.removeItem(STORAGE_DATA_KEY);
         }
       }
@@ -89,13 +105,47 @@ export function PortfolioProvider({ children }) {
         if (!res.ok) return;
         const record = await res.json();
         const data = record.record || record;
-        if (isMounted && data && typeof data === "object" && data.projects && Array.isArray(data.projects)) {
-          console.info("[Portfolio] Fresh updates loaded live from Cloud Database for all devices.");
+        if (!isMounted || !data || typeof data !== "object") return;
+
+        // Codebase vs Cloud Precedence check:
+        // A stale cloud snapshot must NEVER overwrite a newer codebase deployment!
+        const codebaseTs = Date.parse(PORTFOLIO_BUILD_TIMESTAMP) || 0;
+        const cloudTs = Date.parse(data.lastUpdated) || 0;
+
+        if (cloudTs && cloudTs > codebaseTs) {
+          // Cloud has a fresher edit made via Admin Panel AFTER the codebase was deployed
+          console.info("[Portfolio] Applying fresh live update from Cloud Database.");
           setPortfolioData((prev) => ({
             ...prev,
             ...data,
             personal: { ...prev.personal, ...(data.personal || {}) },
           }));
+        } else {
+          // Codebase is newer than or equal to the cloud record (or cloud record has no timestamp)
+          console.info("[Portfolio] Codebase files are up-to-date and take precedence over cloud snapshot.");
+          // Refresh the cloud bin with current codebase data so all other devices receive the newest release!
+          if (cloudConfig.apiKey) {
+            try {
+              const currentFingerprint = computeDataFingerprint(defaultPortfolioData);
+              if (data._fingerprint !== currentFingerprint) {
+                const refreshedData = {
+                  ...defaultPortfolioData,
+                  version: PORTFOLIO_BUILD_VERSION,
+                  _buildTime: PORTFOLIO_BUILD_TIMESTAMP,
+                  _fingerprint: currentFingerprint,
+                  lastUpdated: new Date().toISOString(),
+                };
+                fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
+                  method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json",
+                    "X-Master-Key": cloudConfig.apiKey,
+                  },
+                  body: JSON.stringify(refreshedData),
+                }).catch(() => {});
+              }
+            } catch {}
+          }
         }
       } catch (err) {
         console.warn("[CloudSync] Background sync check:", err);
@@ -292,38 +342,63 @@ export function PortfolioProvider({ children }) {
     // Base64 data URIs or blob URLs do not need cache-busting
     if (url.startsWith("data:") || url.startsWith("blob:")) return url;
     const sep = url.includes("?") ? "&" : "?";
-    return `${url}${sep}v=${encodeURIComponent(PORTFOLIO_BUILD_VERSION)}`;
+    return `${url}${sep}v=${encodeURIComponent(SESSION_CACHE_KEY)}`;
   };
 
   const resolveImage = (imgKey, fallback) => {
     let raw;
-    // 1. Prioritize uploaded base64 data URIs or live web URLs
-    if (typeof fallback === "string" && (fallback.startsWith("data:") || fallback.startsWith("http://") || fallback.startsWith("https://"))) {
-      raw = fallback;
-    } else if (typeof imgKey === "string" && (imgKey.startsWith("data:") || imgKey.startsWith("http://") || imgKey.startsWith("https://"))) {
-      raw = imgKey;
+    // 1. Prioritize uploaded base64 data URIs, blob URLs, or live web URLs
+    if (typeof fallback === "string" && (fallback.startsWith("data:") || fallback.startsWith("blob:") || fallback.startsWith("http://") || fallback.startsWith("https://"))) {
+      return fallback;
     }
-    // 2. Recognized bundled asset keys from ASSET_IMAGES
-    else if (imgKey && ASSET_IMAGES[imgKey]) {
+    if (typeof imgKey === "string" && (imgKey.startsWith("data:") || imgKey.startsWith("blob:") || imgKey.startsWith("http://") || imgKey.startsWith("https://"))) {
+      return imgKey;
+    }
+
+    // 2. Exact match in ASSET_IMAGES
+    if (imgKey && ASSET_IMAGES[imgKey]) {
       raw = ASSET_IMAGES[imgKey];
     }
-    // 3. Fallback to valid fallback if not a stale dev path, or default mentorship
-    else if (fallback && !fallback.startsWith("/src/assets/")) {
-      raw = fallback;
-    } else {
+    // 3. Clean key / filename match (e.g. "my_image" or "LocalFix1" or "solar_system")
+    else if (imgKey) {
+      const cleanKey = String(imgKey).trim().replace(/^\/src\/assets\//, "").replace(/\.[^/.]+$/, "");
+      const normalizedKey = cleanKey.replace(/[\s-_]+(\w)/g, (_, c) => c.toUpperCase());
+      if (ASSET_IMAGES[cleanKey]) {
+        raw = ASSET_IMAGES[cleanKey];
+      } else if (ASSET_IMAGES[normalizedKey]) {
+        raw = ASSET_IMAGES[normalizedKey];
+      }
+    }
+
+    // 4. Fallback checks: if fallback matches an asset name or is not a stale dev path
+    if (!raw && fallback) {
+      const cleanFallback = String(fallback).trim().replace(/^\/src\/assets\//, "").replace(/\.[^/.]+$/, "");
+      const normalizedFallback = cleanFallback.replace(/[\s-_]+(\w)/g, (_, c) => c.toUpperCase());
+      if (ASSET_IMAGES[cleanFallback]) {
+        raw = ASSET_IMAGES[cleanFallback];
+      } else if (ASSET_IMAGES[normalizedFallback]) {
+        raw = ASSET_IMAGES[normalizedFallback];
+      } else if (!fallback.startsWith("/src/assets/") && !fallback.includes("/assets/")) {
+        raw = fallback;
+      }
+    }
+
+    // 5. Ultimate fallback to default mentorship thumbnail
+    if (!raw) {
       raw = ASSET_IMAGES.mentorship;
     }
+
     return resolveAssetUrl(raw);
   };
 
   const resolveDocumentUrl = (docKey, fallback) => {
-    if (typeof fallback === "string" && (fallback.startsWith("data:") || fallback.startsWith("http://") || fallback.startsWith("https://"))) {
+    if (typeof fallback === "string" && (fallback.startsWith("data:") || fallback.startsWith("blob:") || fallback.startsWith("http://") || fallback.startsWith("https://"))) {
       return fallback;
     }
     if (docKey && ASSET_DOCUMENTS[docKey]) {
       return resolveAssetUrl(ASSET_DOCUMENTS[docKey]);
     }
-    if (fallback && !fallback.startsWith("/src/assets/")) {
+    if (fallback && !fallback.startsWith("/src/assets/") && !fallback.includes("/assets/")) {
       return resolveAssetUrl(fallback);
     }
     return resolveAssetUrl(ASSET_DOCUMENTS.myResume);

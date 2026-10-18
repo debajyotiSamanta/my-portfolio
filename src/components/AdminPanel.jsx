@@ -2,6 +2,51 @@ import { useState, useId } from "react";
 import { usePortfolio } from "../context/PortfolioContext";
 import { ASSET_IMAGES } from "../data/portfolioData";
 
+// Utility: Automatically compresses uploaded photos into compact, high-quality WebP/JPEG data URIs
+// Keeps payload under ~30KB so JSONbin free tier (100KB limit) and localStorage never fail!
+function compressImageFile(file, maxWidth = 800, maxHeight = 600, quality = 0.82) {
+  return new Promise((resolve, reject) => {
+    if (!file) return reject(new Error("No file provided"));
+    if (file.type === "image/svg+xml") {
+      const reader = new FileReader();
+      reader.onload = (e) => resolve(e.target?.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+        if (width > maxWidth || height > maxHeight) {
+          const ratio = Math.min(maxWidth / width, maxHeight / height);
+          width = Math.round(width * ratio);
+          height = Math.round(height * ratio);
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+        ctx.drawImage(img, 0, 0, width, height);
+
+        let compressed = canvas.toDataURL("image/webp", quality);
+        if (!compressed || !compressed.startsWith("data:image/webp")) {
+          compressed = canvas.toDataURL("image/jpeg", quality);
+        }
+        resolve(compressed);
+      };
+      img.onerror = () => resolve(e.target?.result);
+      img.src = e.target?.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
 export default function AdminPanel() {
   const {
     portfolioData,
@@ -73,11 +118,12 @@ export default function AdminPanel() {
     }
   };
 
-  const handleSaveAll = () => {
-    const success = savePortfolioData(formData);
+  const handleSaveAll = async () => {
+    setSaveStatus("Saving and syncing across all devices...");
+    const success = await savePortfolioData(formData);
     if (success) {
-      setSaveStatus("Changes successfully saved and applied live!");
-      setTimeout(() => setSaveStatus(""), 4000);
+      setSaveStatus("Changes successfully saved and applied live across all devices!");
+      setTimeout(() => setSaveStatus(""), 4500);
     } else {
       setSaveStatus("Failed to save changes. Please try again.");
     }
@@ -230,24 +276,24 @@ export default function AdminPanel() {
     }
   };
 
-  const handleProjectImageUpload = (e, projId) => {
+  const handleProjectImageUpload = async (e, projId) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (uploadEvent) => {
-      const base64 = uploadEvent.target?.result;
-      if (base64) {
-        setFormData((prev) => ({
-          ...prev,
-          projects: prev.projects.map((p) =>
-            p.id === projId ? { ...p, img: base64, imgKey: "" } : p
-          ),
-        }));
-        setSaveStatus(`Project image updated. Click "Save All Changes" to persist.`);
-        setTimeout(() => setSaveStatus(""), 4000);
-      }
-    };
-    reader.readAsDataURL(file);
+    try {
+      setSaveStatus("Optimizing thumbnail image...");
+      const compressed = await compressImageFile(file, 800, 600, 0.82);
+      setFormData((prev) => ({
+        ...prev,
+        projects: prev.projects.map((p) =>
+          p.id === projId ? { ...p, img: compressed, imgKey: "" } : p
+        ),
+      }));
+      setSaveStatus(`Thumbnail updated & optimized (${(compressed.length / 1024).toFixed(0)} KB). Click "Save All Changes" to persist live.`);
+      setTimeout(() => setSaveStatus(""), 4500);
+    } catch (err) {
+      console.error("Failed to process thumbnail:", err);
+      setSaveStatus("Error processing image file.");
+    }
   };
 
   // ── Skill Helpers ──
@@ -292,26 +338,26 @@ export default function AdminPanel() {
   };
 
   // ── Profile Photo Upload & Reset Helpers ──
-  const handleAvatarUpload = (e) => {
+  const handleAvatarUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (uploadEvent) => {
-      const base64 = uploadEvent.target?.result;
-      if (base64) {
-        setFormData((prev) => ({
-          ...prev,
-          personal: {
-            ...prev.personal,
-            avatar: base64,
-            avatarKey: "",
-          },
-        }));
-        setSaveStatus(`Profile picture updated to "${file.name}". Click "Save All Changes" to apply live.`);
-        setTimeout(() => setSaveStatus(""), 4000);
-      }
-    };
-    reader.readAsDataURL(file);
+    try {
+      setSaveStatus("Optimizing profile photo...");
+      const compressed = await compressImageFile(file, 600, 600, 0.85);
+      setFormData((prev) => ({
+        ...prev,
+        personal: {
+          ...prev.personal,
+          avatar: compressed,
+          avatarKey: "",
+        },
+      }));
+      setSaveStatus(`Profile photo updated & optimized (${(compressed.length / 1024).toFixed(0)} KB). Click "Save All Changes" to persist live.`);
+      setTimeout(() => setSaveStatus(""), 4500);
+    } catch (err) {
+      console.error("Failed to process photo:", err);
+      setSaveStatus("Error processing photo file.");
+    }
   };
 
   const handleResetAvatar = () => {
@@ -349,25 +395,25 @@ export default function AdminPanel() {
     }
   };
 
-  const handleToolIconUpload = (e, index) => {
+  const handleToolIconUpload = async (e, index) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (uploadEvent) => {
-      const base64 = uploadEvent.target?.result;
-      if (base64) {
-        setFormData((prev) => {
-          const updated = [...(prev.frameworksAndTools || [])];
-          updated[index] = {
-            ...updated[index],
-            img: base64,
-            imgKey: "", // clear asset key when custom image is uploaded
-          };
-          return { ...prev, frameworksAndTools: updated };
-        });
-      }
-    };
-    reader.readAsDataURL(file);
+    try {
+      const compressed = await compressImageFile(file, 200, 200, 0.9);
+      setFormData((prev) => {
+        const updated = [...(prev.frameworksAndTools || [])];
+        updated[index] = {
+          ...updated[index],
+          img: compressed,
+          imgKey: "", // clear asset key when custom image is uploaded
+        };
+        return { ...prev, frameworksAndTools: updated };
+      });
+      setSaveStatus("Tool icon updated & optimized. Click 'Save All Changes' to persist.");
+      setTimeout(() => setSaveStatus(""), 4000);
+    } catch (err) {
+      console.error("Tool icon error:", err);
+    }
   };
 
   const handleMoveTool = (index, direction) => {

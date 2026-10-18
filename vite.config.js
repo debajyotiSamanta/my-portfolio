@@ -28,17 +28,14 @@ function portfolioDataSyncPlugin() {
               const data = JSON.parse(body)
               const targetPath = path.resolve(__dirname, 'src/data/portfolioData.js')
               if (fs.existsSync(targetPath)) {
-                const currentContent = fs.readFileSync(targetPath, 'utf8')
-                const exportMatch = currentContent.indexOf('export const PORTFOLIO_BUILD_VERSION')
-                const fallbackMatch = exportMatch !== -1 ? exportMatch : currentContent.indexOf('export const defaultPortfolioData =')
-                if (fallbackMatch !== -1) {
-                  const importsAndAssets = currentContent.substring(0, fallbackMatch)
-                  const newVersion = `v-${Date.now()}`
-                  data.version = newVersion
-                  const newContent = `${importsAndAssets}export const PORTFOLIO_BUILD_VERSION = "${newVersion}";\n\nexport const defaultPortfolioData = ${JSON.stringify(data, null, 2)};\n`
+                const targetExport = 'export const defaultPortfolioData ='
+                const exportMatch = currentContent.indexOf(targetExport)
+                if (exportMatch !== -1) {
+                  const prefix = currentContent.substring(0, exportMatch)
+                  const newContent = `${prefix}${targetExport} ${JSON.stringify(data, null, 2)};\n`
                   fs.writeFileSync(targetPath, newContent, 'utf8')
                   res.writeHead(200, { 'Content-Type': 'application/json' })
-                  res.end(JSON.stringify({ success: true, message: 'Updated portfolioData.js in codebase!' }))
+                  res.end(JSON.stringify({ success: true, message: 'Updated defaultPortfolioData in codebase!' }))
                   return
                 }
               }

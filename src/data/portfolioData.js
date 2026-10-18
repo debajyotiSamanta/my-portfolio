@@ -13,6 +13,8 @@ import musicHub     from "../assets/Music Hub.png";
 import localFix     from "../assets/LocalFix1.png";
 
 import myImage      from "../assets/my_image.png";
+import myImg        from "../assets/my_img.png";
+import festivalImages from "../assets/festival_images.jpg";
 import myResume     from "../assets/my_resume.pdf";
 import myCV         from "../assets/my_CV.pdf";
 
@@ -32,20 +34,38 @@ import tailwind     from "../assets/Tailwind_CSS.png";
 import sql          from "../assets/sql.png";
 
 export const ASSET_IMAGES = {
+  // Projects
   mentorship,
   musicHub,
+  "Music Hub": musicHub,
+  music_hub: musicHub,
   localFix,
+  LocalFix1: localFix,
+  localFix1: localFix,
+  local_fix: localFix,
   pfm,
   ludo,
   solarSystem,
+  solar_system: solarSystem,
   project4,
   todo,
   personalLib,
+  "personal book library": personalLib,
+  personal_book_library: personalLib,
   project1,
   project2,
   project3,
   project5,
+  festivalImages,
+  festival_images: festivalImages,
+
+  // Avatar / Profile
   myImage,
+  my_image: myImage,
+  myImg: myImg || myImage,
+  my_img: myImg || myImage,
+
+  // Tools & Skills
   html,
   css,
   js,
@@ -67,10 +87,15 @@ export const ASSET_DOCUMENTS = {
   myCV,
 };
 
-export const PORTFOLIO_BUILD_VERSION =
+export const PORTFOLIO_BUILD_TIMESTAMP =
   typeof __PORTFOLIO_BUILD_TIME__ !== "undefined"
     ? __PORTFOLIO_BUILD_TIME__
-    : "2026.10.18-v3.2";
+    : new Date().toISOString();
+
+export const PORTFOLIO_BUILD_VERSION =
+  typeof __PORTFOLIO_BUILD_TIME__ !== "undefined"
+    ? `v-${__PORTFOLIO_BUILD_TIME__.replace(/[^0-9a-zA-Z]/g, "")}`
+    : "2026.10.18-v3.3";
 
 export const CLOUD_SYNC_CONFIG = {
   provider: "jsonbin",
