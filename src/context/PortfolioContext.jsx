@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { defaultPortfolioData, PORTFOLIO_BUILD_VERSION, ASSET_IMAGES, computeDataFingerprint, CLOUD_SYNC_CONFIG } from "../data/portfolioData";
+import { defaultPortfolioData, PORTFOLIO_BUILD_VERSION, ASSET_IMAGES, ASSET_DOCUMENTS, computeDataFingerprint, CLOUD_SYNC_CONFIG } from "../data/portfolioData";
 
 const STORAGE_DATA_KEY   = "debajyoti_portfolio_data_v3";
 const STORAGE_PIN_KEY    = "debajyoti_portfolio_admin_pin_v2";
@@ -297,17 +297,36 @@ export function PortfolioProvider({ children }) {
 
   const resolveImage = (imgKey, fallback) => {
     let raw;
-    // If fallback is an uploaded base64 data URI or custom URL, prioritize it
-    if (typeof fallback === "string" && (fallback.startsWith("data:") || fallback.startsWith("http://") || fallback.startsWith("https://") || fallback.startsWith("/"))) {
+    // 1. Prioritize uploaded base64 data URIs or live web URLs
+    if (typeof fallback === "string" && (fallback.startsWith("data:") || fallback.startsWith("http://") || fallback.startsWith("https://"))) {
       raw = fallback;
-    } else if (typeof imgKey === "string" && (imgKey.startsWith("data:") || imgKey.startsWith("http://") || imgKey.startsWith("https://") || imgKey.startsWith("/"))) {
+    } else if (typeof imgKey === "string" && (imgKey.startsWith("data:") || imgKey.startsWith("http://") || imgKey.startsWith("https://"))) {
       raw = imgKey;
-    } else if (imgKey && ASSET_IMAGES[imgKey]) {
+    }
+    // 2. Recognized bundled asset keys from ASSET_IMAGES
+    else if (imgKey && ASSET_IMAGES[imgKey]) {
       raw = ASSET_IMAGES[imgKey];
+    }
+    // 3. Fallback to valid fallback if not a stale dev path, or default mentorship
+    else if (fallback && !fallback.startsWith("/src/assets/")) {
+      raw = fallback;
     } else {
-      raw = fallback || ASSET_IMAGES.mentorship;
+      raw = ASSET_IMAGES.mentorship;
     }
     return resolveAssetUrl(raw);
+  };
+
+  const resolveDocumentUrl = (docKey, fallback) => {
+    if (typeof fallback === "string" && (fallback.startsWith("data:") || fallback.startsWith("http://") || fallback.startsWith("https://"))) {
+      return fallback;
+    }
+    if (docKey && ASSET_DOCUMENTS[docKey]) {
+      return resolveAssetUrl(ASSET_DOCUMENTS[docKey]);
+    }
+    if (fallback && !fallback.startsWith("/src/assets/")) {
+      return resolveAssetUrl(fallback);
+    }
+    return resolveAssetUrl(ASSET_DOCUMENTS.myResume);
   };
 
   return (
@@ -324,6 +343,7 @@ export function PortfolioProvider({ children }) {
         importDataJSON,
         resolveImage,
         resolveAssetUrl,
+        resolveDocumentUrl,
         messages,
         addMessage,
         deleteMessage,

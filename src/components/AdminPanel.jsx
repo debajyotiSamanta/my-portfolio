@@ -882,7 +882,7 @@ export default function AdminPanel() {
                           overflow: "hidden", background: "#060913",
                         }}>
                           <img
-                            src={resolveImage(formData.personal.avatarKey, formData.personal.avatar)}
+                            src={resolveImage(formData.personal.avatarKey || "myImage", formData.personal.avatar)}
                             alt="Profile Avatar Preview"
                             style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top" }}
                           />

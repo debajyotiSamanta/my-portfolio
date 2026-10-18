@@ -32,7 +32,7 @@ function useTypewriter(words, { typingSpeed = 80, erasingSpeed = 45, pauseTime =
 }
 
 export default function Home() {
-  const { portfolioData, resolveImage, resolveAssetUrl } = usePortfolio();
+  const { portfolioData, resolveImage, resolveAssetUrl, resolveDocumentUrl } = usePortfolio();
   const personal = portfolioData?.personal || {};
   const stats    = portfolioData?.stats || [];
   const socials  = portfolioData?.socials || [];
@@ -41,7 +41,7 @@ export default function Home() {
   const role = useTypewriter(roles);
   const [imgLoaded, setImgLoaded] = useState(false);
 
-  const avatarSrc = resolveImage(personal.avatarKey, personal.avatar);
+  const avatarSrc = resolveImage(personal.avatarKey || "myImage", personal.avatar);
 
   return (
     <section
@@ -179,7 +179,7 @@ export default function Home() {
 
               {personal.resumeUrl && (
                 <a
-                  href={resolveAssetUrl ? resolveAssetUrl(personal.resumeUrl) : personal.resumeUrl}
+                  href={resolveDocumentUrl ? resolveDocumentUrl(personal.resumeKey || "myResume", personal.resumeUrl) : personal.resumeUrl}
                   download={personal.resumeName || "Debajyoti_Samanta_Resume.pdf"}
                   className="btn-ghost"
                   style={{ padding: "12px 22px", fontSize: "0.9rem", gap: "8px" }}
@@ -191,7 +191,7 @@ export default function Home() {
 
               {personal.cvUrl && (
                 <a
-                  href={resolveAssetUrl ? resolveAssetUrl(personal.cvUrl) : personal.cvUrl}
+                  href={resolveDocumentUrl ? resolveDocumentUrl(personal.cvKey || "myCV", personal.cvUrl) : personal.cvUrl}
                   download={personal.cvName || "Debajyoti_Samanta_CV.pdf"}
                   className="btn-ghost"
                   style={{ padding: "12px 22px", fontSize: "0.9rem", gap: "8px" }}

@@ -19,7 +19,7 @@ const SERVICES_LIST = [
 ];
 
 export default function Footer() {
-  const { portfolioData, resolveAssetUrl } = usePortfolio();
+  const { portfolioData, resolveAssetUrl, resolveDocumentUrl } = usePortfolio();
   const personal = portfolioData?.personal || {};
   const socials  = portfolioData?.socials || [];
   const year     = new Date().getFullYear();
@@ -104,7 +104,7 @@ export default function Footer() {
             </a>
             {personal.resumeUrl && (
               <a
-                href={resolveAssetUrl ? resolveAssetUrl(personal.resumeUrl) : personal.resumeUrl}
+                href={resolveDocumentUrl ? resolveDocumentUrl(personal.resumeKey || "myResume", personal.resumeUrl) : personal.resumeUrl}
                 download={personal.resumeName || "Debajyoti_Samanta_Resume.pdf"}
                 className="btn-ghost"
                 style={{ padding: "13px 24px", fontSize: "0.9rem", gap: "8px" }}
@@ -115,7 +115,7 @@ export default function Footer() {
             )}
             {personal.cvUrl && (
               <a
-                href={resolveAssetUrl ? resolveAssetUrl(personal.cvUrl) : personal.cvUrl}
+                href={resolveDocumentUrl ? resolveDocumentUrl(personal.cvKey || "myCV", personal.cvUrl) : personal.cvUrl}
                 download={personal.cvName || "Debajyoti_Samanta_CV.pdf"}
                 className="btn-ghost"
                 style={{ padding: "13px 24px", fontSize: "0.9rem", gap: "8px" }}

@@ -62,6 +62,11 @@ export const ASSET_IMAGES = {
   cpp,
 };
 
+export const ASSET_DOCUMENTS = {
+  myResume,
+  myCV,
+};
+
 export const PORTFOLIO_BUILD_VERSION =
   typeof __PORTFOLIO_BUILD_TIME__ !== "undefined"
     ? __PORTFOLIO_BUILD_TIME__
@@ -123,6 +128,9 @@ export const defaultPortfolioData = {
     resumeName: "Debajyoti_Samanta_Resume.pdf",
     cvName: "Debajyoti_Samanta_CV.pdf",
     avatar: myImage,
+    avatarKey: "myImage",
+    resumeKey: "myResume",
+    cvKey: "myCV",
   },
 
   stats: [
