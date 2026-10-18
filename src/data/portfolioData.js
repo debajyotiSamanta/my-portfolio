@@ -62,7 +62,38 @@ export const ASSET_IMAGES = {
   cpp,
 };
 
+export const PORTFOLIO_BUILD_VERSION =
+  typeof __PORTFOLIO_BUILD_TIME__ !== "undefined"
+    ? __PORTFOLIO_BUILD_TIME__
+    : "2026.10.18-v3.2";
+
+export function computeDataFingerprint(data) {
+  try {
+    const raw = JSON.stringify({
+      v: PORTFOLIO_BUILD_VERSION,
+      p: data?.personal,
+      pr: data?.projects,
+      sk: data?.skillsCategories,
+      st: data?.stats,
+      sv: data?.services,
+      ed: data?.education,
+      ex: data?.experience,
+      tl: data?.frameworksAndTools,
+      tm: data?.testimonials,
+    });
+    let hash = 5381;
+    for (let i = 0; i < raw.length; i++) {
+      hash = ((hash << 5) + hash) + raw.charCodeAt(i);
+      hash = hash & hash;
+    }
+    return `fp-${Math.abs(hash).toString(36)}`;
+  } catch {
+    return `fp-${Date.now()}`;
+  }
+}
+
 export const defaultPortfolioData = {
+  version: PORTFOLIO_BUILD_VERSION,
   personal: {
     name: "Debajyoti Samanta",
     firstName: "Debajyoti",

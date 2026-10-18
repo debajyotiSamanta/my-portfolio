@@ -858,6 +858,7 @@ select option {
   align-items: center;
   gap: 14px;
   min-width: 0;
+  flex: 1;
 }
 
 .admin-modal-header-actions {
@@ -865,6 +866,55 @@ select option {
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
+}
+
+.admin-save-all-btn {
+  padding: 9px 20px;
+  background: #059669;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 2px 10px rgba(5, 150, 105, 0.35);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  font-family: var(--font-body);
+}
+.admin-save-all-btn:hover {
+  background: #047857;
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.45);
+}
+
+.admin-modal-close-desktop,
+.admin-modal-close-mobile {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+.admin-modal-close-desktop:hover,
+.admin-modal-close-mobile:hover {
+  color: #ffffff;
+  background: #334155;
+}
+
+.admin-modal-close-mobile {
+  display: none;
 }
 
 /* Tabs */
@@ -936,6 +986,43 @@ select option {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
   gap: 18px;
+}
+
+/* Section Header & Primary Action Button */
+.admin-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.admin-btn-primary {
+  padding: 10px 20px;
+  background: #2563eb;
+  border: 1px solid rgba(255, 255, 255, 0.20);
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.35);
+  text-decoration: none;
+  font-family: var(--font-body);
+}
+.admin-btn-primary:hover {
+  background: #1d4ed8;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.5);
+  transform: translateY(-1px);
+}
+.admin-btn-primary:active {
+  transform: translateY(0);
 }
 
 /* Project Item Expandable & Responsive Architecture */
@@ -1404,6 +1491,34 @@ select option {
   .admin-skill-row {
     padding: 12px;
   }
+  .admin-modal-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 12px 14px;
+  }
+  .admin-modal-header-info {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .admin-modal-close-desktop {
+    display: none !important;
+  }
+  .admin-modal-close-mobile {
+    display: flex !important;
+  }
+  .admin-modal-header-actions {
+    width: 100%;
+  }
+  .admin-save-all-btn {
+    width: 100%;
+    padding: 11px 16px !important;
+    font-size: 0.88rem !important;
+    justify-content: center;
+  }
+  .admin-save-all-btn .save-btn-text {
+    display: inline !important;
+  }
 }
 
 @media (max-width: 540px) {
@@ -1416,16 +1531,13 @@ select option {
     border-radius: 0;
     border: none;
   }
-  .admin-modal-header {
-    padding: 12px 14px;
-    flex-wrap: wrap;
+  .admin-save-all-btn {
+    width: 100%;
+    padding: 11px 14px !important;
+    font-size: 0.85rem !important;
   }
-  .admin-modal-header-actions .save-btn-text {
-    display: none;
-  }
-  .admin-modal-header-actions button {
-    padding: 8px 12px !important;
-    font-size: 0.82rem !important;
+  .admin-save-all-btn .save-btn-text {
+    display: inline !important;
   }
   .admin-trigger-pill {
     bottom: 14px;

@@ -594,8 +594,8 @@ export default function AdminPanel() {
                 >
                   <i className="ri-settings-4-fill" />
                 </div>
-                <div style={{ minWidth: 0 }}>
-                  <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "#f8fafc", margin: 0, fontFamily: "var(--font-display)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "#f8fafc", margin: 0, fontFamily: "var(--font-display)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                     Portfolio Dynamic Manager
                   </h3>
                   <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "3px" }}>
@@ -612,50 +612,34 @@ export default function AdminPanel() {
                     </span>
                   </div>
                 </div>
+
+                {/* Close Button on mobile view */}
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  className="admin-modal-close-mobile"
+                  title="Close Manager"
+                >
+                  <i className="ri-close-line" />
+                </button>
               </div>
 
               <div className="admin-modal-header-actions">
                 <button
+                  type="button"
                   onClick={handleSaveAll}
-                  style={{
-                    padding: "9px 20px",
-                    background: "#059669",
-                    border: "1px solid rgba(255,255,255,0.18)",
-                    borderRadius: "12px",
-                    color: "#ffffff",
-                    fontSize: "0.86rem",
-                    fontWeight: 700,
-                    cursor: "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    boxShadow: "0 2px 10px rgba(5,150,105,0.35)",
-                    transition: "all 0.2s ease",
-                  }}
+                  className="admin-save-all-btn"
+                  title="Save All Changes live"
                 >
                   <i className="ri-save-3-line" style={{ fontSize: "1rem" }} />
                   <span className="save-btn-text">Save All Changes</span>
                 </button>
 
+                {/* Close Button on desktop view */}
                 <button
+                  type="button"
                   onClick={() => setIsOpen(false)}
-                  style={{
-                    width: "36px",
-                    height: "36px",
-                    borderRadius: "50%",
-                    background: "#1e293b",
-                    border: "1px solid #334155",
-                    color: "#94a3b8",
-                    cursor: "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "1.2rem",
-                    transition: "all 0.2s ease",
-                    flexShrink: 0,
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.color = "#ffffff"; e.currentTarget.style.background = "#334155"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = "#94a3b8"; e.currentTarget.style.background = "#1e293b"; }}
+                  className="admin-modal-close-desktop"
                   title="Close Manager"
                 >
                   <i className="ri-close-line" />
@@ -1429,6 +1413,22 @@ export default function AdminPanel() {
                       type="button"
                       onClick={handleAddProject}
                       className="admin-btn-primary"
+                      style={{
+                        padding: "10px 20px",
+                        background: "#2563eb",
+                        border: "1px solid rgba(255, 255, 255, 0.20)",
+                        borderRadius: "12px",
+                        color: "#ffffff",
+                        fontSize: "0.86rem",
+                        fontWeight: 600,
+                        cursor: "pointer",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "8px",
+                        boxShadow: "0 2px 10px rgba(37, 99, 235, 0.35)",
+                        transition: "all 0.2s ease",
+                      }}
                     >
                       <i className="ri-add-circle-fill" style={{ fontSize: "1.1rem" }} />
                       <span>Add New Project</span>
@@ -1574,6 +1574,7 @@ export default function AdminPanel() {
                                     onChange={(e) => {
                                       const newP = [...formData.projects];
                                       newP[idx].imgKey = e.target.value;
+                                      newP[idx].img = "";
                                       setFormData((prev) => ({ ...prev, projects: newP }));
                                     }}
                                     style={inputStyle}

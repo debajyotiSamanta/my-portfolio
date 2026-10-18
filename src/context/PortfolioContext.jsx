@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { defaultPortfolioData, ASSET_IMAGES } from "../data/portfolioData";
+import { defaultPortfolioData, PORTFOLIO_BUILD_VERSION, ASSET_IMAGES, computeDataFingerprint } from "../data/portfolioData";
 
-const STORAGE_DATA_KEY = "debajyoti_portfolio_data_v2";
+const STORAGE_DATA_KEY = "debajyoti_portfolio_data_v3";
 const STORAGE_PIN_KEY  = "debajyoti_portfolio_admin_pin_v2";
 const STORAGE_MSGS_KEY = "debajyoti_portfolio_messages_v2";
 const DEFAULT_PIN      = "debajyoti2024";
@@ -11,14 +11,35 @@ const PortfolioContext = createContext(null);
 export function PortfolioProvider({ children }) {
   const [portfolioData, setPortfolioData] = useState(() => {
     try {
+      // Purge obsolete legacy caches
+      try {
+        localStorage.removeItem("debajyoti_portfolio_data_v1");
+        localStorage.removeItem("debajyoti_portfolio_data_v2");
+      } catch {}
+
+      const currentFingerprint = computeDataFingerprint(defaultPortfolioData);
       const saved = localStorage.getItem(STORAGE_DATA_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        return {
-          ...defaultPortfolioData,
-          ...parsed,
-          personal: { ...defaultPortfolioData.personal, ...(parsed.personal || {}) },
-        };
+        // Cache Invalidation Check:
+        // When any file in the project (thumbnails, portfolioData.js, text, etc.) is updated:
+        // 1. If PORTFOLIO_BUILD_VERSION changed OR
+        // 2. If the codebase fingerprint changed (i.e. someone edited portfolioData.js directly)
+        // Purge stale local cache so viewers are 100% guaranteed to see the brand new files!
+        if (
+          parsed &&
+          parsed.version === PORTFOLIO_BUILD_VERSION &&
+          parsed._fingerprint === currentFingerprint
+        ) {
+          return {
+            ...defaultPortfolioData,
+            ...parsed,
+            personal: { ...defaultPortfolioData.personal, ...(parsed.personal || {}) },
+          };
+        } else {
+          console.info("[PortfolioContext] Codebase file update detected. Purged stale local cache to load newest files.");
+          localStorage.removeItem(STORAGE_DATA_KEY);
+        }
       }
     } catch (err) {
       console.warn("Failed to read saved portfolio data:", err);
@@ -43,7 +64,6 @@ export function PortfolioProvider({ children }) {
     } catch (e) {
       console.warn("Failed to read messages:", e);
     }
-    // Initial welcome message sample so Debajyoti can immediately see how it works
     return [
       {
         id: "msg-welcome",
@@ -57,10 +77,34 @@ export function PortfolioProvider({ children }) {
     ];
   });
 
-  const savePortfolioData = (newData) => {
+  const savePortfolioData = async (newData) => {
     try {
-      setPortfolioData(newData);
-      localStorage.setItem(STORAGE_DATA_KEY, JSON.stringify(newData));
+      const dataWithVersion = {
+        ...newData,
+        version: PORTFOLIO_BUILD_VERSION,
+        _fingerprint: computeDataFingerprint(newData),
+        lastUpdated: new Date().toISOString(),
+      };
+      setPortfolioData(dataWithVersion);
+      localStorage.setItem(STORAGE_DATA_KEY, JSON.stringify(dataWithVersion));
+
+      // In local development, sync directly to src/data/portfolioData.js so git push deploys live to every viewer
+      if (typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")) {
+        try {
+          const res = await fetch("/api/save-portfolio-data", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(dataWithVersion),
+          });
+          const resJson = await res.json();
+          if (resJson?.success) {
+            console.info("[PortfolioContext] Successfully updated src/data/portfolioData.js!");
+          }
+        } catch {
+          // Dev server sync endpoint not active, continue with localStorage
+        }
+      }
+
       return true;
     } catch (err) {
       console.error("Error saving portfolio data:", err);
@@ -172,19 +216,27 @@ export function PortfolioProvider({ children }) {
     } catch {}
   };
 
-  const unreadMessagesCount = messages.filter((m) => !m.read).length;
+  const resolveAssetUrl = (url) => {
+    if (!url || typeof url !== "string") return url;
+    // Base64 data URIs or blob URLs do not need cache-busting
+    if (url.startsWith("data:") || url.startsWith("blob:")) return url;
+    const sep = url.includes("?") ? "&" : "?";
+    return `${url}${sep}v=${encodeURIComponent(PORTFOLIO_BUILD_VERSION)}`;
+  };
 
   const resolveImage = (imgKey, fallback) => {
+    let raw;
     // If fallback is an uploaded base64 data URI or custom URL, prioritize it
-    if (typeof fallback === "string" && (fallback.startsWith("data:") || fallback.startsWith("http://") || fallback.startsWith("https://"))) {
-      return fallback;
+    if (typeof fallback === "string" && (fallback.startsWith("data:") || fallback.startsWith("http://") || fallback.startsWith("https://") || fallback.startsWith("/"))) {
+      raw = fallback;
+    } else if (typeof imgKey === "string" && (imgKey.startsWith("data:") || imgKey.startsWith("http://") || imgKey.startsWith("https://") || imgKey.startsWith("/"))) {
+      raw = imgKey;
+    } else if (imgKey && ASSET_IMAGES[imgKey]) {
+      raw = ASSET_IMAGES[imgKey];
+    } else {
+      raw = fallback || ASSET_IMAGES.mentorship;
     }
-    // If imgKey is an uploaded base64 data URI or custom URL
-    if (typeof imgKey === "string" && (imgKey.startsWith("data:") || imgKey.startsWith("http://") || imgKey.startsWith("https://") || imgKey.startsWith("/"))) {
-      return imgKey;
-    }
-    if (imgKey && ASSET_IMAGES[imgKey]) return ASSET_IMAGES[imgKey];
-    return fallback || ASSET_IMAGES.mentorship;
+    return resolveAssetUrl(raw);
   };
 
   return (
@@ -200,6 +252,7 @@ export function PortfolioProvider({ children }) {
         exportDataJSON,
         importDataJSON,
         resolveImage,
+        resolveAssetUrl,
         messages,
         addMessage,
         deleteMessage,
