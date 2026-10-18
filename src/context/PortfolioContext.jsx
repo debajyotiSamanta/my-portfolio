@@ -199,28 +199,49 @@ export function PortfolioProvider({ children }) {
       }
 
       // Cloud: push so every other device gets it in <=20 s
+      let cloudSynced = false;
+      let cloudError = null;
       const { binId, apiKey } = cloudConfigRef.current;
       if (binId && apiKey) {
         try {
+          // Prepare payload safe for JSONbin 100KB limit:
+          // Keep text and compressed thumbnails; strip oversized raw base64 PDFs (>35KB) to prevent 403 errors
+          const cloudPayload = JSON.parse(JSON.stringify(dataWithVersion));
+          if (cloudPayload.personal) {
+            if (typeof cloudPayload.personal.resumeUrl === "string" && cloudPayload.personal.resumeUrl.startsWith("data:") && cloudPayload.personal.resumeUrl.length > 35000) {
+              delete cloudPayload.personal.resumeUrl;
+            }
+            if (typeof cloudPayload.personal.cvUrl === "string" && cloudPayload.personal.cvUrl.startsWith("data:") && cloudPayload.personal.cvUrl.length > 35000) {
+              delete cloudPayload.personal.cvUrl;
+            }
+          }
+
+          const payloadStr = JSON.stringify(cloudPayload);
+          console.info(`[CloudSync] Publishing payload (${(payloadStr.length / 1024).toFixed(1)} KB) to JSONbin...`);
+
           const cloudRes = await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json", "X-Master-Key": apiKey },
-            body: JSON.stringify(dataWithVersion),
+            body: payloadStr,
           });
           if (cloudRes.ok) {
+            cloudSynced = true;
             console.info("[CloudSync] Published to cloud – viewers receive in <= 20 s.");
           } else {
-            console.warn("[CloudSync] PUT failed:", cloudRes.status, await cloudRes.text());
+            const errBody = await cloudRes.text();
+            cloudError = `JSONbin ${cloudRes.status}`;
+            console.warn("[CloudSync] PUT failed:", cloudRes.status, errBody);
           }
         } catch (cloudErr) {
+          cloudError = cloudErr.message;
           console.warn("[CloudSync] Network error during save:", cloudErr);
         }
       }
 
-      return true;
+      return { success: true, cloudSynced, cloudError };
     } catch (err) {
       console.error("Error saving portfolio data:", err);
-      return false;
+      return { success: false, error: err.message };
     }
   };
 

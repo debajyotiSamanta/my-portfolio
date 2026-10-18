@@ -3,8 +3,8 @@ import { usePortfolio } from "../context/PortfolioContext";
 import { ASSET_IMAGES } from "../data/portfolioData";
 
 // Utility: Automatically compresses uploaded photos into compact, high-quality WebP/JPEG data URIs
-// Keeps payload under ~30KB so JSONbin free tier (100KB limit) and localStorage never fail!
-function compressImageFile(file, maxWidth = 800, maxHeight = 600, quality = 0.82) {
+// Keeps payload strictly under ~12KB per image so JSONbin free tier (100KB limit) never fails!
+function compressImageFile(file, maxWidth = 480, maxHeight = 320, quality = 0.70) {
   return new Promise((resolve, reject) => {
     if (!file) return reject(new Error("No file provided"));
     if (file.type === "image/svg+xml") {
@@ -129,10 +129,14 @@ export default function AdminPanel() {
 
   const handleSaveAll = async () => {
     setSaveStatus("Saving and syncing across all devices...");
-    const success = await savePortfolioData(formData);
-    if (success) {
-      setSaveStatus("Changes successfully saved and applied live across all devices!");
-      setTimeout(() => setSaveStatus(""), 4500);
+    const res = await savePortfolioData(formData);
+    if (res && res.success) {
+      if (res.cloudSynced) {
+        setSaveStatus("Changes successfully saved and synced live across all devices!");
+      } else {
+        setSaveStatus(`Saved locally! Cloud note: ${res.cloudError || "Stored on this device"}`);
+      }
+      setTimeout(() => setSaveStatus(""), 5000);
     } else {
       setSaveStatus("Failed to save changes. Please try again.");
     }
@@ -290,7 +294,7 @@ export default function AdminPanel() {
     if (!file) return;
     try {
       setSaveStatus("Optimizing thumbnail image...");
-      const compressed = await compressImageFile(file, 800, 600, 0.82);
+      const compressed = await compressImageFile(file, 480, 320, 0.70);
       setFormData((prev) => ({
         ...prev,
         projects: prev.projects.map((p) =>
@@ -378,7 +382,7 @@ export default function AdminPanel() {
     if (!file) return;
     try {
       setSaveStatus("Optimizing profile photo...");
-      const compressed = await compressImageFile(file, 600, 600, 0.85);
+      const compressed = await compressImageFile(file, 360, 360, 0.72);
       setFormData((prev) => ({
         ...prev,
         personal: {
@@ -434,7 +438,7 @@ export default function AdminPanel() {
     const file = e.target.files?.[0];
     if (!file) return;
     try {
-      const compressed = await compressImageFile(file, 200, 200, 0.9);
+      const compressed = await compressImageFile(file, 80, 80, 0.75);
       setFormData((prev) => {
         const updated = [...(prev.frameworksAndTools || [])];
         updated[index] = {

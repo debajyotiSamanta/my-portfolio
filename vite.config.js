@@ -95,6 +95,7 @@ export default defineConfig({
   },
   plugins: [react(), portfolioDataSyncPlugin()],
   server: {
+    host: true,
     headers: {
       'Cache-Control': 'no-store, no-cache, must-revalidate',
     },
