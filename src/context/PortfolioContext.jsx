@@ -216,6 +216,8 @@ export function PortfolioProvider({ children }) {
     } catch {}
   };
 
+  const unreadMessagesCount = messages.filter((m) => !m.read).length;
+
   const resolveAssetUrl = (url) => {
     if (!url || typeof url !== "string") return url;
     // Base64 data URIs or blob URLs do not need cache-busting
