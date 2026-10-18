@@ -19,6 +19,8 @@ export default function AdminPanel() {
     markMessageRead,
     clearAllMessages,
     unreadMessagesCount,
+    cloudConfig,
+    updateCloudConfig,
   } = usePortfolio();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -39,6 +41,12 @@ export default function AdminPanel() {
   const [newPin, setNewPin] = useState("");
   const [showChangePin, setShowChangePin] = useState(false);
   const [pinMsg, setPinMsg] = useState("");
+
+  // Live Cloud Database Sync state
+  const [cloudApiKey, setCloudApiKey] = useState(cloudConfig?.apiKey || "");
+  const [cloudBinId, setCloudBinId] = useState(cloudConfig?.binId || "");
+  const [cloudStatusMsg, setCloudStatusMsg] = useState("");
+  const [isCloudLoading, setIsCloudLoading] = useState(false);
 
   const handleOpenManager = () => {
     if (!isAdmin) {
@@ -95,6 +103,99 @@ export default function AdminPanel() {
       setPinMsg(`Error: ${res.message}`);
     }
     setTimeout(() => setPinMsg(""), 5000);
+  };
+
+  // ── Cloud Database Handlers ──
+  const handleAutoCreateCloudBin = async () => {
+    if (!cloudApiKey.trim()) {
+      setCloudStatusMsg("Please enter your JSONbin Master Key first.");
+      return;
+    }
+    setIsCloudLoading(true);
+    setCloudStatusMsg("Connecting and creating public cloud database on JSONbin...");
+    try {
+      const res = await fetch("https://api.jsonbin.io/v3/b", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Master-Key": cloudApiKey.trim(),
+          "X-Bin-Name": "debajyoti-portfolio-live",
+          "X-Bin-Private": "false",
+        },
+        body: JSON.stringify({
+          ...formData,
+          version: PORTFOLIO_BUILD_VERSION,
+          lastUpdated: new Date().toISOString(),
+        }),
+      });
+      const data = await res.json();
+      if (data?.metadata?.id) {
+        const newBinId = data.metadata.id;
+        setCloudBinId(newBinId);
+        updateCloudConfig({
+          provider: "jsonbin",
+          binId: newBinId,
+          apiKey: cloudApiKey.trim(),
+        });
+        setCloudStatusMsg(`Cloud Database connected successfully! Bin ID: ${newBinId}. All devices will now receive your updates.`);
+      } else {
+        setCloudStatusMsg(`Error creating bin: ${data?.message || "Invalid Key or request failed"}`);
+      }
+    } catch (err) {
+      setCloudStatusMsg(`Connection failed: ${err.message}`);
+    } finally {
+      setIsCloudLoading(false);
+    }
+  };
+
+  const handleSaveManualCloud = () => {
+    if (!cloudBinId.trim() || !cloudApiKey.trim()) {
+      setCloudStatusMsg("Please provide both Bin ID and API Key.");
+      return;
+    }
+    updateCloudConfig({
+      provider: "jsonbin",
+      binId: cloudBinId.trim(),
+      apiKey: cloudApiKey.trim(),
+    });
+    setCloudStatusMsg("Cloud Database configuration saved! Any changes will now sync live.");
+    setTimeout(() => setCloudStatusMsg(""), 5000);
+  };
+
+  const handleTestCloudConnection = async () => {
+    if (!cloudBinId.trim()) {
+      setCloudStatusMsg("No Bin ID provided to test.");
+      return;
+    }
+    setIsCloudLoading(true);
+    setCloudStatusMsg("Testing connection to cloud database...");
+    try {
+      const headers = { "X-Bin-Meta": "false" };
+      if (cloudApiKey.trim()) headers["X-Master-Key"] = cloudApiKey.trim();
+      const res = await fetch(`https://api.jsonbin.io/v3/b/${cloudBinId.trim()}/latest`, { headers });
+      if (res.ok) {
+        setCloudStatusMsg("Connection test SUCCESSFUL! Cloud Database is online and accessible.");
+      } else {
+        setCloudStatusMsg(`Connection test failed: HTTP ${res.status} (${res.statusText})`);
+      }
+    } catch (err) {
+      setCloudStatusMsg(`Connection test failed: ${err.message}`);
+    } finally {
+      setIsCloudLoading(false);
+    }
+  };
+
+  const handleDisconnectCloud = () => {
+    if (window.confirm("Disconnect from Cloud Database? Changes will only be saved locally until reconnected.")) {
+      setCloudBinId("");
+      setCloudApiKey("");
+      updateCloudConfig({
+        provider: "jsonbin",
+        binId: "",
+        apiKey: "",
+      });
+      setCloudStatusMsg("Cloud Database disconnected.");
+    }
   };
 
   // ── Project Helpers ──
@@ -683,6 +784,7 @@ export default function AdminPanel() {
                 { id: "experience", label: "Qualifications", icon: "ri-briefcase-line" },
                 { id: "services", label: "Services", icon: "ri-layout-masonry-line" },
                 { id: "testimonials", label: `Endorsements (${formData.testimonials?.length || 0})`, icon: "ri-chat-quote-line" },
+                { id: "cloud", label: "Cloud Sync (Live)", icon: "ri-cloud-line", badge: cloudConfig?.binId ? 0 : 0 },
                 { id: "security", label: "Backup & PIN", icon: "ri-shield-keyhole-line" },
               ].map((tab) => (
                 <button
@@ -2616,6 +2718,232 @@ export default function AdminPanel() {
                         </div>
                       </div>
                     ))}
+                  </div>
+                </div>
+              )}
+
+              {/* ════════ CLOUD SYNC TAB (LIVE GLOBAL UPDATES) ════════ */}
+              {activeTab === "cloud" && (
+                <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+                  {/* Status Banner */}
+                  <div style={{
+                    background: cloudConfig?.binId ? "rgba(16, 185, 129, 0.12)" : "rgba(245, 158, 11, 0.12)",
+                    border: `1px solid ${cloudConfig?.binId ? "rgba(16, 185, 129, 0.35)" : "rgba(245, 158, 11, 0.35)"}`,
+                    borderRadius: "16px",
+                    padding: "20px 24px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                    gap: "16px",
+                  }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                      <div style={{
+                        width: "48px", height: "48px", borderRadius: "14px",
+                        background: cloudConfig?.binId ? "rgba(16, 185, 129, 0.20)" : "rgba(245, 158, 11, 0.20)",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        color: cloudConfig?.binId ? "#34d399" : "#fbbf24",
+                        fontSize: "1.5rem",
+                      }}>
+                        <i className={cloudConfig?.binId ? "ri-cloud-fill" : "ri-cloud-off-line"} />
+                      </div>
+                      <div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
+                          <h4 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#f8fafc", margin: 0 }}>
+                            {cloudConfig?.binId ? "Live Cloud Sync Active" : "Cloud Sync Inactive"}
+                          </h4>
+                          <span style={{
+                            padding: "3px 10px", borderRadius: "999px",
+                            background: cloudConfig?.binId ? "rgba(16, 185, 129, 0.2)" : "rgba(245, 158, 11, 0.2)",
+                            color: cloudConfig?.binId ? "#6ee7b7" : "#fde68a",
+                            fontSize: "0.72rem", fontWeight: 700,
+                          }}>
+                            {cloudConfig?.binId ? "Global Broadcast ON" : "Local Storage Only"}
+                          </span>
+                        </div>
+                        <p style={{ fontSize: "0.85rem", color: "#94a3b8", margin: 0 }}>
+                          {cloudConfig?.binId
+                            ? `Connected to Bin: ${cloudConfig.binId}. Whenever you click "Save All Changes", all viewers on all devices immediately receive updates.`
+                            : "Your changes are currently saved only to this browser. Connect a free cloud database below so other devices receive your updates."}
+                        </p>
+                      </div>
+                    </div>
+
+                    {cloudConfig?.binId && (
+                      <div style={{ display: "flex", gap: "10px" }}>
+                        <button
+                          type="button"
+                          onClick={handleTestCloudConnection}
+                          disabled={isCloudLoading}
+                          style={{
+                            padding: "8px 16px", background: "#1e293b",
+                            border: "1px solid #334155", borderRadius: "8px",
+                            color: "#e2e8f0", fontSize: "0.80rem", fontWeight: 600,
+                            cursor: "pointer",
+                          }}
+                        >
+                          <i className="ri-pulse-line" /> Test Connection
+                        </button>
+                        <button
+                          type="button"
+                          onClick={handleDisconnectCloud}
+                          style={{
+                            padding: "8px 14px", background: "rgba(239, 68, 68, 0.15)",
+                            border: "1px solid rgba(239, 68, 68, 0.35)", borderRadius: "8px",
+                            color: "#fca5a5", fontSize: "0.80rem", fontWeight: 600,
+                            cursor: "pointer",
+                          }}
+                        >
+                          Disconnect
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {cloudStatusMsg && (
+                    <div style={{
+                      padding: "12px 18px",
+                      background: cloudStatusMsg.includes("SUCCESS") || cloudStatusMsg.includes("connected")
+                        ? "rgba(16, 185, 129, 0.15)"
+                        : "rgba(59, 130, 246, 0.15)",
+                      border: "1px solid rgba(255,255,255,0.12)",
+                      borderRadius: "12px",
+                      color: "#f8fafc",
+                      fontSize: "0.85rem",
+                      fontWeight: 600,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                    }}>
+                      <i className="ri-information-line" />
+                      <span>{cloudStatusMsg}</span>
+                    </div>
+                  )}
+
+                  {/* One-Click Auto Setup Card */}
+                  <div className="admin-card">
+                    <div style={{ marginBottom: "16px" }}>
+                      <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "#38bdf8", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+                        Quick Setup (Free Forever)
+                      </span>
+                      <h4 style={{ fontSize: "1.15rem", fontWeight: 700, color: "#f8fafc", margin: "4px 0 6px 0" }}>
+                        Connect Free JSONbin.io Cloud Database in 30 Seconds
+                      </h4>
+                      <p style={{ fontSize: "0.85rem", color: "#94a3b8", lineHeight: 1.6, margin: 0 }}>
+                        JSONbin.io provides 10,000 free cloud requests per month with zero server setup.
+                        Paste your Master Key below, and our manager will automatically create and connect your live cloud database with one click.
+                      </p>
+                    </div>
+
+                    <div style={{
+                      background: "#080c17",
+                      border: "1px solid #1e293b",
+                      borderRadius: "14px",
+                      padding: "16px 20px",
+                      marginBottom: "20px",
+                    }}>
+                      <ol style={{ margin: 0, paddingLeft: "18px", color: "#cbd5e1", fontSize: "0.86rem", lineHeight: 1.8 }}>
+                        <li>
+                          Open <a href="https://jsonbin.io" target="_blank" rel="noreferrer" style={{ color: "#38bdf8", fontWeight: 700, textDecoration: "underline" }}>jsonbin.io</a> and create a free account with Google/GitHub.
+                        </li>
+                        <li>
+                          Navigate to <strong>API Keys</strong> in their sidebar and copy your <strong>Master Key</strong> (starts with <code>$2a$...</code>).
+                        </li>
+                        <li>
+                          Paste your Master Key below and click <strong>Auto-Create & Connect Live Cloud Database</strong>.
+                        </li>
+                      </ol>
+                    </div>
+
+                    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                      <div>
+                        <label style={labelStyle}>Your JSONbin Master Key (X-Master-Key) *</label>
+                        <input
+                          type="password"
+                          value={cloudApiKey}
+                          onChange={(e) => setCloudApiKey(e.target.value)}
+                          placeholder="$2a$10$abcdef1234567890..."
+                          style={inputStyle}
+                        />
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={handleAutoCreateCloudBin}
+                        disabled={isCloudLoading}
+                        className="admin-btn-primary"
+                        style={{
+                          padding: "12px 24px",
+                          background: "#2563eb",
+                          border: "1px solid rgba(255,255,255,0.20)",
+                          borderRadius: "12px",
+                          color: "#ffffff",
+                          fontSize: "0.90rem",
+                          fontWeight: 700,
+                          cursor: "pointer",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "8px",
+                          boxShadow: "0 2px 10px rgba(37,99,235,0.35)",
+                        }}
+                      >
+                        <i className={isCloudLoading ? "ri-loader-4-line ri-spin" : "ri-magic-line"} style={{ fontSize: "1.1rem" }} />
+                        <span>{isCloudLoading ? "Creating & Connecting Cloud Database..." : "Auto-Create & Connect Live Cloud Database"}</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Manual Settings / Existing Bin */}
+                  <div className="admin-card">
+                    <h4 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#f8fafc", marginBottom: "6px" }}>
+                      Manual Cloud Configuration
+                    </h4>
+                    <p style={{ fontSize: "0.82rem", color: "#94a3b8", marginBottom: "18px" }}>
+                      If you already have an existing Bin ID or want to link a specific bin:
+                    </p>
+
+                    <div className="admin-grid-2" style={{ marginBottom: "16px" }}>
+                      <div>
+                        <label style={labelStyle}>Active Bin ID</label>
+                        <input
+                          type="text"
+                          value={cloudBinId}
+                          onChange={(e) => setCloudBinId(e.target.value)}
+                          placeholder="e.g. 660f8a9e1f... or similar"
+                          style={inputStyle}
+                        />
+                      </div>
+                      <div>
+                        <label style={labelStyle}>API Master Key</label>
+                        <input
+                          type="password"
+                          value={cloudApiKey}
+                          onChange={(e) => setCloudApiKey(e.target.value)}
+                          placeholder="JSONbin Master Key"
+                          style={inputStyle}
+                        />
+                      </div>
+                    </div>
+
+                    <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                      <button
+                        type="button"
+                        onClick={handleSaveManualCloud}
+                        style={{
+                          padding: "10px 20px",
+                          background: "#1e293b",
+                          border: "1px solid #334155",
+                          borderRadius: "10px",
+                          color: "#38bdf8",
+                          fontSize: "0.86rem",
+                          fontWeight: 700,
+                          cursor: "pointer",
+                        }}
+                      >
+                        Save Configuration
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}

@@ -67,6 +67,12 @@ export const PORTFOLIO_BUILD_VERSION =
     ? __PORTFOLIO_BUILD_TIME__
     : "2026.10.18-v3.2";
 
+export const CLOUD_SYNC_CONFIG = {
+  provider: "jsonbin",
+  binId: "6ad4a366ac6210605a3bdc6c",
+  apiKey: "$2a$10$U99V8hUfuRvBhjmYWTBemuaQgwy7j6e1SVodaHbPTvXqMs1juVG9u",
+};
+
 export function computeDataFingerprint(data) {
   try {
     const raw = JSON.stringify({

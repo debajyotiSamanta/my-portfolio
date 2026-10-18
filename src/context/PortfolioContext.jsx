@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { defaultPortfolioData, PORTFOLIO_BUILD_VERSION, ASSET_IMAGES, computeDataFingerprint } from "../data/portfolioData";
+import { defaultPortfolioData, PORTFOLIO_BUILD_VERSION, ASSET_IMAGES, computeDataFingerprint, CLOUD_SYNC_CONFIG } from "../data/portfolioData";
 
-const STORAGE_DATA_KEY = "debajyoti_portfolio_data_v3";
-const STORAGE_PIN_KEY  = "debajyoti_portfolio_admin_pin_v2";
-const STORAGE_MSGS_KEY = "debajyoti_portfolio_messages_v2";
-const DEFAULT_PIN      = "debajyoti2024";
+const STORAGE_DATA_KEY   = "debajyoti_portfolio_data_v3";
+const STORAGE_PIN_KEY    = "debajyoti_portfolio_admin_pin_v2";
+const STORAGE_MSGS_KEY   = "debajyoti_portfolio_messages_v2";
+const STORAGE_CLOUD_KEY  = "debajyoti_portfolio_cloud_v1";
+const DEFAULT_PIN        = "debajyoti2024";
 
 const PortfolioContext = createContext(null);
 
@@ -56,6 +57,55 @@ export function PortfolioProvider({ children }) {
     }
   });
 
+  const [cloudConfig, setCloudConfig] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_CLOUD_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return { ...CLOUD_SYNC_CONFIG, ...parsed };
+      }
+    } catch {}
+    return CLOUD_SYNC_CONFIG;
+  });
+
+  const updateCloudConfig = (nextConfig) => {
+    setCloudConfig(nextConfig);
+    try {
+      localStorage.setItem(STORAGE_CLOUD_KEY, JSON.stringify(nextConfig));
+    } catch {}
+  };
+
+  // Live Cloud Database Sync: Automatically fetch the latest data from the cloud on every device!
+  useEffect(() => {
+    const binId = cloudConfig.binId;
+    if (!binId) return;
+
+    let isMounted = true;
+    const fetchCloudData = async () => {
+      try {
+        const headers = { "X-Bin-Meta": "false" };
+        if (cloudConfig.apiKey) headers["X-Master-Key"] = cloudConfig.apiKey;
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, { headers });
+        if (!res.ok) return;
+        const record = await res.json();
+        const data = record.record || record;
+        if (isMounted && data && typeof data === "object" && data.projects && Array.isArray(data.projects)) {
+          console.info("[Portfolio] Fresh updates loaded live from Cloud Database for all devices.");
+          setPortfolioData((prev) => ({
+            ...prev,
+            ...data,
+            personal: { ...prev.personal, ...(data.personal || {}) },
+          }));
+        }
+      } catch (err) {
+        console.warn("[CloudSync] Background sync check:", err);
+      }
+    };
+
+    fetchCloudData();
+    return () => { isMounted = false; };
+  }, [cloudConfig.binId, cloudConfig.apiKey]);
+
   // Contact form messages inbox
   const [messages, setMessages] = useState(() => {
     try {
@@ -102,6 +152,25 @@ export function PortfolioProvider({ children }) {
           }
         } catch {
           // Dev server sync endpoint not active, continue with localStorage
+        }
+      }
+
+      // Cloud Database Sync: When deployed, push updates directly to the cloud so all viewers on all devices receive changes immediately!
+      if (cloudConfig.binId && cloudConfig.apiKey) {
+        try {
+          const cloudRes = await fetch(`https://api.jsonbin.io/v3/b/${cloudConfig.binId}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Master-Key": cloudConfig.apiKey,
+            },
+            body: JSON.stringify(dataWithVersion),
+          });
+          if (cloudRes.ok) {
+            console.info("[CloudSync] Successfully published updates to Cloud Database for all viewers!");
+          }
+        } catch (cloudErr) {
+          console.warn("[CloudSync] Cloud sync error:", cloudErr);
         }
       }
 
@@ -261,6 +330,8 @@ export function PortfolioProvider({ children }) {
         markMessageRead,
         clearAllMessages,
         unreadMessagesCount,
+        cloudConfig,
+        updateCloudConfig,
       }}
     >
       {children}
