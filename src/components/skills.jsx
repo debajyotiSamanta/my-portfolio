@@ -40,7 +40,7 @@ function SkillBar({ name, level, color }) {
           ref={fillRef}
           style={{
             height: "100%", borderRadius: "999px",
-            background: color || "linear-gradient(90deg, var(--clr-primary), var(--clr-cyan))",
+            background: color || "var(--clr-primary-dim)",
             transition: "width 1.2s cubic-bezier(0.16, 1, 0.3, 1)",
             width: "0%",
           }}
@@ -146,7 +146,7 @@ export default function Skills() {
                     key={skIdx}
                     name={sk.name}
                     level={sk.level}
-                    color={`linear-gradient(90deg, ${cat.color || "var(--clr-primary)"}, var(--clr-cyan-bright))`}
+                    color={cat.color || "var(--clr-primary-dim)"}
                   />
                 ))}
               </div>

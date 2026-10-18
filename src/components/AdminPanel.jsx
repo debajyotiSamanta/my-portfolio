@@ -129,6 +129,26 @@ export default function AdminPanel() {
     }
   };
 
+  const handleProjectImageUpload = (e, projId) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (uploadEvent) => {
+      const base64 = uploadEvent.target?.result;
+      if (base64) {
+        setFormData((prev) => ({
+          ...prev,
+          projects: prev.projects.map((p) =>
+            p.id === projId ? { ...p, img: base64, imgKey: "" } : p
+          ),
+        }));
+        setSaveStatus(`Project image updated. Click "Save All Changes" to persist.`);
+        setTimeout(() => setSaveStatus(""), 4000);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
   // ── Skill Helpers ──
   const handleAddSkill = (catIdx) => {
     const newSkill = { name: "New Skill", level: 80, icon: "ri-code-line" };
@@ -383,27 +403,27 @@ export default function AdminPanel() {
           style={{
             padding: "9px 18px",
             background: isAdmin
-              ? "linear-gradient(135deg, #7c3aed, #06b6d4)"
-              : "rgba(15, 23, 42, 0.90)",
+              ? "#1e293b"
+              : "rgba(15, 23, 42, 0.92)",
             backdropFilter: "blur(20px)",
             border: isAdmin
-              ? "1px solid rgba(255, 255, 255, 0.35)"
-              : "1px solid rgba(255, 255, 255, 0.18)",
+              ? "1px solid rgba(59, 130, 246, 0.55)"
+              : "1px solid rgba(255, 255, 255, 0.16)",
             borderRadius: "999px",
             color: "#ffffff",
             fontSize: "0.84rem",
-            fontWeight: 700,
+            fontWeight: 600,
             cursor: "pointer",
             boxShadow: isAdmin
-              ? "0 6px 24px rgba(124,58,237,0.5), 0 0 15px rgba(6,182,212,0.4)"
-              : "0 6px 20px rgba(0,0,0,0.6)",
+              ? "0 6px 20px rgba(0, 0, 0, 0.6), 0 0 14px rgba(59, 130, 246, 0.25)"
+              : "0 6px 20px rgba(0, 0, 0, 0.6)",
             display: "flex",
             alignItems: "center",
             gap: "8px",
             transition: "all 0.25s ease",
           }}
         >
-          <i className={isAdmin ? "ri-dashboard-3-fill" : "ri-shield-keyhole-line"} style={{ fontSize: "1rem" }} />
+          <i className={isAdmin ? "ri-dashboard-3-fill" : "ri-shield-keyhole-line"} style={{ fontSize: "1rem", color: isAdmin ? "#60a5fa" : "#94a3b8" }} />
           <span>{isAdmin ? "Portfolio Manager (Active)" : "Owner Access"}</span>
         </button>
       </div>
@@ -562,12 +582,12 @@ export default function AdminPanel() {
                     width: "40px",
                     height: "40px",
                     borderRadius: "12px",
-                    background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(6,182,212,0.3))",
-                    border: "1px solid rgba(124,58,237,0.5)",
+                    background: "rgba(59, 130, 246, 0.12)",
+                    border: "1px solid rgba(59, 130, 246, 0.25)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    color: "#c4b5fd",
+                    color: "#60a5fa",
                     fontSize: "1.25rem",
                     flexShrink: 0,
                   }}
@@ -583,7 +603,7 @@ export default function AdminPanel() {
                       display: "inline-block", width: "7px", height: "7px", borderRadius: "50%",
                       backgroundColor: "#10b981", boxShadow: "0 0 8px #10b981", flexShrink: 0,
                     }} />
-                    <span style={{ fontSize: "0.76rem", color: "#38bdf8", fontWeight: 600 }}>
+                    <span style={{ fontSize: "0.76rem", color: "#60a5fa", fontWeight: 600 }}>
                       Owner Access
                     </span>
                     <span style={{ fontSize: "0.76rem", color: "#64748b" }}>•</span>
@@ -599,8 +619,8 @@ export default function AdminPanel() {
                   onClick={handleSaveAll}
                   style={{
                     padding: "9px 20px",
-                    background: "linear-gradient(135deg, #10b981, #059669)",
-                    border: "1px solid rgba(255,255,255,0.2)",
+                    background: "#059669",
+                    border: "1px solid rgba(255,255,255,0.18)",
                     borderRadius: "12px",
                     color: "#ffffff",
                     fontSize: "0.86rem",
@@ -609,7 +629,8 @@ export default function AdminPanel() {
                     display: "flex",
                     alignItems: "center",
                     gap: "8px",
-                    boxShadow: "0 4px 16px rgba(16,185,129,0.4)",
+                    boxShadow: "0 2px 10px rgba(5,150,105,0.35)",
+                    transition: "all 0.2s ease",
                   }}
                 >
                   <i className="ri-save-3-line" style={{ fontSize: "1rem" }} />
@@ -683,25 +704,12 @@ export default function AdminPanel() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className="admin-tab-btn"
+                  className={`admin-tab-btn ${activeTab === tab.id ? "active" : ""}`}
                   style={{
-                    background: activeTab === tab.id
-                      ? "linear-gradient(135deg, rgba(124,58,237,0.30), rgba(6,182,212,0.30))"
-                      : "transparent",
-                    border: `1px solid ${activeTab === tab.id ? "#7c3aed" : "transparent"}`,
+                    background: activeTab === tab.id ? "#1e293b" : "transparent",
+                    border: `1px solid ${activeTab === tab.id ? "rgba(255,255,255,0.16)" : "transparent"}`,
                     color: activeTab === tab.id ? "#ffffff" : "#94a3b8",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (activeTab !== tab.id) {
-                      e.currentTarget.style.color = "#f8fafc";
-                      e.currentTarget.style.background = "#1e293b";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (activeTab !== tab.id) {
-                      e.currentTarget.style.color = "#94a3b8";
-                      e.currentTarget.style.background = "transparent";
-                    }
+                    boxShadow: activeTab === tab.id ? "0 2px 8px rgba(0,0,0,0.35)" : "none",
                   }}
                 >
                   <i className={tab.icon} style={{ fontSize: "1rem" }} />
@@ -1407,45 +1415,27 @@ export default function AdminPanel() {
               {/* ════════ PROJECTS TAB ════════ */}
               {activeTab === "projects" && (
                 <div>
-                  <div style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    flexWrap: "wrap",
-                    gap: "12px",
-                    marginBottom: "24px",
-                  }}>
+                  <div className="admin-section-header">
                     <div>
-                      <h4 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#f8fafc", margin: 0 }}>
+                      <h4 style={{ fontSize: "1.15rem", fontWeight: 700, color: "#f8fafc", margin: 0 }}>
                         All Showcase Projects ({formData.projects?.length || 0})
                       </h4>
                       <p style={{ fontSize: "0.82rem", color: "#94a3b8", margin: "4px 0 0 0" }}>
-                        Click on any project to edit details, images, live links, or tech stacks.
+                        Click any project card to edit title, description, category, demo URL, thumbnail, or tech stack.
                       </p>
                     </div>
 
                     <button
+                      type="button"
                       onClick={handleAddProject}
-                      style={{
-                        padding: "10px 20px",
-                        background: "linear-gradient(135deg, #7c3aed, #a78bfa)",
-                        border: "1px solid rgba(255,255,255,0.2)",
-                        borderRadius: "12px",
-                        color: "#ffffff",
-                        fontSize: "0.86rem",
-                        fontWeight: 700,
-                        cursor: "pointer",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                      }}
+                      className="admin-btn-primary"
                     >
-                      <i className="ri-add-circle-fill" style={{ fontSize: "1.05rem" }} />
+                      <i className="ri-add-circle-fill" style={{ fontSize: "1.1rem" }} />
                       <span>Add New Project</span>
                     </button>
                   </div>
 
-                  <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                     {formData.projects.map((proj, idx) => {
                       const isExpanded = editingProjectId === proj.id;
                       const thumb = resolveImage(proj.imgKey, proj.img);
@@ -1453,80 +1443,59 @@ export default function AdminPanel() {
                       return (
                         <div
                           key={proj.id || idx}
-                          style={{
-                            background: isExpanded ? "#141c30" : "#101626",
-                            border: `1px solid ${isExpanded ? "#7c3aed" : "#1f293d"}`,
-                            borderRadius: "18px",
-                            padding: "20px 24px",
-                            boxShadow: isExpanded ? "0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(124,58,237,0.15)" : "none",
-                            transition: "all 0.25s ease",
-                          }}
+                          className={`admin-project-card ${isExpanded ? "expanded" : ""}`}
                         >
                           {/* Project Header Row */}
                           <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "space-between",
-                              gap: "16px",
-                              cursor: "pointer",
-                            }}
+                            className="admin-project-header"
                             onClick={() => setEditingProjectId(isExpanded ? null : proj.id)}
                           >
-                            <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                            <div className="admin-project-header-left">
                               <img
                                 src={thumb}
                                 alt={proj.title}
-                                style={{
-                                  width: "56px",
-                                  height: "38px",
-                                  objectFit: "cover",
-                                  borderRadius: "8px",
-                                  border: "1px solid #334155",
-                                }}
+                                className="admin-project-thumb"
                               />
-                              <div>
-                                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                  <h4 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#f8fafc", margin: 0 }}>
+                              <div className="admin-project-meta">
+                                <div className="admin-project-title-row">
+                                  <h4 className="admin-project-title">
                                     {proj.title}
                                   </h4>
-                                  <span style={{
-                                    padding: "2px 10px",
-                                    borderRadius: "999px",
-                                    fontSize: "0.72rem",
-                                    fontWeight: 700,
-                                    background: "rgba(6,182,212,0.15)",
-                                    color: "#67e8f9",
-                                    border: "1px solid rgba(6,182,212,0.3)",
-                                  }}>
+                                  <span className="admin-project-tag">
                                     {proj.tag}
                                   </span>
+                                  {proj.featured && (
+                                    <span style={{
+                                      padding: "2px 8px",
+                                      borderRadius: "999px",
+                                      fontSize: "0.68rem",
+                                      fontWeight: 600,
+                                      background: "rgba(234, 179, 8, 0.15)",
+                                      color: "#fde047",
+                                      border: "1px solid rgba(234, 179, 8, 0.3)",
+                                      whiteSpace: "nowrap",
+                                    }}>
+                                      Featured
+                                    </span>
+                                  )}
                                 </div>
-                                <span style={{ fontSize: "0.80rem", color: "#94a3b8" }}>
+                                <span className="admin-project-subtitle">
                                   {proj.subtitle}
                                 </span>
                               </div>
                             </div>
 
-                            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                            <div className="admin-project-actions">
                               <button
                                 type="button"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   setEditingProjectId(isExpanded ? null : proj.id);
                                 }}
-                                style={{
-                                  padding: "6px 14px",
-                                  background: "#1e293b",
-                                  border: "1px solid #334155",
-                                  borderRadius: "8px",
-                                  color: "#38bdf8",
-                                  fontSize: "0.80rem",
-                                  fontWeight: 600,
-                                  cursor: "pointer",
-                                }}
+                                className="admin-btn-action-edit"
                               >
-                                {isExpanded ? "Collapse" : "Edit Details"}
+                                <i className={isExpanded ? "ri-arrow-up-s-line" : "ri-edit-line"} />
+                                <span>{isExpanded ? "Collapse" : "Edit Details"}</span>
                               </button>
 
                               <button
@@ -1535,15 +1504,7 @@ export default function AdminPanel() {
                                   e.stopPropagation();
                                   handleDeleteProject(proj.id);
                                 }}
-                                style={{
-                                  padding: "6px 12px",
-                                  background: "rgba(239, 68, 68, 0.15)",
-                                  border: "1px solid rgba(239, 68, 68, 0.35)",
-                                  borderRadius: "8px",
-                                  color: "#fca5a5",
-                                  fontSize: "0.80rem",
-                                  cursor: "pointer",
-                                }}
+                                className="admin-btn-action-delete"
                                 title="Delete Project"
                               >
                                 <i className="ri-delete-bin-line" />
@@ -1553,7 +1514,7 @@ export default function AdminPanel() {
 
                           {/* Expanded Edit Form */}
                           {isExpanded && (
-                            <div style={{ marginTop: "24px", paddingTop: "20px", borderTop: "1px solid #23304b" }}>
+                            <div style={{ marginTop: "20px", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
                               <div className="admin-grid-2" style={{ marginBottom: "16px" }}>
                                 <div>
                                   <label style={labelStyle}>Project Title *</label>
@@ -1566,6 +1527,7 @@ export default function AdminPanel() {
                                       setFormData((prev) => ({ ...prev, projects: newP }));
                                     }}
                                     style={inputStyle}
+                                    placeholder="e.g. Finance Manager"
                                   />
                                 </div>
 
@@ -1580,6 +1542,7 @@ export default function AdminPanel() {
                                       setFormData((prev) => ({ ...prev, projects: newP }));
                                     }}
                                     style={inputStyle}
+                                    placeholder="e.g. Full-Stack Web Application"
                                   />
                                 </div>
                               </div>
@@ -1604,7 +1567,7 @@ export default function AdminPanel() {
                                 </div>
 
                                 <div>
-                                  <label style={labelStyle}>Image Asset Key or Custom Image URL</label>
+                                  <label style={labelStyle}>Image Key or Custom URL</label>
                                   <input
                                     type="text"
                                     value={proj.imgKey || ""}
@@ -1614,29 +1577,79 @@ export default function AdminPanel() {
                                       setFormData((prev) => ({ ...prev, projects: newP }));
                                     }}
                                     style={inputStyle}
-                                    placeholder="e.g. mentorship, musicHub, localFix, pfm, etc."
+                                    placeholder="e.g. mentorship, musicHub, localFix..."
                                   />
                                 </div>
 
                                 <div>
-                                  <label style={labelStyle}>Accent Glow Color</label>
-                                  <input
-                                    type="text"
-                                    value={proj.accentColor || "#22d3ee"}
-                                    onChange={(e) => {
-                                      const newP = [...formData.projects];
-                                      newP[idx].accentColor = e.target.value;
-                                      setFormData((prev) => ({ ...prev, projects: newP }));
-                                    }}
-                                    style={inputStyle}
-                                  />
+                                  <label style={labelStyle}>Accent Color</label>
+                                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                    <input
+                                      type="color"
+                                      value={proj.accentColor?.startsWith("#") ? proj.accentColor : "#3b82f6"}
+                                      onChange={(e) => {
+                                        const newP = [...formData.projects];
+                                        newP[idx].accentColor = e.target.value;
+                                        setFormData((prev) => ({ ...prev, projects: newP }));
+                                      }}
+                                      style={{
+                                        width: "40px",
+                                        height: "40px",
+                                        borderRadius: "8px",
+                                        border: "1px solid #334155",
+                                        background: "transparent",
+                                        cursor: "pointer",
+                                        padding: "2px",
+                                        flexShrink: 0,
+                                      }}
+                                    />
+                                    <input
+                                      type="text"
+                                      value={proj.accentColor || "#3b82f6"}
+                                      onChange={(e) => {
+                                        const newP = [...formData.projects];
+                                        newP[idx].accentColor = e.target.value;
+                                        setFormData((prev) => ({ ...prev, projects: newP }));
+                                      }}
+                                      style={{ ...inputStyle, flex: 1 }}
+                                      placeholder="#3b82f6"
+                                    />
+                                  </div>
                                 </div>
                               </div>
 
+                              {/* Upload custom thumbnail option */}
                               <div style={{ marginBottom: "16px" }}>
-                                <label style={labelStyle}>Live Demo Website URL *</label>
+                                <label style={labelStyle}>Upload Project Screenshot / Thumbnail from Device</label>
                                 <input
-                                  type="text"
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) => handleProjectImageUpload(e, proj.id)}
+                                  style={{
+                                    ...inputStyle,
+                                    padding: "8px 12px",
+                                    cursor: "pointer",
+                                    fontSize: "0.82rem",
+                                  }}
+                                />
+                              </div>
+
+                              <div style={{ marginBottom: "16px" }}>
+                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+                                  <label style={{ ...labelStyle, marginBottom: 0 }}>Live Demo Website URL *</label>
+                                  {proj.link && (
+                                    <a
+                                      href={proj.link}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      style={{ fontSize: "0.78rem", color: "#60a5fa", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "4px" }}
+                                    >
+                                      Test Link <i className="ri-external-link-line" />
+                                    </a>
+                                  )}
+                                </div>
+                                <input
+                                  type="url"
                                   value={proj.link || ""}
                                   onChange={(e) => {
                                     const newP = [...formData.projects];
@@ -1644,6 +1657,7 @@ export default function AdminPanel() {
                                     setFormData((prev) => ({ ...prev, projects: newP }));
                                   }}
                                   style={inputStyle}
+                                  placeholder="https://..."
                                 />
                               </div>
 
@@ -1658,10 +1672,11 @@ export default function AdminPanel() {
                                     setFormData((prev) => ({ ...prev, projects: newP }));
                                   }}
                                   style={inputStyle}
+                                  placeholder="Describe the application features, architecture, and impact..."
                                 />
                               </div>
 
-                              <div>
+                              <div style={{ marginBottom: "18px" }}>
                                 <label style={labelStyle}>Technologies Used (Comma-separated tags)</label>
                                 <input
                                   type="text"
@@ -1672,7 +1687,36 @@ export default function AdminPanel() {
                                     setFormData((prev) => ({ ...prev, projects: newP }));
                                   }}
                                   style={inputStyle}
+                                  placeholder="React, Node.js, Express, MongoDB, Tailwind CSS"
                                 />
+                                {proj.tech && proj.tech.length > 0 && (
+                                  <div className="admin-tech-tags-list">
+                                    {proj.tech.map((t, tIdx) => (
+                                      <span key={tIdx} className="admin-tech-pill">
+                                        {t}
+                                      </span>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+
+                              <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", paddingTop: "14px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                                <button
+                                  type="button"
+                                  onClick={() => setEditingProjectId(null)}
+                                  style={{
+                                    padding: "8px 18px",
+                                    background: "#1e293b",
+                                    border: "1px solid #334155",
+                                    borderRadius: "8px",
+                                    color: "#e2e8f0",
+                                    fontSize: "0.82rem",
+                                    fontWeight: 600,
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  Done Editing
+                                </button>
                               </div>
                             </div>
                           )}
@@ -1686,41 +1730,27 @@ export default function AdminPanel() {
               {/* ════════ SKILLS TAB ════════ */}
               {activeTab === "skills" && (
                 <div>
-                  <div style={{
-                    background: "rgba(124,58,237,0.10)",
-                    border: "1px solid rgba(124,58,237,0.25)",
-                    borderRadius: "14px",
-                    padding: "14px 18px",
-                    marginBottom: "24px",
-                    color: "#e2e8f0",
-                    fontSize: "0.88rem",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px",
-                  }}>
-                    <i className="ri-information-line" style={{ color: "#a78bfa", fontSize: "1.2rem" }} />
-                    <span>Adjust skill names, category titles, and mastery levels (10% - 100%).</span>
+                  <div className="admin-skills-info-banner">
+                    <i className="ri-information-line" />
+                    <div>
+                      <strong style={{ color: "#f8fafc", display: "block", marginBottom: "2px" }}>
+                        Technical Skills Matrix & Proficiency
+                      </strong>
+                      <span>
+                        Adjust category titles, skill names, and mastery percentages (10% to 100%). Use the range sliders or enter exact values.
+                      </span>
+                    </div>
                   </div>
 
-                  <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
                     {formData.skillsCategories.map((cat, catIdx) => (
                       <div
                         key={cat.id || catIdx}
-                        style={{
-                          background: "#131a2c",
-                          border: "1px solid #23304b",
-                          borderRadius: "18px",
-                          padding: "24px",
-                        }}
+                        className="admin-skill-category-card"
                       >
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "18px" }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                            <div style={{
-                              width: "32px", height: "32px", borderRadius: "8px",
-                              background: cat.bg || "rgba(124,58,237,0.15)",
-                              display: "flex", alignItems: "center", justifyContent: "center",
-                              color: cat.color || "#c4b5fd",
-                            }}>
+                        <div className="admin-skill-category-header">
+                          <div className="admin-skill-category-title-group">
+                            <div className="admin-skill-category-icon">
                               <i className={cat.icon || "ri-code-line"} />
                             </div>
                             <input
@@ -1731,35 +1761,18 @@ export default function AdminPanel() {
                                 newCats[catIdx].label = e.target.value;
                                 setFormData((prev) => ({ ...prev, skillsCategories: newCats }));
                               }}
-                              style={{
-                                ...inputStyle,
-                                fontWeight: 700,
-                                fontSize: "1.05rem",
-                                color: cat.color || "#ffffff",
-                                width: "auto",
-                                padding: "6px 12px",
-                              }}
+                              className="admin-skill-category-input"
+                              placeholder="Category Name"
                             />
                           </div>
 
                           <button
                             type="button"
                             onClick={() => handleAddSkill(catIdx)}
-                            style={{
-                              padding: "6px 14px",
-                              background: "rgba(124,58,237,0.20)",
-                              border: "1px solid rgba(124,58,237,0.40)",
-                              borderRadius: "8px",
-                              color: "#c4b5fd",
-                              fontSize: "0.80rem",
-                              fontWeight: 600,
-                              cursor: "pointer",
-                              display: "flex",
-                              alignItems: "center",
-                              gap: "6px",
-                            }}
+                            className="admin-btn-add-skill"
                           >
-                            <i className="ri-add-line" /> Add Skill
+                            <i className="ri-add-line" />
+                            <span>Add Skill</span>
                           </button>
                         </div>
 
@@ -1767,57 +1780,76 @@ export default function AdminPanel() {
                           {cat.skills?.map((sk, skIdx) => (
                             <div
                               key={skIdx}
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "10px",
-                                background: "#0b0f19",
-                                padding: "10px 14px",
-                                borderRadius: "10px",
-                                border: "1px solid #1e293b",
-                              }}
+                              className="admin-skill-row"
                             >
-                              <input
-                                type="text"
-                                value={sk.name}
-                                onChange={(e) => {
-                                  const newCats = [...formData.skillsCategories];
-                                  newCats[catIdx].skills[skIdx].name = e.target.value;
-                                  setFormData((prev) => ({ ...prev, skillsCategories: newCats }));
-                                }}
-                                style={{ ...inputStyle, flex: 2, padding: "8px 12px" }}
-                              />
-
-                              <div style={{ display: "flex", alignItems: "center", gap: "6px", flex: 1 }}>
+                              <div className="admin-skill-row-top">
                                 <input
-                                  type="number"
-                                  min="10"
-                                  max="100"
-                                  value={sk.level}
+                                  type="text"
+                                  value={sk.name}
                                   onChange={(e) => {
                                     const newCats = [...formData.skillsCategories];
-                                    newCats[catIdx].skills[skIdx].level = Number(e.target.value);
+                                    newCats[catIdx].skills[skIdx].name = e.target.value;
                                     setFormData((prev) => ({ ...prev, skillsCategories: newCats }));
                                   }}
-                                  style={{ ...inputStyle, textAlign: "center", padding: "8px 6px" }}
+                                  className="admin-skill-name-input"
+                                  placeholder="Skill Name (e.g. React.js)"
                                 />
-                                <span style={{ fontSize: "0.85rem", color: "#94a3b8", fontWeight: 700 }}>%</span>
+
+                                <button
+                                  type="button"
+                                  onClick={() => handleDeleteSkill(catIdx, skIdx)}
+                                  style={{
+                                    background: "rgba(239, 68, 68, 0.10)",
+                                    border: "1px solid rgba(239, 68, 68, 0.25)",
+                                    borderRadius: "6px",
+                                    color: "#fca5a5",
+                                    cursor: "pointer",
+                                    padding: "6px 8px",
+                                    display: "inline-flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    transition: "all 0.15s ease",
+                                  }}
+                                  title="Delete Skill"
+                                >
+                                  <i className="ri-delete-bin-line" />
+                                </button>
                               </div>
 
-                              <button
-                                type="button"
-                                onClick={() => handleDeleteSkill(catIdx, skIdx)}
-                                style={{
-                                  background: "transparent",
-                                  border: "none",
-                                  color: "#ef4444",
-                                  cursor: "pointer",
-                                  padding: "4px",
-                                }}
-                                title="Delete Skill"
-                              >
-                                <i className="ri-delete-bin-line" />
-                              </button>
+                              <div className="admin-skill-row-bottom">
+                                <div className="admin-skill-range-container">
+                                  <input
+                                    type="range"
+                                    min="10"
+                                    max="100"
+                                    step="1"
+                                    value={sk.level}
+                                    onChange={(e) => {
+                                      const newCats = [...formData.skillsCategories];
+                                      newCats[catIdx].skills[skIdx].level = Number(e.target.value);
+                                      setFormData((prev) => ({ ...prev, skillsCategories: newCats }));
+                                    }}
+                                    className="admin-skill-slider"
+                                    style={{ accentColor: cat.color?.includes("#") ? cat.color : "#3b82f6" }}
+                                  />
+                                </div>
+
+                                <div className="admin-skill-badge">
+                                  <input
+                                    type="number"
+                                    min="10"
+                                    max="100"
+                                    value={sk.level}
+                                    onChange={(e) => {
+                                      const newCats = [...formData.skillsCategories];
+                                      newCats[catIdx].skills[skIdx].level = Math.max(0, Math.min(100, Number(e.target.value)));
+                                      setFormData((prev) => ({ ...prev, skillsCategories: newCats }));
+                                    }}
+                                    className="admin-skill-level-input"
+                                  />
+                                  <span style={{ fontSize: "0.80rem", color: "#94a3b8", fontWeight: 700 }}>%</span>
+                                </div>
+                              </div>
                             </div>
                           ))}
                         </div>
@@ -2859,13 +2891,15 @@ export default function AdminPanel() {
                   onClick={handleSaveAll}
                   style={{
                     padding: "9px 22px",
-                    background: "linear-gradient(135deg, #10b981, #059669)",
-                    border: "1px solid rgba(255,255,255,0.2)",
+                    background: "#059669",
+                    border: "1px solid rgba(255,255,255,0.18)",
                     borderRadius: "10px",
                     color: "#ffffff",
                     fontSize: "0.86rem",
                     fontWeight: 700,
                     cursor: "pointer",
+                    boxShadow: "0 2px 10px rgba(5,150,105,0.3)",
+                    transition: "all 0.2s ease",
                   }}
                 >
                   Save Changes
